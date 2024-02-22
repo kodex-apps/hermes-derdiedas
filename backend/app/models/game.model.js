@@ -1,10 +1,10 @@
 module.exports = mongoose => {
     const Game = mongoose.model(
         "game",
-        {shortID: Number,
+        mongoose.Schema({shortID: Number,
         wordList: Array,
         playerList: Array},
-        {timestamps: true}
+        {timestamps: true})
     );
 
     return Game;

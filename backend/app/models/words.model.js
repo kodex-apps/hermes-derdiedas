@@ -1,9 +1,9 @@
 module.exports = mongoose => {
     const Words = mongoose.model(
         "words",
-        {article: String,
+        mongoose.Schema({article: String,
         word: String},
-        {timestamps: true}
+        {timestamps: true})
     );
 
     return Words;
