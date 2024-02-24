@@ -1,11 +1,11 @@
 module.exports = mongoose => {
-    const Game = mongoose.model(
-        "game",
+    const Match = mongoose.model(
+        "match",
         mongoose.Schema({shortID: Number,
         wordList: Array,
         playerList: Array},
         {timestamps: true})
     );
 
-    return Game;
+    return Match;
 }
