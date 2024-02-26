@@ -6,9 +6,6 @@ const router = require('express').Router();
 
 app.use(express.json());
 
-// Add API routes
-require('./app/routes/match.routes.js')(app);
-
 // Connect to MongoDB, if succesful, start listening on port 3030.
 db.mongoose.connect(db.url)
 .then(() => {
@@ -16,3 +13,6 @@ db.mongoose.connect(db.url)
     app.listen(3030, () => {console.log("Listening on port 3030.")});
     })
 .catch((err) => console.log(`MongoDB connection refused: ${err}.`));
+
+// Add API routes
+require("./app/routes/match.routes")(app, router);
