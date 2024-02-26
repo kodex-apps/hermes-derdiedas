@@ -2,10 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const db = require('./app/models/');
+const router = require('express').Router();
 
-app.get('/', (req, res) => {
-    res.send('GET succesful!');
-})
+app.use(express.json());
+
+// Add API routes
+require('./app/routes/match.routes.js')(app);
 
 // Connect to MongoDB, if succesful, start listening on port 3030.
 db.mongoose.connect(db.url)
