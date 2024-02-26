@@ -19,7 +19,7 @@ exports.findOne = (req, res) => {
 exports.create = (req, res) => {
     const matchOwner = req.params.ownerName;
     // Temp shortId for testing purposes. TODO: Create the actual generation of a short and unique id for each match, made of numbers?
-    const minCeilied = Math.ceil(1);
+    const minCeiled = Math.ceil(1);
     const maxFloored = Math.floor(1000);
     const randomShortId = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
     // Temp wordList for testing purposes.
