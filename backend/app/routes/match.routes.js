@@ -3,4 +3,7 @@ module.export = (app, router) => {
 
     // Get a match by its id
     router.get('/:shortId', matchController.findOne);
+
+    // Create a match providing the first player's name (aka owner)
+    router.create('/create/:ownerName', matchController.create);
 }
