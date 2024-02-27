@@ -5,7 +5,7 @@ const Match = db.match;
 exports.findOne = (req, res) => {
     const id = req.params.shortId;
 
-    Match.find({shortId: id})
+    Match.find({shortID: id})
         .then(data => {
            if (!data) res.status(404).send({message: `Couldn't find match ${id}`});
            else res.send(data);
@@ -25,7 +25,7 @@ exports.create = (req, res) => {
     const wordList = [["Die", "Frau", "Der", "Mann", "Das", "Kind", "Das", "Auto", "Der", "Teufel", "Die", "Mutter", "Das", "Geschehen", "Die", "Granate", "Der", "Renner", "Die", "Klingel"]];
 
     const newMatch = new Match({
-        shortId: randomShortId,
+        shortID: randomShortId,
         owner: matchOwner,
         wordList: wordList,
         playerList: [matchOwner]
