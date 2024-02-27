@@ -1,5 +1,4 @@
 const db = require('../models/index');
-
 const Match = db.match;
 
 // Get a match
@@ -31,4 +30,14 @@ exports.create = (req, res) => {
         wordList: wordList,
         playerList: [matchOwner]
     })
+
+    newMatch.save(newMatch)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Error creating the match."
+            });
+        })
 }
