@@ -11,7 +11,7 @@ exports.findOne = (req, res) => {
            else res.send(data);
         })
         .catch(err => {
-            res.status(500).send({message: `${err}`})
+            res.status(500).send({message: err.message || "Unknown error finding the match."})
         });
 }
 
@@ -37,7 +37,7 @@ exports.create = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Error creating the match."
+                message: err.message || "Unknown error creating the match."
             });
         })
 }
