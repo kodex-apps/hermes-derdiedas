@@ -4,11 +4,12 @@ import './index.css';
 import Root from './pages/root';
 import reportWebVitals from './reportWebVitals';
 import {RouterProvider, createBrowserRouter} from 'react-router-dom';
+import Lobby from './pages/match.lobby';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />
+    element: <Root><Lobby/></Root>
   }
 ])
 
