@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Root from './pages/root';
+import Root from './root';
 import reportWebVitals from './reportWebVitals';
 import {RouterProvider, createBrowserRouter} from 'react-router-dom';
 import Lobby from './pages/lobby';
