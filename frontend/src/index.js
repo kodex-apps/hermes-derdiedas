@@ -9,14 +9,16 @@ import Lobby from './pages/lobby';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root><Lobby/></Root>
+    element: <Lobby/>
   }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Root>
     <RouterProvider router={router} />
+    </Root>
   </React.StrictMode>
 );
 
