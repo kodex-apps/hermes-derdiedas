@@ -1,5 +1,18 @@
 .start-game-button {
     max-width: 200px !important;
-    margin: 0 auto;
+    margin: auto;
     text-align: center;
+}
+
+.lobby {
+    width: 80%;
+    margin: auto;
+}
+
+.playerlist {
+    height: 400px;
+}
+
+.playerlist-element{
+    height: 10px; /*temp just so it's not empty*/
 }
