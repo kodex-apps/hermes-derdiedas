@@ -18,7 +18,7 @@ const Lobby = (props) => {
     return (
     <div className="lobby">
         <div className="playerlist"></div>
-        <div className="start-game-button"><Button>SPIEL STARTEN</Button></div>
+        <div className="start-game"><Button>SPIEL STARTEN</Button></div>
     </div>)
 }
 
