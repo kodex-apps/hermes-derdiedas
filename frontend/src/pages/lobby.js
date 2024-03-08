@@ -1,6 +1,7 @@
 import React from 'react';
 import './lobby.css';
 import Button from '../components/button';
+import PlayerList from './lobby.playerlist';
 
 const playerList = [
     {
@@ -21,7 +22,7 @@ The match Lobby should be where you see the player list and can click PARTIE STA
 const Lobby = (props) => {
     return (
     <div className="lobby">
-        <div className="playerlist"></div>
+        <div className="playerlist"><PlayerList/></div>
         <div className="start-game"><Button>SPIEL STARTEN</Button></div>
     </div>)
 }
