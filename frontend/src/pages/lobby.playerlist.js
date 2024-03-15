@@ -5,6 +5,11 @@ The playerlist shows PlayerListElements for each player and ordered according to
 */
 const PlayerList = props => {
     //TODO: Add the header of the table (Name, % (if there is one))
+    return (
+    <table>
+
+    </table>
+    )
 }
 
 export default PlayerList;
