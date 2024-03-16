@@ -1,4 +1,5 @@
 import React from 'react';
+import './lobby.playerlist.element.css';
 
 /* 
 A playerlist element is composed of a name to the left side, a winPercentage number if there is one (don't have one at the stat),

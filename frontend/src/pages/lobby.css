@@ -7,12 +7,10 @@
 .lobby {
     width: 80%;
     margin: auto;
+    text-align: center;
 }
 
 .playerlist {
     height: 400px;
-}
-
-.playerlist-element{
-    height: 10px; /*temp just so it's not empty*/
+    text-align: center;
 }
