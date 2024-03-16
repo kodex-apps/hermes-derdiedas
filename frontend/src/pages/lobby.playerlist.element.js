@@ -5,22 +5,20 @@ A playerlist element is composed of a name to the left side, a winPercentage num
 an edit button in case you want to edit your name
 */
 const PlayerListElement = props => {
-    // TODO: Add an edit button and a delete button (if you're the owner, maybe pass as a prop your player name)
+    // TODO: Add an edit button and a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
     return <tr>
-    <div>
-        <div className="PLE__name">
-            {props.player.name}
-        </div>
-        <div className="PLE__score">
-            {props.player.winPercentage}
-        </div>
-        <div className="PLE__edit">
+    <td className="PLE__name">
+        {props.player.name}
+    </td>
+    <td className="PLE__score">
+        {props.player.winPercentage}
+    </td>
+    <td className="PLE__edit">
 
-        </div>
-        <div className="PLE__delete">
-            
-        </div>
-    </div>
+    </td>
+    <td className="PLE__delete">
+        
+    </td>
     </tr>
 }
 
