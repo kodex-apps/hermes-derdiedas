@@ -16,7 +16,7 @@ const PlayerList = props => {
         <tr>
             <th>Name</th>
         </tr>
-        {props.playerList.map(player => <PlayerListElement playerObject={player}/>)}
+        {props.playerList.map(player => <PlayerListElement player={player}/>)}
     </table>
     )
 }
