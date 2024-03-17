@@ -1,3 +1,16 @@
 .th, tr, td {
     text-align: left;
 }
+
+.PLE__img--edit {
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+}
+
+.PLE__img--delete {
+    width: 17px;
+    height: 17px;
+    vertical-align: top;
+    padding-top: 2px;
+}

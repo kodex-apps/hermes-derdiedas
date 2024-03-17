@@ -5,7 +5,7 @@ import PlayerList from './lobby.playerlist';
 
 const playerList = [
     {
-        placement: 1,
+        placement: 3,
         name: "User1",
         winPercentage: null,
         isOwner: false
@@ -13,8 +13,14 @@ const playerList = [
     {
         placement: 2,
         name: "Ranatapasamatlingo",
-        winPercentage: "60%",
+        winPercentage: "90%",
         isOwner: true
+    },
+    {
+        placement: 1,
+        name: "Ruppsala",
+        winPercentage: "60%",
+        isOwner: false
     }
 ]
 

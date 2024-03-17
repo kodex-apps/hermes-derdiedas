@@ -1,5 +1,7 @@
 import React from 'react';
 import './lobby.playerlist.element.css';
+import editIcon from '../img/edit.png';
+import deleteIcon from '../img/delete.png';
 
 /* 
 A playerlist element is composed of a name to the left side, a winPercentage number if there is one (don't have one at the stat),
@@ -15,10 +17,10 @@ const PlayerListElement = props => {
         {props.player.winPercentage}
     </td>
     <td className="PLE__edit">
-
+    <img className="PLE__img--edit" src={editIcon} />
     </td>
     <td className="PLE__delete">
-        
+    <img className="PLE__img--delete" src={deleteIcon} />
     </td>
     </tr>
 }

@@ -16,6 +16,7 @@ const PlayerList = props => {
     <table className="playerlist__table">
         <tr>
             <th>Name</th>
+            <th>%</th>
         </tr>
         {props.playerList.map(player => <PlayerListElement player={player}/>)}
     </table>
