@@ -12,7 +12,7 @@ const playerList = [
     },
     {
         placement: 2,
-        name: "User 2933",
+        name: "Ranatapasamatlingo",
         winPercentage: "60%",
         isOwner: true
     }

@@ -1,7 +1,7 @@
 .main-container {
     margin: auto;
     max-width: 600px;
-    background-color: #EC8F5E;
+    background-color: var(--palette-background);
     text-align: center;
 }
 

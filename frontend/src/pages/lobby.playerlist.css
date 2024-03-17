@@ -1,4 +1,6 @@
-table{
+table {
     margin: auto;
     text-align: left;
+    border-collapse: collapse;
+    border-spacing: 0px;
 }

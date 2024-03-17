@@ -8,9 +8,16 @@
     width: 80%;
     margin: auto;
     text-align: center;
+    background-color: var(--palette-background-2);
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .playerlist {
     height: 400px;
     text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: var(--palette-element);
 }
