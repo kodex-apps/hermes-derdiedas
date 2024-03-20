@@ -15,8 +15,8 @@ const PlayerList = props => {
     return (
     <div className="playerlist__table">
         <div className="playerlist__row">
-            <th>Name</th>
-            <th>%</th>
+            <div className="playerlist__headerelement">Name</div>
+            <div className="playerlist__headerelement">%</div>
         </div>
         {props.playerList.map(player => <PlayerListElement player={player}/>)}
     </div>
