@@ -13,13 +13,13 @@ const PlayerList = props => {
     })
     //TODO: Add conditional to the table header to show a % column if there is one
     return (
-    <div className="playerlist__table">
-        <div className="playerlist__row">
-            <div className="playerlist__headerelement">Name</div>
-            <div className="playerlist__headerelement">%</div>
-        </div>
+    <table className="playerlist__table">
+        <tr className="playerlist__playernames">
+            <th className="playerlist__headerelement">Name</th>
+            <th className="playerlist__headerelement">%</th>
+        </tr>
         {props.playerList.map(player => <PlayerListElement player={player}/>)}
-    </div>
+    </table>
     )
 }
 
