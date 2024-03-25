@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayerListElement from './lobby.playerlist.element';
+import PlayerListElement from '../pages/lobby.playerlist.element';
 import './lobby.playerlist.css';
 
 /* 

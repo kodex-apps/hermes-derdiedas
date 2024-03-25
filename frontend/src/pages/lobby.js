@@ -1,7 +1,7 @@
 import React from 'react';
 import './lobby.css';
 import Button from '../components/button';
-import PlayerList from './lobby.playerlist';
+import PlayerList from '../components/lobby.playerlist';
 
 const playerList = [
     {
@@ -12,7 +12,7 @@ const playerList = [
     },
     {
         placement: 2,
-        name: "Ranatapasamatlingo",
+        name: "Super super long name aaaa",
         winPercentage: "90%",
         isOwner: true
     },
