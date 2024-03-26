@@ -7,7 +7,7 @@ import PlayerList from '../components/lobby.playerlist';
 const playerList = [
     {
         placement: 3,
-        name: "User1",
+        name: "Lorenz",
         winPercentage: null,
         isOwner: false
     },
@@ -19,18 +19,19 @@ const playerList = [
     },
     {
         placement: 1,
-        name: "Ruppsala",
+        name: "Jasmine",
         winPercentage: "60%",
         isOwner: false
     }
 ]
 
-// Callback function to be sent to the popup text to assign a name
-
 /* 
 The match Lobby should be where you see the player list and can click PARTIE STARTEN or SPIEL STARTEN (TBD) 
 */
 const Lobby = (props) => {
+    // TODO: Create a function to get a playername that isn't taken (First Spieler_1, then Spieler_2, etc)
+    const [playerName, setPlayerName] = useState();
+
     return (
     <div className="lobby">
         <div className="playerlist"><PlayerList playerList={playerList}/></div>
