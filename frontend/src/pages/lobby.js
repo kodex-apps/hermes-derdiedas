@@ -2,6 +2,7 @@ import {React, useState} from 'react';
 import './lobby.css';
 import Button from '../components/button';
 import PlayerList from '../components/lobby.playerlist';
+import getUsername from '../utils/getusername';
 
 // Placeholder variable for playerList
 const playerList = [
@@ -30,7 +31,7 @@ The match Lobby should be where you see the player list and can click PARTIE STA
 */
 const Lobby = (props) => {
     // TODO: Create a function to get a playername that isn't taken (First Spieler_1, then Spieler_2, etc)
-    const [playerName, setPlayerName] = useState();
+    const [playerName, setPlayerName] = useState(getUsername(playerList));
 
     return (
     <div className="lobby">
