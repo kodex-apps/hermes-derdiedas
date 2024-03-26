@@ -1,8 +1,9 @@
-import React from 'react';
+import {React, useState} from 'react';
 import './lobby.css';
 import Button from '../components/button';
 import PlayerList from '../components/lobby.playerlist';
 
+// Placeholder variable for playerList
 const playerList = [
     {
         placement: 3,
@@ -23,6 +24,8 @@ const playerList = [
         isOwner: false
     }
 ]
+
+// Callback function to be sent to the popup text to assign a name
 
 /* 
 The match Lobby should be where you see the player list and can click PARTIE STARTEN or SPIEL STARTEN (TBD) 
