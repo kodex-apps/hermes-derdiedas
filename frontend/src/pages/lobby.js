@@ -30,7 +30,6 @@ const playerList = [
 The match Lobby should be where you see the player list and can click PARTIE STARTEN or SPIEL STARTEN (TBD) 
 */
 const Lobby = (props) => {
-    // TODO: Create a function to get a playername that isn't taken (First Spieler_1, then Spieler_2, etc)
     const [playerName, setPlayerName] = useState(getUsername(playerList));
 
     return (
