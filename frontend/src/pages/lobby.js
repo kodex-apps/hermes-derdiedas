@@ -30,7 +30,7 @@ const playerList = [
 The match Lobby should be where you see the player list and can click PARTIE STARTEN or SPIEL STARTEN (TBD) 
 */
 const Lobby = (props) => {
-    const [playerName, setPlayerName] = useState(getUsername(playerList));
+    const [playerName, setUserName] = useState(getUsername(playerList));
 
     return (
     <div className="lobby">
