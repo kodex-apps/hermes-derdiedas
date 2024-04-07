@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './button';
 
-const PopupText = props => {
+const PopupName = props => {
     /* TODO: Create a popup that asks for a name, the popup's button is a callback function passed through props (use state?) to set the player's name.
     The player's name cannot be repeated (move this text to the callback description)
     */
@@ -14,4 +14,4 @@ const PopupText = props => {
     </dialog>
 }
 
-export default PopupText;
+export default PopupName;
