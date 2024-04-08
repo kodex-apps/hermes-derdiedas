@@ -7,11 +7,11 @@ const PopupName = props => {
     20240408: Added basic dialog. Now create the listener in the edit button of the lobby to create a PopupName object and pass onto it a callback function to set the name (maybe make it get accept an argument with the name?)
     */
     
-    const [showDialog, setShowDialog] = React.useState(false);
+    const [showDialog, setShowDialog] = React.useState(props.showDialog);
     const openDialog = () => setShowDialog(true);
     const closeDialog = () => setShowDialog(false);
 
-	return <dialog>
+	return <dialog open={showDialog}>
         <form method="dialog">
             <label>Name:</label>
             <input type="text" autofocus/>
