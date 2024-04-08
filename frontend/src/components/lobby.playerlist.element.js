@@ -9,9 +9,9 @@ an edit button in case you want to edit your name
 */
 const PlayerListElement = props => {
 
-	// Callback function to set the player's username via popup
-	const setUsernameCallback = (setUsername) => {
-		<PopupName showDialog={true} callback={setUsername}/>;
+	// Function to show the PopupName dialog, state variable function is passed in the props 
+	const showDialog = () => {
+		props.setShowDialog(true);
 	}
     // TODO: Add an edit button and a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
 	return <tr className="PLE">
@@ -22,7 +22,7 @@ const PlayerListElement = props => {
             {props.player.winPercentage}
         </td>
         <td className="PLE__edit">
-            <img alt="Edit Button" className="PLE__img--edit" src={editIcon} onClick={setUsernameCallback(props.setUsername)} />
+            <img alt="Edit Button" className="PLE__img--edit" src={editIcon} onClick={showDialog} />
         </td>
         <td className="PLE__delete">
             <img alt="Delete Button" className="PLE__img--delete" src={deleteIcon} />
