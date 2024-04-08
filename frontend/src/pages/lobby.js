@@ -10,13 +10,13 @@ const playerList = [
         placement: 3,
         name: "Lorenz",
         winPercentage: null,
-        isOwner: false
+        isOwner: true
     },
     {
         placement: 2,
         name: "Super super long name aaaa",
         winPercentage: "90%",
-        isOwner: true
+        isOwner: false
     },
     {
         placement: 1,
@@ -31,10 +31,10 @@ The match Lobby should be where you see the player list and can click PARTIE STA
 */
 const Lobby = (props) => {
     const [playerName, setUserName] = useState(getUsername(playerList));
-
+	
     return (
     <div className="lobby">
-        <div className="playerlist"><PlayerList playerList={playerList}/></div>
+        <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setUserName={setUserName}/>
         <div className="start-game"><Button>SPIEL STARTEN</Button></div>
     </div>)
 }
