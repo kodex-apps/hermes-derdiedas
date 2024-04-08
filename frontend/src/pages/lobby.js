@@ -34,7 +34,7 @@ const Lobby = (props) => {
 	
     return (
     <div className="lobby">
-        <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setUserName={setUserName}/>
+        <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setUserName={setUserName}/></div>
         <div className="start-game"><Button>SPIEL STARTEN</Button></div>
     </div>)
 }
