@@ -4,6 +4,7 @@ import Button from '../components/button';
 import PlayerList from '../components/lobby.playerlist';
 import getUsername from '../utils/getusername';
 import PopupName from '../components/popup.name';
+import PlayernameContext from '../context/playername';
 
 // Placeholder variable for playerList
 const playerList = [
@@ -33,11 +34,14 @@ The match Lobby should be where you see the player list and can click PARTIE STA
 const Lobby = (props) => {
     const [playerName, setUserName] = useState(getUsername(playerList));
 	const [showDialog, setShowDialog] = useState(false);
+
     return <>
 	<PopupName setUserName={setUserName} showDialog={showDialog} setShowDialog={setShowDialog}/>
     <div className="lobby">
+		<PlayernameContext.Provider value={playerName}>
         <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
         <div className="start-game"><Button>SPIEL STARTEN</Button></div>
+		</PlayernameContext.Provider>
     </div>
 	</>
 }
