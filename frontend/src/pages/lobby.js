@@ -4,10 +4,9 @@ import Button from '../components/button';
 import PlayerList from '../components/lobby.playerlist';
 import getUsername from '../utils/getusername';
 import PopupName from '../components/popup.name';
-import PlayernameContext from '../context/playername';
 
-// Placeholder variable for playerList
-const playerList = [
+// Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
+const fetchedPlayerList = [
     {
         placement: 3,
         name: "Lorenz",
@@ -32,16 +31,28 @@ const playerList = [
 The match Lobby should be where you see the player list and can click PARTIE STARTEN or SPIEL STARTEN (TBD) 
 */
 const Lobby = (props) => {
-    const [playerName, setUserName] = useState(getUsername(playerList));
+	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
+    const [playerName, setUserName] = useState('Lorenz');
 	const [showDialog, setShowDialog] = useState(false);
+	const [playerList, setPlayerList] = useState(fetchedPlayerList);
+	const oldPlayerName = playerName;
 
+	// TODO: Check why this doesn't work
+	const changeUserName = (newUserName) => {
+		for (var playerElement in fetchedPlayerList) {
+			if (playerElement.name == oldPlayerName) {
+				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)] = newUserName; 
+				oldPlayerName = newUserName; 
+				setUserName(newUserName);	
+				setPlayerList(fetchedPlayerList);
+			}
+		}
+	}
     return <>
-	<PopupName setUserName={setUserName} showDialog={showDialog} setShowDialog={setShowDialog}/>
+	<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog}/>
     <div className="lobby">
-		<PlayernameContext.Provider value={playerName}>
         <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
         <div className="start-game"><Button>SPIEL STARTEN</Button></div>
-		</PlayernameContext.Provider>
     </div>
 	</>
 }
