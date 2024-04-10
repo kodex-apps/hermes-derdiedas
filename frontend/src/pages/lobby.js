@@ -35,21 +35,21 @@ const Lobby = (props) => {
     const [playerName, setUserName] = useState('Lorenz');
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState(fetchedPlayerList);
-	const oldPlayerName = playerName;
+	let oldPlayerName = playerName;
 
 	// TODO: Check why this doesn't work
 	const changeUserName = (newUserName) => {
-		for (var playerElement in fetchedPlayerList) {
-			if (playerElement.name == oldPlayerName) {
-				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)] = newUserName; 
+		fetchedPlayerList.forEach((playerElement) => {
+			if (playerElement.name === oldPlayerName) {
+				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)].name = newUserName; 
 				oldPlayerName = newUserName; 
 				setUserName(newUserName);	
 				setPlayerList(fetchedPlayerList);
 			}
-		}
+		});
 	}
     return <>
-	<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog}/>
+	<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
     <div className="lobby">
         <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
         <div className="start-game"><Button>SPIEL STARTEN</Button></div>
