@@ -8,6 +8,10 @@
     vertical-align: top;
 }
 
+.PLE__edit {
+	display: inline-block;
+}
+
 .PLE__img--delete {
     width: 17px;
     height: 17px;
