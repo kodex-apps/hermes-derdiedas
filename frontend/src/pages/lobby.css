@@ -16,4 +16,6 @@
 .playerlist {
     height: 400px;
     text-align: center;
+	padding: 40px 0;
+	display: inline-block;
 }
