@@ -8,7 +8,7 @@ const PopupName = props => {
 	20240409: The dialog now shows. Now make the props.setUserName in line 15 actually yoink the name given in input and make that name change for the player who changed it.
     */
 	
-	return <dialog open={props.showDialog}>
+    return <dialog open={props.showDialog}>
         <form method="dialog">
             <label>Name:</label>
             <input type="text" onChange={e => props.setUserName(e.target.value ? e.target.value : props.originalName)} autofocus/>

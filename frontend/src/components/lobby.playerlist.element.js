@@ -2,7 +2,7 @@ import React from 'react';
 import './lobby.playerlist.element.css';
 import editIcon from '../img/edit.png';
 import deleteIcon from '../img/delete.png';
-import PopupName from './popup.name';
+
 /* 
 A playerlist element is composed of a name to the left side, a winPercentage number if there is one (don't have one at the stat),
 an edit button in case you want to edit your name
