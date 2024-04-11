@@ -32,7 +32,7 @@ The match Lobby should be where you see the player list and can click PARTIE STA
 */
 const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
-    const [playerName, setUserName] = useState('Lorenz');
+    const [playerName, setUserName] = useState('Jasmine');
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState(fetchedPlayerList);
 	let oldPlayerName = playerName;

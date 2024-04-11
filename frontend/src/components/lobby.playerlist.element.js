@@ -17,7 +17,7 @@ const PlayerListElement = props => {
     // TODO: Add an edit button and a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
 	return <tr className="PLE">
         <td className="PLE__name">
-            {props.playerElement.name}{props.playerName == props.playerElement.name ? (<div className="PLE__edit">&nbsp;
+            {props.playerElement.name}{props.userName == props.playerElement.name ? (<div className="PLE__edit">&nbsp;
             <img alt="Edit Button" className="PLE__img--edit" src={editIcon} onClick={showDialog} />
         </div>) : null}
 
@@ -25,9 +25,9 @@ const PlayerListElement = props => {
         <td className="PLE__score">
             {props.playerElement.winPercentage}
         </td>
-        <td className="PLE__delete">
+	{props.playerList.some((e) => (e.name === props.userName) && (e.isOwner)) ? (<td className="PLE__delete">
             <img alt="Delete Button" className="PLE__img--delete" src={deleteIcon} />
-        </td>
+        </td>) : null}
     </tr>
 }
 
