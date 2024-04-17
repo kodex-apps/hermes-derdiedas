@@ -3,6 +3,7 @@
     max-width: 600px;
     background-color: var(--palette-background);
     text-align: center;
+    height: 100vh;
 }
 
 .title {
