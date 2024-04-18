@@ -9,12 +9,12 @@
 }
 
 .PLE__edit {
-	display: inline-block;
+    display: inline-block;
 }
 
 .PLE__img--delete {
-    width: 17px;
-    height: 17px;
+    width: 14px;
+    height: 14px;
     vertical-align: top;
     padding-top: 2px;
 }
