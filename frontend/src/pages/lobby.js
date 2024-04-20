@@ -51,7 +51,7 @@ const Lobby = (props) => {
 		<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
 	<div className="room">
 	    <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
-	    {playerList.some((e) => (e.name === playerName) && (e.isOwner)) ? (<div className="start-game"><Button>SPIEL STARTEN</Button></div>) : null}
+	    {playerList.some((e) => (e.name === playerName) && (e.isOwner)) && (<div className="start-game"><Button>SPIEL STARTEN</Button></div>)}
 	</div>
 	</>
 }
