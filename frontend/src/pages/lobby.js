@@ -32,12 +32,11 @@ The match Lobby should be where you see the player list and can click PARTIE STA
 */
 const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
-    const [playerName, setUserName] = useState('Lorenz');
+	const [playerName, setUserName] = useState('Lorenz');
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState(fetchedPlayerList);
 	let oldPlayerName = playerName;
 
-	// TODO: Check why this doesn't work
 	const changeUserName = (newUserName) => {
 		fetchedPlayerList.forEach((playerElement) => {
 			if (playerElement.name === oldPlayerName) {
@@ -48,12 +47,12 @@ const Lobby = (props) => {
 			}
 		});
 	}
-    return <>
-	<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
-    <div className="room">
-        <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
-        {playerList.some((e) => (e.name === playerName) && (e.isOwner)) ? (<div className="start-game"><Button>SPIEL STARTEN</Button></div>) : null}
-    </div>
+	return <>
+		<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
+	<div className="room">
+	    <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
+	    {playerList.some((e) => (e.name === playerName) && (e.isOwner)) ? (<div className="start-game"><Button>SPIEL STARTEN</Button></div>) : null}
+	</div>
 	</>
 }
 
