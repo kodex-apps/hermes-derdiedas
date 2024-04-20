@@ -5,7 +5,7 @@ import React from 'react';
  */
 
 // Placeholder list of 10 words with their articles
-const wordList = [{'Das', 'Haus'},{'Die', 'Frau'}, {'Der', 'Mann'}, {'Das', 'Interesse'}, {'Der', 'Meister'}, {'Die', 'Bremse'}, {'Der', 'Junge'}, {'Das', 'Kind'}, {'Die', 'Mermelade'}, {'Das', 'Ziel'}];
+const wordList = [{article: 'Das', word: 'Haus'},{article: 'Die', word: 'Frau'}, {article: 'Der', word: 'Mann'}, {article: 'Das', word: 'Interesse'}, {article: 'Der', word: 'Meister'}, {article: 'Die', word: 'Bremse'}, {article: 'Der', word: 'Junge'}, {article: 'Das', word: 'Kind'}, {article: 'Die', word: 'Mermelade'}, {article: 'Das', word: 'Ziel'}];
 
 const Match = props => {
 	return <div className="match">

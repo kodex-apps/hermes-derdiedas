@@ -50,7 +50,7 @@ const Lobby = (props) => {
 	}
     return <>
 	<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
-    <div className="lobby">
+    <div className="room">
         <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
         <div className="start-game"><Button>SPIEL STARTEN</Button></div>
     </div>
