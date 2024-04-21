@@ -6,8 +6,9 @@ import React from 'react';
 
 // TODO: Create some sort of word list component where the words will scroll up (and fade-in/fade-out). I'm thinking maybe a state variable that will hold a list of items and set a css animation of fade-in/fade-out to a different word every time a user guesses a word correctly. This should be enough at least for the word part (not the article part)
 // TODO: Now do the article part
+
 // Placeholder list of 10 words with their articles
-const wordList = [{article: 'Das', word: 'Haus'},{article: 'Die', word: 'Frau'}, {article: 'Der', word: 'Mann'}, {article: 'Das', word: 'Interesse'}, {article: 'Der', word: 'Meister'}, {article: 'Die', word: 'Bremse'}, {article: 'Der', word: 'Junge'}, {article: 'Das', word: 'Kind'}, {article: 'Die', word: 'Mermelade'}, {article: 'Das', word: 'Ziel'}];
+const wordList = [{article: 'Das', word: 'Haus', currentWord: true},{article: 'Die', word: 'Frau', currentWord: true}, {article: 'Der', word: 'Mann', currentWord: true}, {article: 'Das', word: 'Interesse', currentWord: true}, {article: 'Der', word: 'Meister', currentWord: true}, {article: 'Die', word: 'Bremse', currentWord: true}, {article: 'Der', word: 'Junge', currentWord: true}, {article: 'Das', word: 'Kind', currentWord: true}, {article: 'Die', word: 'Mermelade', currentWord: true}, {article: 'Das', word: 'Ziel', currentWord: true}];
 
 const Match = props => {
 	return <div className="match">
