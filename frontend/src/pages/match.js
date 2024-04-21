@@ -8,9 +8,10 @@ import React from 'react';
 // TODO: Now do the article part
 
 // Placeholder list of 10 words with their articles
-const wordList = [{article: 'Das', word: 'Haus', currentWord: true},{article: 'Die', word: 'Frau', currentWord: true}, {article: 'Der', word: 'Mann', currentWord: true}, {article: 'Das', word: 'Interesse', currentWord: true}, {article: 'Der', word: 'Meister', currentWord: true}, {article: 'Die', word: 'Bremse', currentWord: true}, {article: 'Der', word: 'Junge', currentWord: true}, {article: 'Das', word: 'Kind', currentWord: true}, {article: 'Die', word: 'Mermelade', currentWord: true}, {article: 'Das', word: 'Ziel', currentWord: true}];
+const loadedWordList = [{article: 'Das', word: 'Haus', currentWord: true},{article: 'Die', word: 'Frau', currentWord: true}, {article: 'Der', word: 'Mann', currentWord: true}, {article: 'Das', word: 'Interesse', currentWord: true}, {article: 'Der', word: 'Meister', currentWord: true}, {article: 'Die', word: 'Bremse', currentWord: true}, {article: 'Der', word: 'Junge', currentWord: true}, {article: 'Das', word: 'Kind', currentWord: true}, {article: 'Die', word: 'Mermelade', currentWord: true}, {article: 'Das', word: 'Ziel', currentWord: true}];
 
 const Match = props => {
+	[wordList, setWordList] = useState(loadedWordList);
 	return <div className="match">
 	
 	</div>
