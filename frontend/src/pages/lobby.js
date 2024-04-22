@@ -1,4 +1,5 @@
 import {React, useState} from 'react';
+    },
 import './lobby.css';
 import Button from '../components/button';
 import PlayerList from '../components/lobby.playerlist';
