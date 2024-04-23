@@ -1,3 +1,4 @@
 .article-textbox {
 	border-style: hidden;
+	background-color: var(--palette-background);
 }
