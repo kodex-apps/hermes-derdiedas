@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './match.css';
 import TextBox from '../components/match.textbox';
 
@@ -13,10 +13,9 @@ import TextBox from '../components/match.textbox';
 const loadedWordList = [{article: 'Das', word: 'Haus', isCurrentWord: true},{article: 'Die', word: 'Frau', isCurrentWord: false}, {article: 'Der', word: 'Mann', isCurrentWord: false}, {article: 'Das', word: 'Interesse', isCurrentWord: false}, {article: 'Der', word: 'Meister', isCurrentWord: false}, {article: 'Die', word: 'Bremse', isCurrentWord: false}, {article: 'Der', word: 'Junge', isCurrentWord: false}, {article: 'Das', word: 'Kind', isCurrentWord: false}, {article: 'Die', word: 'Mermelade', isCurrentWord: false}, {article: 'Das', word: 'Ziel', isCurrentWord: false}];
 
 const Match = props => {
-	[wordList, setWordList] = useState(loadedWordList);
+	const [wordList, setWordList] = useState(loadedWordList);
 	return <div className="match">
 		<TextBox />
-	
 	</div>
 }
 

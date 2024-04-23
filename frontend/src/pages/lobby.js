@@ -4,6 +4,7 @@ import Button from '../components/button';
 import PlayerList from '../components/lobby.playerlist';
 import getUsername from '../utils/getusername';
 import PopupName from '../components/popup.name';
+import { Link } from 'react-router-dom';
 
 // Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
 const fetchedPlayerList = [
@@ -51,7 +52,7 @@ const Lobby = (props) => {
 		<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
 	<div className="room">
 	    <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
-	    {playerList.some((e) => (e.name === playerName) && (e.isOwner)) && (<div className="start-game"><Button>SPIEL STARTEN</Button></div>)}
+	    {playerList.some((e) => (e.name === playerName) && (e.isOwner)) && (<div className="start-game"><Link to={`/4324`}><Button>SPIEL STARTEN</Button></Link></div>)}
 	</div>
 	</>
 }
