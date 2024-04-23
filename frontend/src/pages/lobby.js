@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useRef} from 'react';
 import './lobby.css';
 import Button from '../components/button';
 import PlayerList from '../components/lobby.playerlist';
@@ -37,6 +37,7 @@ const Lobby = (props) => {
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState(fetchedPlayerList);
 	let oldPlayerName = playerName;
+	const inputRef = useRef(null);
 
 	const changeUserName = (newUserName) => {
 		fetchedPlayerList.forEach((playerElement) => {
@@ -49,9 +50,9 @@ const Lobby = (props) => {
 		});
 	}
 	return <>
-		<PopupName setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
+		<PopupName inputRef={inputRef} setUserName={changeUserName} showDialog={showDialog} setShowDialog={setShowDialog} originalName={oldPlayerName}/>
 	<div className="room">
-	    <div className="playerlist"><PlayerList playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
+	    <div className="playerlist"><PlayerList inputRef={inputRef} playerList={playerList} playerName={playerName} setShowDialog={setShowDialog}/></div>
 	    {playerList.some((e) => (e.name === playerName) && (e.isOwner)) && (<div className="start-game"><Link to={`/4324`}><Button>SPIEL STARTEN</Button></Link></div>)}
 	</div>
 	</>

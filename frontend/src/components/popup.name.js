@@ -6,7 +6,7 @@ const PopupName = props => {
 	<div style={{textAlign: 'center', whiteSpace: 'pre-line'}}>
         <form method="dialog">
             <label>Name:</label><br />
-            <input autoFocus type="text" onChange={e => props.setUserName(e.target.value ? e.target.value : props.originalName)}/><br /><br />
+            <input ref={props.inputRef} autoFocus="true" type="text" onChange={e => props.setUserName(e.target.value ? e.target.value : props.originalName)}/><br /><br />
             <Button onClick={() => {props.setShowDialog(false);}}>OK</Button>
         </form>
 	</div>
