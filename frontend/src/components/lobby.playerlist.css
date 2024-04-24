@@ -1,23 +1,27 @@
 .playerlist__table {
-    margin: auto;
-    text-align: left;
-    border-collapse: collapse;
-    border-spacing: 0px;
+	margin: auto;
+	text-align: left;
+	border-collapse: collapse;
+	border-spacing: 0px;
 }
 
 
 tr:nth-child(even) {
-    td {
-        background-color: var(--palette-element);
-    };
-    td:first-child {
-        border-radius: 7px 0 0 7px;
-    };
-    td:last-child {
-        border-radius: 0 2px 1px 0;
-    };
+	td {
+		background-color: var(--palette-element);
+	};
+	td:first-child {
+		border-radius: 7px 0 0 7px;
+	};
+	td:last-child {
+		border-radius: 0 2px 1px 0;
+	};
 }
 
 td {
-    padding: 3px 5px 3px 5px;
+	padding: 3px 5px 3px 5px;
+}
+
+.playerlist__headerelement-percentage {
+	text-align: center;
 }

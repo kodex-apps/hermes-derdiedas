@@ -16,7 +16,7 @@ const PlayerList = props => {
     <table className="playerlist__table">
         <tr className="playerlist__playernames">
             <th className="playerlist__headerelement">Name</th>
-            <th className="playerlist__headerelement">%</th>
+            <th className="playerlist__headerelement-percentage">%</th>
         </tr>
         {props.playerList.map(playerElement => <PlayerListElement playerList={props.playerList} userName={props.playerName} playerElement={playerElement} setShowDialog={props.setShowDialog}/>)}
     </table>
