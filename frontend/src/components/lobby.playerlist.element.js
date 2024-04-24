@@ -13,7 +13,6 @@ const PlayerListElement = props => {
 	// Function to show the PopupName dialog, state variable function is passed in the props 
 	const showDialog = () => {
 		props.setShowDialog(true);
-		props.inputRef.current.focus();
 	}
 
     // TODO: Add an edit button and a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
