@@ -14,8 +14,17 @@ const loadedWordList = [{article: 'Das', word: 'Haus', isCurrentWord: true},{art
 
 const Match = props => {
 	const [wordList, setWordList] = useState(loadedWordList);
+
+	/* 
+	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:
+	 * 1. If it's equivalent, do an animation where the article + the word scroll up and fade out.
+	 * 2. Set the wordList to be the next one (there's a util for that)
+	 * 3. Make the new word come fade in from the bottom next to the textbox (where the last word was before guessing)
+	 */
+	const handleChange = event => {
+	}
 	return <div className="match">
-		<TextBox />
+		<TextBox onChange={handleChange} />
 	</div>
 }
 
