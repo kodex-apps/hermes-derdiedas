@@ -1,4 +1,9 @@
 .article-textbox {
-	border-style: hidden;
 	background-color: var(--palette-background);
+	outline: none;
+	border-width: 0 0 1px;
+}
+
+.article-textbox:focus {
+	outline: none;
 }
