@@ -13,16 +13,16 @@ import setNextWord from "../utils/setnextword";
 const validArticles = ["der", "die", "das"];
 // Placeholder list of 10 words with their articles
 const loadedWordList = [
-	{ article: "das", word: "Haus", isCurrentWord: true, correctWord: null },
-	{ article: "die", word: "Frau", isCurrentWord: false, correctWord: null },
-	{ article: "der", word: "Mann", isCurrentWord: false, correctWord: null },
-	{ article: "das", word: "Interesse", isCurrentWord: false, correctWord: null },
-	{ article: "der", word: "Meister", isCurrentWord: false, correctWord: null },
-	{ article: "die", word: "Bremse", isCurrentWord: false, correctWord: null },
-	{ article: "der", word: "Junge", isCurrentWord: false, correctWord: null },
-	{ article: "das", word: "Kind", isCurrentWord: false, correctWord: null },
-	{ article: "die", word: "Mermelade", isCurrentWord: false, correctWord: null },
-	{ article: "das", word: "Ziel", isCurrentWord: false, correctWord: null },
+	{ article: "das", word: "Haus", isCurrentWord: true, isCorrectWord: null },
+	{ article: "die", word: "Frau", isCurrentWord: false, isCorrectWord: null },
+	{ article: "der", word: "Mann", isCurrentWord: false, isCorrectWord: null },
+	{ article: "das", word: "Interesse", isCurrentWord: false, isCorrectWord: null },
+	{ article: "der", word: "Meister", isCurrentWord: false, isCorrectWord: null },
+	{ article: "die", word: "Bremse", isCurrentWord: false, isCorrectWord: null },
+	{ article: "der", word: "Junge", isCurrentWord: false, isCorrectWord: null },
+	{ article: "das", word: "Kind", isCurrentWord: false, isCorrectWord: null },
+	{ article: "die", word: "Mermelade", isCurrentWord: false, isCorrectWord: null },
+	{ article: "das", word: "Ziel", isCurrentWord: false, isCorrectWord: null },
 ];
 
 const Match = (props) => {
@@ -41,16 +41,16 @@ const Match = (props) => {
 		console.log(input);
 		if (validArticles.includes(input)) {
 			if (input.slice(-3) === currentWord.article) {
-				// Set the correctWord = true if it wasn't marked as false before (because the user got it wrong)
-				if (currentWord.correctWord === null)
-					wordList[wordList.findIndex((e) => e.isCurrentWord)].correctWord =
+				// Set the isCorrectWord = true if it wasn't marked as false before (because the user got it wrong)
+				if (currentWord.isCorrectWord === null)
+					wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 						true;
 				setWordList([...setNextWord(wordList)]);
 				currentWord = wordList.find((e) => e.isCurrentWord);
 				console.log(wordList);
 			} else {
-				// Set the correctWord = false if the user got it wrong once
-				wordList[wordList.findIndex((e) => e.isCurrentWord)].correctWord =
+				// Set the isCorrectWord = false if the user got it wrong once
+				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 					false;
 			}
 		}
