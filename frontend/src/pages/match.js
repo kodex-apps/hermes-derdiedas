@@ -54,6 +54,7 @@ const Match = (props) => {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 					false;
+				articleInputRef.current.value = "";
 			}
 		}
 	};
