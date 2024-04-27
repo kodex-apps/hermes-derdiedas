@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./match.css";
 import TextBox from "../components/match.textbox";
 import setNextWord from "../utils/setnextword";
@@ -28,6 +28,7 @@ const loadedWordList = [
 const Match = (props) => {
 	const [wordList, setWordList] = useState(loadedWordList);
 	let currentWord = wordList.find((e) => e.isCurrentWord);
+	const articleInputRef = useRef(null);
 
 	/*
 	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:
@@ -48,6 +49,7 @@ const Match = (props) => {
 				setWordList([...setNextWord(wordList)]);
 				currentWord = wordList.find((e) => e.isCurrentWord);
 				console.log(wordList);
+				articleInputRef.current.value = "";
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
@@ -58,7 +60,7 @@ const Match = (props) => {
 
 	return (
 		<div className="match">
-			<TextBox onChange={handleChange} />
+			<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
 			{wordList.find((e) => e.isCurrentWord).word}
 		</div>
 	);

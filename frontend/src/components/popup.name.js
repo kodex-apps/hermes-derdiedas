@@ -3,6 +3,7 @@ import Button from "./button";
 
 const PopupName = (props) => {
 	const inputRef = useRef(null);
+	// Set focus on the input as soon as PopupName renders
 	useEffect(() => {
 		inputRef.current.focus();
 	});
@@ -14,7 +15,6 @@ const PopupName = (props) => {
 					<br />
 					<input
 						ref={inputRef}
-						autoFocus="true"
 						type="text"
 						onChange={(e) =>
 							props.setUserName(
