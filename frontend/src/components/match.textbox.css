@@ -1,9 +1,10 @@
 .article-textbox {
-	background-color: var(--palette-background);
+	background-color: var(--palette-background-2);
 	outline: none;
 	border-width: 0 0 2px;
 	border-color: var(--palette-element);
 	margin: 0 9px 0 0;
+	font-size: 45px;
 }
 
 .article-textbox:focus {

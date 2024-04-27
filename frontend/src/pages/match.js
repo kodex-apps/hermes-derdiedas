@@ -22,7 +22,7 @@ const loadedWordList = [
 	{ article: "der", word: "Junge", isCurrentWord: false, isCorrectWord: null },
 	{ article: "das", word: "Kind", isCurrentWord: false, isCorrectWord: null },
 	{ article: "die", word: "Mermelade", isCurrentWord: false, isCorrectWord: null },
-	{ article: "das", word: "Ziel", isCurrentWord: false, isCorrectWord: null },
+	{ article: "das", word: "Ziel", isCurrentWord: false, isCorrectWord: null }
 ];
 
 const Match = (props) => {
@@ -62,7 +62,7 @@ const Match = (props) => {
 	return (
 		<div className="match">
 			<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
-			{wordList.find((e) => e.isCurrentWord).word}
+			<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
 		</div>
 	);
 };

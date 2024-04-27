@@ -9,7 +9,7 @@ const TextBox = (props) => {
 			alt="Article Text Box"
 			autoFocus
 			type="text"
-			size="3"
+			size="2"
 			className="article-textbox"
 		/>
 	);
