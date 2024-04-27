@@ -1,7 +1,9 @@
 .article-textbox {
 	background-color: var(--palette-background);
 	outline: none;
-	border-width: 0 0 1px;
+	border-width: 0 0 2px;
+	border-color: var(--palette-element);
+	margin: 0 9px 0 0;
 }
 
 .article-textbox:focus {
