@@ -16,22 +16,12 @@ const loadedWordList = [
 	{ article: "das", word: "Haus", isCurrentWord: true, correctWord: null },
 	{ article: "die", word: "Frau", isCurrentWord: false, correctWord: null },
 	{ article: "der", word: "Mann", isCurrentWord: false, correctWord: null },
-	{
-		article: "das",
-		word: "Interesse",
-		isCurrentWord: false,
-		correctWord: null,
-	},
+	{ article: "das", word: "Interesse", isCurrentWord: false, correctWord: null },
 	{ article: "der", word: "Meister", isCurrentWord: false, correctWord: null },
 	{ article: "die", word: "Bremse", isCurrentWord: false, correctWord: null },
 	{ article: "der", word: "Junge", isCurrentWord: false, correctWord: null },
 	{ article: "das", word: "Kind", isCurrentWord: false, correctWord: null },
-	{
-		article: "die",
-		word: "Mermelade",
-		isCurrentWord: false,
-		correctWord: null,
-	},
+	{ article: "die", word: "Mermelade", isCurrentWord: false, correctWord: null },
 	{ article: "das", word: "Ziel", isCurrentWord: false, correctWord: null },
 ];
 
