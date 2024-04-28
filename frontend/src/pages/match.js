@@ -49,7 +49,6 @@ const Match = (props) => {
 				// it wouldn't re-render thinking it's the same array
 				setWordList([...setNextWord(wordList)]);
 				currentWord = wordList.find((e) => e.isCurrentWord);
-				console.log(wordList);
 				articleInputRef.current.value = "";
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
@@ -60,12 +59,10 @@ const Match = (props) => {
 		}
 	};
 
-	return (
-		<div className="match">
-			<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
-			<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
+	return <div className="match">
+			{(wordList.some(e => e.isCurrentWord) === true) ? (<><TextBox articleInputRef={articleInputRef} onChange={handleChange} /><span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span></>
+			) : (<span className="game-ended">Lade Punktestand...</span>)}
 		</div>
-	);
 };
 
 export default Match;
