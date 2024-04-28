@@ -22,7 +22,7 @@ const loadedWordList = [
 	{ article: "der", word: "Junge", isCurrentWord: false, isCorrectWord: null },
 	{ article: "das", word: "Kind", isCurrentWord: false, isCorrectWord: null },
 	{ article: "die", word: "Mermelade", isCurrentWord: false, isCorrectWord: null },
-	{ article: "das", word: "ImpossiblelongwordofratestthearticleisDASbtw", isCurrentWord: false, isCorrectWord: null }
+	{ article: "die", word: "Mitfahrgelegenheit", isCurrentWord: false, isCorrectWord: null }
 ];
 
 const Match = (props) => {

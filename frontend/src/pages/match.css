@@ -9,7 +9,6 @@
 	background-color: var(--palette-background-2);
 	border-radius: 10px;
 	padding: 10px;
-	overflow-wrap: break-word;
 }
 
 .word-span {
@@ -18,6 +17,13 @@
 }
 
 .game-ended {
-	font-size: 45px;
+	font-size: 25px;
 }
 
+@media (max-width:641px)  { /* below portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+	
+	.word-span {
+		font-size: 40px;
+		overflow-wrap: anywhere;
+	}
+}
