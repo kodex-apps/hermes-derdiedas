@@ -8,7 +8,11 @@
 }
 
 .title {
-    width: 80%;
+	height: 20vh;
+}
+
+.title img {
+	height: 100%;
 }
 
 @media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
