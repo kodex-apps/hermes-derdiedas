@@ -11,6 +11,20 @@
 	padding: 10px;
 }
 
-.word-span, .game-ended {
+.word-span {
 	font-size: 60px;
+	overflow-wrap: anywhere;
+}
+
+.game-ended {
+	font-size: 25px;
+}
+
+@media (max-width:641px)  { /* below portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+	
+	.word-span {
+		font-size: 40px;
+		overflow-wrap: anywhere;
+	}
+
 }
