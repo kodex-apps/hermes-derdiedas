@@ -69,7 +69,7 @@ const Match = (props) => {
 				<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
 				<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
 			</>) : 
-			(<p className="game-ended">This is a long text to test some behaviour</p>)}
+			(<p className="game-ended">Lade Punktestand...</p>)}
 		</div>
 };
 
