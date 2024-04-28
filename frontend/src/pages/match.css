@@ -9,9 +9,10 @@
 	background-color: var(--palette-background-2);
 	border-radius: 10px;
 	padding: 10px;
+	overflow-wrap: break-word;
 }
 
 .word-span, .game-ended {
 	font-size: 60px;
-	overflow-wrap: break-work;
+	overflow-wrap: break-word;
 }
