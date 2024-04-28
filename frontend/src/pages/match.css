@@ -12,7 +12,12 @@
 	overflow-wrap: break-word;
 }
 
-.word-span, .game-ended {
+.word-span {
 	font-size: 60px;
 	overflow-wrap: break-word;
 }
+
+.game-ended {
+	font-size: 45px;
+}
+
