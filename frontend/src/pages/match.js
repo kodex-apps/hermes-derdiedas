@@ -64,8 +64,12 @@ const Match = (props) => {
 	}
 
 	return <div onClick={handleMatchClick} className="match">
-			{(wordList.some(e => e.isCurrentWord) === true) ? (<><TextBox articleInputRef={articleInputRef} onChange={handleChange} /><span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span></>
-			) : (<span className="game-ended">Lade Punktestand...</span>)}
+			{(wordList.some(e => e.isCurrentWord) === true) ? 
+			(<>
+				<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
+				<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
+			</>) : 
+			(<span className="game-ended">Lade Punktestand...</span>)}
 		</div>
 };
 
