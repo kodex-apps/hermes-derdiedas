@@ -5,8 +5,16 @@
 	border-color: var(--palette-element);
 	margin: 0 9px 0 0;
 	font-size: 60px;
+	text-align: center;
 }
 
 .article-textbox:focus {
 	outline: none;
+}
+
+@media (max-width:641px)  { /* below portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+	
+	.article-textbox {
+		font-size: 30px;
+	}
 }
