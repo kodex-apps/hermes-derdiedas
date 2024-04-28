@@ -14,7 +14,7 @@
 
 .word-span {
 	font-size: 60px;
-	overflow-wrap: break-word;
+	overflow-wrap: anywhere;
 }
 
 .game-ended {
