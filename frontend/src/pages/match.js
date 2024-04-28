@@ -39,16 +39,16 @@ const Match = (props) => {
 	const handleChange = (event) => {
 		const input = event.target.value.slice(-3).toLowerCase();
 		// Check if user wrote an article
-		console.log(input);
 		if (validArticles.includes(input)) {
 			if (input.slice(-3) === currentWord.article) {
 				// Set the isCorrectWord = true if it wasn't marked as false before (because the user got it wrong)
 				if (currentWord.isCorrectWord === null)
 					wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 						true;
+				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else
+				// it wouldn't re-render thinking it's the same array
 				setWordList([...setNextWord(wordList)]);
 				currentWord = wordList.find((e) => e.isCurrentWord);
-				console.log(wordList);
 				articleInputRef.current.value = "";
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
@@ -59,12 +59,18 @@ const Match = (props) => {
 		}
 	};
 
-	return (
-		<div className="match">
-			<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
-			<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
+	const handleMatchClick = () => {
+		articleInputRef.current.focus();
+	}
+
+	return <div onClick={handleMatchClick} className="match">
+			{(wordList.some(e => e.isCurrentWord) === true) ? 
+			(<>
+				<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
+				<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
+			</>) : 
+			(<span className="game-ended">Lade Punktestand...</span>)}
 		</div>
-	);
 };
 
 export default Match;
