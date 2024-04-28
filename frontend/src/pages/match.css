@@ -1,5 +1,6 @@
 .match {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
 	height: 70vh;
@@ -10,6 +11,6 @@
 	padding: 10px;
 }
 
-.word-span {
+.word-span, .game-ended {
 	font-size: 60px;
 }
