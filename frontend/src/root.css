@@ -8,12 +8,13 @@
 }
 
 .title {
-	max-height: 20vh;
-	max-width: 80%;
+	margin: auto;
+	padding: 10px 0;
 }
 
 .title img {
-	max-width: 100%;
+	max-height: 20vh;
+	max-width: 80%;
 }
 
 @media (max-width:641px)  { /* max portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
