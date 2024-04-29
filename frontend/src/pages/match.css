@@ -11,9 +11,12 @@
 	padding: 10px;
 }
 
+.match > div {
+	overflow-wrap: break-word;
+}
+
 .word-span {
 	font-size: 60px;
-	overflow-wrap: anywhere;
 }
 
 .game-ended {
@@ -24,7 +27,6 @@
 	
 	.word-span {
 		font-size: 40px;
-		overflow-wrap: anywhere;
 	}
 
 }
