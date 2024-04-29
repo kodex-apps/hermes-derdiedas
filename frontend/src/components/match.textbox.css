@@ -6,6 +6,7 @@
 	margin: 0 9px 0 0;
 	font-size: 60px;
 	text-align: center;
+	display: inline;
 }
 
 .article-textbox:focus {
