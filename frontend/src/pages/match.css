@@ -21,7 +21,19 @@
 }
 
 .game-ended {
-	font-size: 25px;
+	animation-name: hover;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+@keyframes hover {
+	from {
+		font-size: 45px;
+	}
+	to {
+		font-size: 46px;
+	}
 }
 
 @media (max-width:641px)  { /* below portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
