@@ -29,6 +29,7 @@ const Match = (props) => {
 	const [wordList, setWordList] = useState(loadedWordList);
 	let currentWord = wordList.find((e) => e.isCurrentWord);
 	const articleInputRef = useRef(null);
+	const animatedText = useRef(null);
 
 	/*
 	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:
@@ -57,6 +58,8 @@ const Match = (props) => {
 				articleInputRef.current.value = "";
 			}
 		}
+
+
 	};
 
 	const handleMatchClick = () => {
@@ -70,6 +73,7 @@ const Match = (props) => {
 				<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
 			</div>) : 
 			(<p className="game-ended">Lade Punktestand...</p>)}
+			<div className="word-span animated-text">Der</div>
 		</div>
 };
 
