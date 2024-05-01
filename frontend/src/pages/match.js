@@ -46,20 +46,23 @@ const Match = (props) => {
 				if (currentWord.isCorrectWord === null)
 					wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 						true;
+				animatedText.current.innerHTML = currentWord.article;
 				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else
 				// it wouldn't re-render thinking it's the same array
 				setWordList([...setNextWord(wordList)]);
 				currentWord = wordList.find((e) => e.isCurrentWord);
 				articleInputRef.current.value = "";
+				animatedText.current.classList.add("fadeout-class");
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 					false;
 				articleInputRef.current.value = "";
 			}
+		} else {
+			animatedText.current.classList.remove("fadeout-class");
+			animatedText.current.innerHTML = "";
 		}
-
-
 	};
 
 	const handleMatchClick = () => {
@@ -69,11 +72,11 @@ const Match = (props) => {
 	return <div onClick={handleMatchClick} className="match">
 			{(wordList.some(e => e.isCurrentWord) === true) ? 
 			(<div>
-				<TextBox articleInputRef={articleInputRef} onChange={handleChange} />
+				<div><TextBox articleInputRef={articleInputRef} onChange={handleChange} />
+				<div ref={animatedText} className="animated-text"></div></div>
 				<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
 			</div>) : 
 			(<p className="game-ended">Lade Punktestand...</p>)}
-			<div className="word-span animated-text">Der</div>
 		</div>
 };
 
