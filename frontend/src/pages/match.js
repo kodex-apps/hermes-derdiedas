@@ -46,12 +46,14 @@ const Match = (props) => {
 				if (currentWord.isCorrectWord === null)
 					wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 						true;
+				// Set the current word into the fadeout element before it changes value
 				animatedText.current.innerHTML = currentWord.article;
 				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else
 				// it wouldn't re-render thinking it's the same array
 				setWordList([...setNextWord(wordList)]);
 				currentWord = wordList.find((e) => e.isCurrentWord);
 				articleInputRef.current.value = "";
+				// Apply the fadeout animation
 				animatedText.current.classList.add("fadeout-class");
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once

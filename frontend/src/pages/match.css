@@ -60,9 +60,11 @@
 @keyframes fadeout {
 	from {
 		opacity: 95%; 
+		top: 0px;
 	}
 	to {
 		opacity: 0%;
+		top: -200px;
 	}
 }
 
@@ -72,4 +74,8 @@
 		font-size: 40px;
 	}
 
+
+	.animated-text {
+		font-size: 40px;
+	}
 }
