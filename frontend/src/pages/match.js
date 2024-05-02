@@ -47,7 +47,7 @@ const Match = (props) => {
 					wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 						true;
 				// Set the current word into the fadeout element before it changes value
-				animatedText.current.innerHTML = currentWord.article;
+				animatedText.current.innerHTML = currentWord.article.replace(currentWord.article.charAt(0), currentWord.article.charAt(0).toUpperCase()) + " " + currentWord.word;
 				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else
 				// it wouldn't re-render thinking it's the same array
 				setWordList([...setNextWord(wordList)]);
@@ -75,7 +75,7 @@ const Match = (props) => {
 			{(wordList.some(e => e.isCurrentWord) === true) ? 
 			(<div>
 				<div><TextBox articleInputRef={articleInputRef} onChange={handleChange} />
-				<div ref={animatedText} className="animated-text"></div></div>
+				<div ref={animatedText} className="animated-text"/></div>
 				<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
 			</div>) : 
 			(<p className="game-ended">Lade Punktestand...</p>)}
