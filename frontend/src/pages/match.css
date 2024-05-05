@@ -11,20 +11,73 @@
 	padding: 10px;
 }
 
+.match > div {
+	overflow-wrap: anywhere;
+	padding: 0 20px;
+	width: 100%;
+}
+
+.match > div > div {
+	position: relative;
+	padding-bottom: 20px;
+}
+
 .word-span {
 	font-size: 60px;
-	overflow-wrap: anywhere;
 }
 
 .game-ended {
-	font-size: 25px;
+	animation-name: hover;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+.animated-text {
+	width: 100%;
+	display: inline;
+	font-size: 60px;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+}
+
+@keyframes hover {
+	from {
+		font-size: 45px;
+	}
+	to {
+		font-size: 46px;
+	}
+}
+
+.fadeout-class {
+	animation-name: fadeout;
+	animation-duration: 0.6s;
+	animation-iteration-count: 1;
+	animation-direction: normal;
+	animation-fill-mode: forwards;
+}
+
+@keyframes fadeout {
+	from {
+		opacity: 95%; 
+		top: 0px;
+	}
+	to {
+		opacity: 0%;
+		top: -100px;
+	}
 }
 
 @media (max-width:641px)  { /* below portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
 	
 	.word-span {
 		font-size: 40px;
-		overflow-wrap: anywhere;
 	}
 
+
+	.animated-text {
+		font-size: 40px;
+	}
 }

@@ -6,9 +6,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --palette-background:  #EC8F5E;
-  --palette-background-2: #F3B664;
-  --palette-element: #F1EB90;
+  --palette-background:  #803D3B;
+  --palette-background-2: #E4C59E;
+  --palette-element: #AF8260;
   --palette-element-2: #9FBB73;
   background-color: var(--palette-background);
   height: 100vh;
