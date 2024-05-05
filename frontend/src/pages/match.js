@@ -68,7 +68,7 @@ const Match = (props) => {
 	};
 
 	const handleMatchClick = () => {
-		articleInputRef.current.focus();
+		if (articleInputRef.current) articleInputRef.current.focus();
 	}
 
 	return <div onClick={handleMatchClick} className="match">
