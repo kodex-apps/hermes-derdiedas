@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Button from "./button";
+import './popup.name.css';
 
 const PopupName = (props) => {
 	const inputRef = useRef(null);
@@ -11,9 +12,10 @@ const PopupName = (props) => {
 		<dialog open={props.showDialog}>
 			<div style={{ textAlign: "center", whiteSpace: "pre-line" }}>
 				<form method="dialog">
-					<label>Name:</label>
+					<label>Name</label>
 					<br />
 					<input
+						className="name-textbox"
 						ref={inputRef}
 						type="text"
 						onChange={(e) =>
