@@ -56,6 +56,7 @@ const Lobby = (props) => {
 				showDialog={showDialog}
 				setShowDialog={setShowDialog}
 				originalName={oldPlayerName}
+				playerList={playerList}
 			/>
 			<div className="room">
 				<div className="playerlist">
