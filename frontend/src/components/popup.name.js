@@ -18,9 +18,10 @@ const PopupName = (props) => {
 						className="name-textbox"
 						ref={inputRef}
 						type="text"
+						size="8"
 						onChange={(e) =>
 							props.setUserName(
-								e.target.value ? e.target.value : props.originalName,
+								e.target.value ? e.target.value : props.originalName
 							)
 						}
 					/>

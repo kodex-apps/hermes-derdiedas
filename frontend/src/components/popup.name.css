@@ -1,0 +1,29 @@
+.name-textbox {
+	background-color: var(--palette-background-2);
+	outline: none;
+	border-width: 0 0 2px;
+	border-color: var(--palette-element);
+	margin: 0 9px 0 0;
+	font-size: 30px;
+	text-align: center;
+	display: inline-block;
+}
+
+.name-textbox:focus {
+	outline: none;
+}
+
+@media (max-width:641px)  { /* below portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+	
+	.name-textbox {
+		font-size: 15px;
+	}
+}
+
+dialog {
+	background-color: var(--palette-background-2);
+}
+
+dialog label {
+	font-size: 25px;
+}
