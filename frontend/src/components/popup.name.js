@@ -8,6 +8,12 @@ const PopupName = (props) => {
 	useEffect(() => {
 		inputRef.current.focus();
 	});
+	// If the input name is null or if it's already on the list, cancel the change and set the name back to the last saved name
+	const handleOnChange = e => {
+		if (!props.playerList.find(player => player.name === e.target.value)) props.setUserName(e.target.value ? e.target.value : props.originalName)
+	}
+
+
 	return (
 		<dialog open={props.showDialog}>
 			<div style={{ textAlign: "center", whiteSpace: "pre-line" }}>
@@ -19,11 +25,7 @@ const PopupName = (props) => {
 						ref={inputRef}
 						type="text"
 						size="8"
-						onChange={(e) =>
-							props.setUserName(
-								e.target.value ? e.target.value : props.originalName
-							)
-						}
+						onChange={handleOnChange}
 					/>
 					<br />
 					<br />
