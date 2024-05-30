@@ -74,14 +74,4 @@ exports.create = (req, res) => {
 		});
 };
 
-// Function to use internally to fetch a list of IDs
-exports.findAllIds = () => {
-	// TODO: return a list of all ids. Btw this is for sure wrong but I'm trying it because why not.
-	let idArray = [];
 
-	Match.distinct('_id', {})
-	.then((data) => idArray = data)  
-	.catch(err => {console.log(err.message || "Unknown error");});
-	
-	return idArray;
-};
