@@ -1,8 +1,14 @@
 const db = require('../models/index');
 
-const getNewId = (matchList) => {
-	// return a random ID of the ones that are available 
-	const MatchModel = db.model;
+// Returns an available ID
+const getNewId = () => {
+	// Array that will hold all the currently used IDs
+	let idArray = [];
+
+	const MatchModel = db.match;
+	MatchModel.distinct('_id', {})
+	.then(data => idArray = data)  
+	.catch(err => {console.log(err.message || "Unknown error");});
 }
 
 module.exports = getNewId;
