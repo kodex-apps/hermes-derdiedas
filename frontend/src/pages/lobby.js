@@ -38,6 +38,7 @@ const Lobby = (props) => {
 	const [playerList, setPlayerList] = useState(fetchedPlayerList);
 	let oldPlayerName = playerName;
 
+	// TODO: Create a match on load [...]
 	const changeUserName = (newUserName) => {
 		fetchedPlayerList.forEach((playerElement) => {
 			if (playerElement.name === oldPlayerName) {
