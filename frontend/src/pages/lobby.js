@@ -5,6 +5,7 @@ import PlayerList from "../components/lobby.playerlist";
 import getUsername from "../utils/getusername";
 import PopupName from "../components/popup.name";
 import { Link } from "react-router-dom";
+import getMatch from "../utils/getnewmatch";
 
 // Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
 const fetchedPlayerList = [
@@ -22,7 +23,7 @@ const fetchedPlayerList = [
 	},
 	{
 		placement: 1,
-		name: "Jasmine",
+		name: "Fefran",
 		winPercentage: "60%",
 		isOwner: false,
 	},
@@ -39,7 +40,11 @@ const Lobby = (props) => {
 	let oldPlayerName = playerName;
 
 	// TODO: Create a match on load [...]
-	// TODO: Fetch the created match's playerList and assigned it to fetchedPlayerList
+	// If there is no match being passed to Lobby, create a new one
+	if (!props.currentMatch) {
+		getMatch().then((data) => console.log(data));
+	}
+	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
 	
 	const changeUserName = (newUserName) => {
 		fetchedPlayerList.forEach((playerElement) => {
