@@ -29,7 +29,7 @@ const fetchedPlayerList = [
 ];
 
 /* 
-The match Lobby should be where you see the player list and can click PARTIE STARTEN or SPIEL STARTEN (TBD) 
+The match Lobby should be where you see the player list and can click SPIEL STARTEN (TBD) 
 */
 const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
@@ -39,6 +39,8 @@ const Lobby = (props) => {
 	let oldPlayerName = playerName;
 
 	// TODO: Create a match on load [...]
+	// TODO: Fetch the created match's playerList and assigned it to fetchedPlayerList
+	
 	const changeUserName = (newUserName) => {
 		fetchedPlayerList.forEach((playerElement) => {
 			if (playerElement.name === oldPlayerName) {
