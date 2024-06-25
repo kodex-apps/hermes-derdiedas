@@ -6,8 +6,9 @@ export default async function getMatch() {
 	const res = await fetch(config.fetchUrl, {
 		method: "GET",
 		headers: {
-			"content-type": "application/json"
-		}
+			"content-type": "application/json",
+		},
+		mode: "no-cors"
 	});
 
 	return res;
