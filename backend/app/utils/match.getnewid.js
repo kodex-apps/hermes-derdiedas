@@ -17,6 +17,7 @@ const getNewId = () => {
 	while (!idFound) {
 		if (idArray.contains(returnId)) returnId--;
 		else idFound
+		console.log("Creating match, trying with id: " + returnId);
 		
 		// On the case the are no more available IDs, increase the scope
 		if (returnId === 0) returnId = 999999;
