@@ -10,7 +10,7 @@ const getNewId = () => {
 
 	// Load into idArray all the _id keys of Matches
 	MatchModel.distinct('_id', {})
-	.then(data => idArray = data)  
+	.then(data => {idArray = data; console.log("Checking availability on this idArray:" + idArray);})  
 	.catch(err => {console.log(err.message || "Unknown error");});
 	
 	// Get highest id not in the array
