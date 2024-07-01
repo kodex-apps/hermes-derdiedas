@@ -10,18 +10,21 @@ const getNewId = () => {
 
 	// Load into idArray all the _id keys of Matches
 	MatchModel.distinct('_id', {})
-	.then(data => {idArray = data; console.log("Checking availability on this idArray:" + idArray);})  
+	.then(data => {
+		idArray = data; 
+		console.log("Checking availability on this idArray:" + idArray);
+		// Get highest id not in the array
+		while (!idFound) {
+			if (idArray.includes(returnId)) {returnId--; console.log("ID already exists, now trying new ID: " + returnId);}
+			else {idFound = true;console.log("Creating match, with id: " + returnId);}
+		
+		
+			// On the case the are no more available IDs, increase the scope
+			if (returnId === 0) returnId = 999999;
+		}
+	})  
 	.catch(err => {console.log(err.message || "Unknown error");});
 	
-	// Get highest id not in the array
-	while (!idFound) {
-		if (idArray.includes(returnId)) {returnId--; console.log("ID already exists, now trying new ID: " + returnId);}
-		else {idFound = true;console.log("Creating match, with id: " + returnId);}
-		
-		
-		// On the case the are no more available IDs, increase the scope
-		if (returnId === 0) returnId = 999999;
-	}
 	
 	return returnId;
 }
