@@ -16,8 +16,8 @@ const getNewId = () => {
 	// Get highest id not in the array
 	while (!idFound) {
 		if (idArray.includes(returnId)) {returnId--; console.log("ID already exists, now trying new ID: " + returnId);}
-		else {idFound = true;}
-		console.log("Creating match, trying with id: " + returnId);
+		else {idFound = true;console.log("Creating match, with id: " + returnId);}
+		
 		
 		// On the case the are no more available IDs, increase the scope
 		if (returnId === 0) returnId = 999999;
