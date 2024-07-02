@@ -53,7 +53,7 @@ exports.create = (req, res) => {
 	];
 
 	const newMatch = new Match({
-		_id: await getNewId(),
+		_id: getNewId(),
 		owner: matchOwner,
 		wordList: wordList,
 		playerList: [matchOwner],
