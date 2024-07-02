@@ -67,6 +67,8 @@ exports.create = (req, res) => {
 		.catch((err) => {
 			res.status(500).send({
 				message: err.message || "Unknown error creating the match.",
-			});
+			}
+			console.log(err.message);
+
 		});
 };
