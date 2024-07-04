@@ -73,7 +73,7 @@ exports.create = (req, res) => {
 			});
 
 		});
-	}
+	});
 
 	
 	};
