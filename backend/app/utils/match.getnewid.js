@@ -1,7 +1,7 @@
 const db = require('../models/index');
 
 // Returns an available ID
-const getNewId = () => {
+const async getNewId = () => {
 	// Array that will hold all the currently used IDs
 	let idArray = [];
 	let returnId = 9999;
@@ -17,8 +17,6 @@ const getNewId = () => {
 		while (!idFound) {
 			if (idArray.includes(returnId)) {returnId--; console.log("ID already exists, now trying new ID: " + returnId);}
 			else {idFound = true;console.log("Creating match, with id: " + returnId);}
-		
-		
 			// On the case the are no more available IDs, increase the scope
 			if (returnId === 0) returnId = 999999;
 		}
@@ -27,8 +25,7 @@ const getNewId = () => {
 	})  
 	.catch(err => {console.log(err.message || "Unknown error");});
 	
-	if (idFound) return returnId;
-	
+	return returnId;
 }
 
 module.exports = getNewId;

@@ -51,14 +51,15 @@ exports.create = (req, res) => {
 			"Klingel",
 		],
 	];
-
+	getNewId().then(newId => {
+	// Create the Match object to be inserted to the DB
 	const newMatch = new Match({
-		_id: getNewId(),
+		_id: newId,
 		owner: matchOwner,
 		wordList: wordList,
 		playerList: [matchOwner],
 	});
-
+	// Save the Match object in the DB
 	newMatch
 		.save(newMatch)
 		.then((data) => {
@@ -72,4 +73,7 @@ exports.create = (req, res) => {
 			});
 
 		});
-};
+	}
+
+	
+	};
