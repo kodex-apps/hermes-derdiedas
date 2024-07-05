@@ -22,10 +22,10 @@ async function getNewId() {
 		}
 		console.log("Exiting while, creating match with id " + returnId);
 
+		return returnId;
 	})  
 	.catch(err => {console.log(err.message || "Unknown error");});
 	
-	return returnId;
 }
 
 module.exports = getNewId;
