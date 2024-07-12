@@ -22,7 +22,7 @@ async function getNewId() {
 		}
 		console.log("Exiting while, creating match with id " + returnId);
 
-		return returnId;
+		return new Promise(res => res(returnId));
 	})  
 	.catch(err => {console.log(err.message || "Unknown error");});
 	
