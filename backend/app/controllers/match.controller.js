@@ -59,6 +59,7 @@ exports.create = (req, res) => {
 		wordList: wordList,
 		playerList: [matchOwner],
 	});
+	console.log(newMatch);
 	// Save the Match object in the DB
 	newMatch
 		.save(newMatch)
