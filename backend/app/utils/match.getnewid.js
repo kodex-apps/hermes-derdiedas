@@ -1,7 +1,7 @@
 const db = require('../models/index');
 
 // Returns an available ID
-async function getNewId() {
+function getNewId() {
 	// Array that will hold all the currently used IDs
 	let idArray = [];
 	let returnId = 9999;
