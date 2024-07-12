@@ -9,7 +9,7 @@ async function getNewId() {
 	const MatchModel = db.match;
 
 	// Load into idArray all the _id keys of Matches
-	MatchModel.distinct('_id', {})
+	returnId = await MatchModel.distinct('_id', {})
 	.then(data => {
 		idArray = data; 
 		console.log("Checking availability on this idArray:" + idArray);
@@ -22,10 +22,10 @@ async function getNewId() {
 		}
 		console.log("Exiting while, creating match with id " + returnId);
 
-		return new Promise(res => res(returnId));
 	})  
 	.catch(err => {console.log(err.message || "Unknown error");});
 	
+	return returnId;
 }
 
 module.exports = getNewId;

@@ -51,7 +51,7 @@ exports.create = (req, res) => {
 			"Klingel",
 		],
 	];
-	await getNewId().then(newId => {
+	getNewId().then(newId => {
 	// Create the Match object to be inserted to the DB
 	const newMatch = new Match({
 		_id: newId,
