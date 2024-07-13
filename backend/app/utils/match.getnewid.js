@@ -9,7 +9,7 @@ async function getNewId() {
 
 	let promiseId = await new Promise(res => {
 		// Load into idArray all the _id keys of Matches
-		returnId = MatchModel.distinct('_id', {})
+		const returnId = MatchModel.distinct('_id', {})
 		.then(data => {
 			idArray = data; 
 			console.log("Checking availability on this idArray:" + idArray);
@@ -24,10 +24,11 @@ async function getNewId() {
 
 
 		})  
-		.catch(err => {console.log(err.message || "Unknown error");});
+		.catch(err => console.log(err.message || "Unknown error"));
 
 		res(returnId);
-	}
+	});
+
 	return promiseId;
 }
 
