@@ -26,7 +26,7 @@ async function getNewId() {
 
 	
 
-	return promiseId;
+	return returnId;
 }
 
 module.exports = getNewId;
