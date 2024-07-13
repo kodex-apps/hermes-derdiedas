@@ -7,9 +7,9 @@ async function getNewId() {
 	let idFound = false;
 	const MatchModel = db.match;
 
-	let promiseId = new Promise(res => {
+	let promiseId = await new Promise(res => {
 		// Load into idArray all the _id keys of Matches
-		returnId = await MatchModel.distinct('_id', {})
+		returnId = MatchModel.distinct('_id', {})
 		.then(data => {
 			idArray = data; 
 			console.log("Checking availability on this idArray:" + idArray);
