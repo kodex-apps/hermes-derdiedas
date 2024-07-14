@@ -3,7 +3,7 @@ module.exports = (mongoose) => {
 		"match",
 		mongoose.Schema(
 			// Overwriting _id so we can set our own 4 digit IDs
-			{ _id: Number, wordList: Array, playerList: Array },
+			{ _id: Number, wordList: Array, playerList: Array, isOngoing: Boolean },
 			{ timestamps: true },
 		),
 	);
