@@ -36,18 +36,22 @@ const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
 	const [playerName, setUserName] = useState("Lorenz");
 	const [showDialog, setShowDialog] = useState(false);
-	const [playerList, setPlayerList] = useState(fetchedPlayerList);
+	const [playerList, setPlayerList] = useState([]);
+	const [loadedMatch, setLoadedMatch] = useState(props.currentMatch);
 	let oldPlayerName = playerName;
 
 	// TODO: Create a match on load [...]
 	// If there is no match being passed to Lobby, create a new one
-	if (!props.currentMatch) {
-		getMatch(playerName).then((data) => console.log(data));
+	if (!loadedMatch) {
+		getMatch(playerName).then((data) => {
+			console.log("Loaded match: " + data);
+			setLoadedMatch(data);
+		});
 	}
 	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
 	
 	const changeUserName = (newUserName) => {
-		fetchedPlayerList.forEach((playerElement) => {
+		playerList.forEach((playerElement) => {
 			if (playerElement.name === oldPlayerName) {
 				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)].name =
 					newUserName;
