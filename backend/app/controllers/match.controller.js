@@ -27,7 +27,7 @@ exports.create = (req, res) => {
 	// 3. Put them into a Match object and respond with it
 	
 	// Temp wordList for testing purposes.
-	const loadedWordList = [
+	const loadedWords = [
 		{ article: "das", word: "Haus", isCurrentWord: true, isCorrectWord: null },
 		{ article: "die", word: "Frau", isCurrentWord: false, isCorrectWord: null },
 		{ article: "der", word: "Mann", isCurrentWord: false, isCorrectWord: null },
@@ -45,7 +45,7 @@ exports.create = (req, res) => {
 	const newMatch = new Match({
 		_id: newId,
 		owner: matchOwner,
-		wordList: wordList,
+		wordList: loadedWords,
 		playerList: [matchOwner],
 		isOngoing: false
 	});
