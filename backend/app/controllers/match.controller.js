@@ -27,30 +27,19 @@ exports.create = (req, res) => {
 	// 3. Put them into a Match object and respond with it
 	
 	// Temp wordList for testing purposes.
-	const wordList = [
-		[
-			"Die",
-			"Frau",
-			"Der",
-			"Mann",
-			"Das",
-			"Kind",
-			"Das",
-			"Auto",
-			"Der",
-			"Teufel",
-			"Die",
-			"Mutter",
-			"Das",
-			"Geschehen",
-			"Die",
-			"Granate",
-			"Der",
-			"Renner",
-			"Die",
-			"Klingel",
-		],
+	const loadedWordList = [
+		{ article: "das", word: "Haus", isCurrentWord: true, isCorrectWord: null },
+		{ article: "die", word: "Frau", isCurrentWord: false, isCorrectWord: null },
+		{ article: "der", word: "Mann", isCurrentWord: false, isCorrectWord: null },
+		{ article: "das", word: "Interesse", isCurrentWord: false, isCorrectWord: null },
+		{ article: "der", word: "Meister", isCurrentWord: false, isCorrectWord: null },
+		{ article: "die", word: "Bremse", isCurrentWord: false, isCorrectWord: null },
+		{ article: "der", word: "Junge", isCurrentWord: false, isCorrectWord: null },
+		{ article: "das", word: "Kind", isCurrentWord: false, isCorrectWord: null },
+		{ article: "die", word: "Mermelade", isCurrentWord: false, isCorrectWord: null },
+		{ article: "die", word: "Mitfahrgelegenheit", isCurrentWord: false, isCorrectWord: null }
 	];
+
 	getNewId().then(newId => {
 	// Create the Match object to be inserted to the DB
 	const newMatch = new Match({
