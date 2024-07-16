@@ -4,6 +4,7 @@ const app = express();
 const db = require("./app/models/");
 const router = require("express").Router();
 
+//commenting out because I can't remember why I put it here
 app.use(express.json());
 
 // Connect to MongoDB, if succesful, start listening on port 3030.
