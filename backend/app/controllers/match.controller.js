@@ -54,8 +54,7 @@ exports.create = (req, res) => {
 	newMatch
 		.save(newMatch)
 		.then((data) => {
-			console.log("New match created with ID " + newMatch._id);
-			res.send(newMatch);
+			res.send(data);
 		})
 		.catch((err) => {
 			console.log(err.message);
