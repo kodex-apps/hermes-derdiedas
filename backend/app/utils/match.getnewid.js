@@ -12,11 +12,10 @@ async function getNewId() {
 	await MatchModel.distinct('_id', {})
 	.then(data => {
 		idArray = data; 
-		console.log("Checking availability on this idArray:" + idArray);
 		// Get highest id not in the array
 		while (!idFound) {
-			if (idArray.includes(returnId)) {returnId--; console.log("ID already exists, now trying new ID: " + returnId);}
-			else {idFound = true;console.log("Creating match, with id: " + returnId);}
+			if (idArray.includes(returnId)) {returnId--;}
+			else {idFound = true;}
 			// On the case the are no more available IDs, increase the scope
 			if (returnId === 0) returnId = 999999;
 		}
