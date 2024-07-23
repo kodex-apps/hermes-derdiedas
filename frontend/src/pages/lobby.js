@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import "./lobby.css";
 import Button from "../components/button";
 import PlayerList from "../components/lobby.playerlist";
@@ -37,26 +37,34 @@ const Lobby = (props) => {
 	const [playerName, setUserName] = useState("Lorenz");
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState([]);
-	const [loadedMatch, setLoadedMatch] = useState(props.currentMatch);
+	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
 	let oldPlayerName = playerName;
 
 	// TODO: Create a match on load [...]
 	// If there is no match being passed to Lobby, create a new one
-	if (!loadedMatch) {
-		getMatch(playerName)
-			.then((response) => response.json())
-			.then((response) => {
-				console.log(response);
-				setLoadedMatch(response);
-				//TODO: Commented out until playerList is configured properly in backend
-				//setPlayerList(response.playerList); 
-			});
+	//TODO: Popup that asks for the player's name
+	useEffect(() => {
+		const handleLoad = () => {
+			getMatch(playerName)
+				.then((response) => response.json())
+				.then((response) => {
+					console.log(response);
+					setLoadedMatch(response);
+					//TODO: Commented out until playerList is configured properly in backend
+					//setPlayerList(response.playerList); 
+				});
+		}
+		window.addEventListener('load', handleLoad);
+		return () => window.removeEventListener('load', handleLoad);
+	});
+	if (loadedMatch._id === 0) {
 	}
 	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
 	
 	const changeUserName = (newUserName) => {
-		playerList.forEach((playerElement) => {
+		loadedMatch.playerList.forEach((playerElement) => {
 			if (playerElement.name === oldPlayerName) {
+				//TODO: Remove fetchedPlayerList from here since it's a placeholder var
 				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)].name =
 					newUserName;
 				oldPlayerName = newUserName;
@@ -72,17 +80,17 @@ const Lobby = (props) => {
 				showDialog={showDialog}
 				setShowDialog={setShowDialog}
 				originalName={oldPlayerName}
-				playerList={playerList}
+				playerList={loadedMatch.playerList}
 			/>
 			<div className="room">
 				<div className="playerlist">
 					<PlayerList
-						playerList={playerList}
+						playerList={loadedMatch.playerList ?? null}
 						playerName={playerName}
 						setShowDialog={setShowDialog}
 					/>
 				</div>
-				{playerList.some((e) => e.name === playerName && e.isOwner) && (
+				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
 						<Link to={`/4324`}>
 							<Button>SPIEL STARTEN</Button>
