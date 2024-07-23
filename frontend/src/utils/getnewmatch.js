@@ -6,8 +6,7 @@ export default async function getMatch(playerName) {
 		method: "POST",
 		headers: {
 			"content-type": "application/json",
-		},
-		mode: "no-cors",
+		}
 	});
 
 	return res;

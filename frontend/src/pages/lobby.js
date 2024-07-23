@@ -43,10 +43,9 @@ const Lobby = (props) => {
 	// TODO: Create a match on load [...]
 	// If there is no match being passed to Lobby, create a new one
 	if (!loadedMatch) {
-		getMatch(playerName).then((response) => {
-			console.log(response);
-			setLoadedMatch(response.data);
-		});
+		getMatch(playerName)
+			.then((response) => response.json())
+			.then((response) => console.log(response));
 	}
 	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
 	
