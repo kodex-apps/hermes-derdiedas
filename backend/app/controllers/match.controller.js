@@ -28,7 +28,7 @@ exports.create = (req, res) => {
 	
 	// Temp wordList for testing purposes.
 	const loadedWords = [
-		{ article: "das", word: "Haus", isCurrentWord: true, isCorrectWord: null },
+		{ article: "die", word: "Limousine", isCurrentWord: true, isCorrectWord: null },
 		{ article: "die", word: "Frau", isCurrentWord: false, isCorrectWord: null },
 		{ article: "der", word: "Mann", isCurrentWord: false, isCorrectWord: null },
 		{ article: "das", word: "Interesse", isCurrentWord: false, isCorrectWord: null },
