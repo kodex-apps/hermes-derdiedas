@@ -44,7 +44,7 @@ const Lobby = (props) => {
 	// If there is no match being passed to Lobby, create a new one
 	if (!loadedMatch) {
 		getMatch(playerName).then((response) => {
-			console.log(response.data);
+			console.log(response);
 			setLoadedMatch(response.data);
 		});
 	}

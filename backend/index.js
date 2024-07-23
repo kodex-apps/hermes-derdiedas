@@ -3,8 +3,13 @@ const mongoose = require("mongoose");
 const app = express();
 const db = require("./app/models/");
 const router = require("express").Router();
+const cors = require('cors');
 
-//commenting out because I can't remember why I put it here
+const corsOptions = {
+	origin: '192.168.1.138'
+}
+
+app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB, if succesful, start listening on port 3030.
