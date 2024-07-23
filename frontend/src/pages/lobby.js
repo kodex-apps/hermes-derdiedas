@@ -45,7 +45,12 @@ const Lobby = (props) => {
 	if (!loadedMatch) {
 		getMatch(playerName)
 			.then((response) => response.json())
-			.then((response) => console.log(response));
+			.then((response) => {
+				console.log(response);
+				setLoadedMatch(response);
+				//TODO: Commented out until playerList is configured properly in backend
+				//setPlayerList(response.playerList); 
+			});
 	}
 	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
 	

@@ -46,7 +46,7 @@ exports.create = (req, res) => {
 		_id: newId,
 		owner: matchOwner,
 		wordList: loadedWords,
-		playerList: [matchOwner],
+		playerList: [{placement: 1, name: matchOwner, winPercentage: null, isOwner: true}],
 		isOngoing: false
 	});
 	console.log(newMatch);
