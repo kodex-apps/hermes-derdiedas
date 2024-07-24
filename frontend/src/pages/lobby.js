@@ -35,8 +35,8 @@ The match Lobby should be where you see the player list and can click SPIEL STAR
 const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
 	const {matchId} = useParams();
-	// TODO: Set up how the playerName is assigned, we can't really pass the playerName through a prop since we're sending players here through a route, so maybe if there is only one player, assign this player that name, and starting from the second player begin adding them as a non-owner
-	const [playerName, setUserName] = useState(props.playerName ?? getUsername(matchId));
+	// TODO: One solution would be to create matches with no Player in playerList, that way the first person to join (which would have to be the owner) would get isOwner: true, any subsequent users would get normal Players. getUsername might have to be modified to adjust since its version is old.
+	const [playerName, setPlayerName] = useState(getUsername(matchId));
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState([]);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
@@ -45,7 +45,7 @@ const Lobby = (props) => {
 	//TODO: Popup that asks for the player's name
 	//TODO: Add useEffect once loaded to load the match in the url (once HttpProvider is created)
 	useEffect(() => {
-		const handleLoad = () => {
+		if (matchId) {
 			dataService.get(matchId)
 				.then((response) => response.json())
 				.then((response) => {
@@ -55,8 +55,6 @@ const Lobby = (props) => {
 					//setPlayerList(response.playerList); 
 				});
 		}
-		window.addEventListener('load', handleLoad);
-		return () => window.removeEventListener('load', handleLoad);
 	},[]);
 	
 	const changeUserName = (newUserName) => {
@@ -66,7 +64,7 @@ const Lobby = (props) => {
 				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)].name =
 					newUserName;
 				oldPlayerName = newUserName;
-				setUserName(newUserName);
+				setPlayerName(newUserName);
 				setPlayerList(fetchedPlayerList);
 			}
 		});
@@ -83,7 +81,7 @@ const Lobby = (props) => {
 			<div className="room">
 				<div className="playerlist">
 					<PlayerList
-						playerList={loadedMatch.playerList ?? null}
+						playerList={loadedMatch.playerList}
 						playerName={playerName}
 						setShowDialog={setShowDialog}
 					/>

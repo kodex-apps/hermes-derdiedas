@@ -4,7 +4,7 @@ const getNewId = require('../utils/match.getnewid');
 
 // Function to return a Match. It will return a match object by its id
 exports.findOne = (req, res) => {
-	const id = req.params.matchId;
+	const matchId = req.params.matchId;
 
 	Match.find({ _id: matchId })
 		.then((data) => {

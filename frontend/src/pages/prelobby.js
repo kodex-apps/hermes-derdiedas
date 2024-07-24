@@ -13,10 +13,7 @@ const PreLobby = () => {
 			getMatch("Spieler")
 				.then((response) => response.json())
 				.then((response) => {
-					console.log(response);
 					navigate(`/${response._id}`);
-					//TODO: Commented out until playerList is configured properly in backend
-					//setPlayerList(response.playerList); 
 				});
 		}
 		window.addEventListener('load', handleLoad);
