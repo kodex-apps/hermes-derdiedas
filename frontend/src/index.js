@@ -6,14 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Lobby from "./pages/lobby";
 import Match from "./pages/match";
+import PreLobby from './pages/prelobby';
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <Lobby />,
+		element: <PreLobby />,
 	},
 	{
 		path: "/:matchId",
+		element: <Lobby />,
+	},
+	{
+		path: "/spiel/:matchId",
 		element: <Match />,
 	},
 ]);

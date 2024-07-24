@@ -34,11 +34,12 @@ The match Lobby should be where you see the player list and can click SPIEL STAR
 */
 const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
-	const [playerName, setUserName] = useState("Lorenz");
+	const {matchId} = useParams();
+	// TODO: Set up how the playerName is assigned, we can't really pass the playerName through a prop since we're sending players here through a route, so maybe if there is only one player, assign this player that name, and starting from the second player begin adding them as a non-owner
+	const [playerName, setUserName] = useState(props.playerName ?? getUsername(matchId));
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState([]);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
-	const {matchId} = useParams();
 	let oldPlayerName = playerName;
 
 	//TODO: Popup that asks for the player's name
@@ -56,7 +57,7 @@ const Lobby = (props) => {
 		}
 		window.addEventListener('load', handleLoad);
 		return () => window.removeEventListener('load', handleLoad);
-	});
+	},[]);
 	
 	const changeUserName = (newUserName) => {
 		loadedMatch.playerList.forEach((playerElement) => {
@@ -89,7 +90,7 @@ const Lobby = (props) => {
 				</div>
 				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
-						<Link to={`/4324`}>
+						<Link to={`/spiel/${loadedMatch._id}`}>
 							<Button>SPIEL STARTEN</Button>
 						</Link>
 					</div>
