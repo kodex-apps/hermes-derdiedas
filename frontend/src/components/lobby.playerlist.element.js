@@ -13,7 +13,7 @@ const PlayerListElement = (props) => {
 		props.setShowDialog(true);
 	};
 
-	// TODO: Add an edit button and a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
+	// TODO: Add a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
 	return (
 		<tr className="PLE">
 			<td className="PLE__name">

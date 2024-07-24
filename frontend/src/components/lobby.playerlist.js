@@ -14,6 +14,7 @@ const PlayerList = (props) => {
 	//TODO: Add conditional to the table header to show a % column if there is one
 	return (
 		<table className="playerlist__table">
+		<tbody>
 			<tr className="playerlist__playernames">
 				<th className="playerlist__headerelement">Name</th>
 				<th className="playerlist__headerelement-percentage">%</th>
@@ -26,6 +27,7 @@ const PlayerList = (props) => {
 					setShowDialog={props.setShowDialog}
 				/>
 			))}
+		</tbody>
 		</table>
 	);
 };
