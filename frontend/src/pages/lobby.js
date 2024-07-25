@@ -43,18 +43,15 @@ const Lobby = (props) => {
 	let oldPlayerName = playerName;
 
 	//TODO: Popup that asks for the player's name
-	//TODO: Add useEffect once loaded to load the match in the url (once HttpProvider is created)
 	useEffect(() => {
-		if (matchId) {
-			dataService.get(matchId)
-				.then((response) => response.json())
-				.then((response) => {
-					console.log(response);
-					setLoadedMatch(response);
-					//TODO: Commented out until playerList is configured properly in backend
-					//setPlayerList(response.playerList); 
-				});
-		}
+		dataService.get(matchId)
+			.then((response) => response.json())
+			.then((response) => {
+				console.log(response);
+				setLoadedMatch(response);
+				//TODO: Commented out until playerList is configured properly in backend
+				//setPlayerList(response.playerList); 
+			});
 	},[]);
 	
 	const changeUserName = (newUserName) => {
