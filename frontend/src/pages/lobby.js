@@ -4,8 +4,8 @@ import Button from "../components/button";
 import PlayerList from "../components/lobby.playerlist";
 import getUsername from "../utils/getusername";
 import PopupName from "../components/popup.name";
-import { Link } from "react-router-dom";
-import getMatch from "../utils/getnewmatch";
+import { Link, useParams } from "react-router-dom";
+import dataService from '../utils/dataservice.js';
 
 // Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
 const fetchedPlayerList = [
@@ -34,18 +34,19 @@ The match Lobby should be where you see the player list and can click SPIEL STAR
 */
 const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
-	const [playerName, setUserName] = useState("Lorenz");
+	const {matchId} = useParams();
+	// TODO: One solution would be to create matches with no Player in playerList, that way the first person to join (which would have to be the owner) would get isOwner: true, any subsequent users would get normal Players. getUsername might have to be modified to adjust since its version is old.
+	const [playerName, setPlayerName] = useState(getUsername(matchId));
 	const [showDialog, setShowDialog] = useState(false);
 	const [playerList, setPlayerList] = useState([]);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
 	let oldPlayerName = playerName;
 
-	// TODO: Create a match on load [...]
-	// If there is no match being passed to Lobby, create a new one
 	//TODO: Popup that asks for the player's name
+	//TODO: Add useEffect once loaded to load the match in the url (once HttpProvider is created)
 	useEffect(() => {
-		const handleLoad = () => {
-			getMatch(playerName)
+		if (matchId) {
+			dataService.get(matchId)
 				.then((response) => response.json())
 				.then((response) => {
 					console.log(response);
@@ -54,12 +55,7 @@ const Lobby = (props) => {
 					//setPlayerList(response.playerList); 
 				});
 		}
-		window.addEventListener('load', handleLoad);
-		return () => window.removeEventListener('load', handleLoad);
-	});
-	if (loadedMatch._id === 0) {
-	}
-	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
+	},[]);
 	
 	const changeUserName = (newUserName) => {
 		loadedMatch.playerList.forEach((playerElement) => {
@@ -68,7 +64,7 @@ const Lobby = (props) => {
 				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)].name =
 					newUserName;
 				oldPlayerName = newUserName;
-				setUserName(newUserName);
+				setPlayerName(newUserName);
 				setPlayerList(fetchedPlayerList);
 			}
 		});
@@ -85,14 +81,14 @@ const Lobby = (props) => {
 			<div className="room">
 				<div className="playerlist">
 					<PlayerList
-						playerList={loadedMatch.playerList ?? null}
+						playerList={loadedMatch.playerList}
 						playerName={playerName}
 						setShowDialog={setShowDialog}
 					/>
 				</div>
 				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
-						<Link to={`/4324`}>
+						<Link to={`/spiel/${loadedMatch._id}`}>
 							<Button>SPIEL STARTEN</Button>
 						</Link>
 					</div>
