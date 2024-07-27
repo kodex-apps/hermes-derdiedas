@@ -29,6 +29,9 @@ class DataService {
 				"content-type": "application/json"
 			},
 			body: JSON.stringify(match)
+		}
+
+		return res;
 	}
 }
 
