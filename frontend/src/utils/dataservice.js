@@ -21,6 +21,15 @@ class DataService {
 
 		return res;
 	}
+
+	async update(match) {
+		const res = await fetch(config.fetchUrl + '/update', {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json"
+			},
+			body: JSON.stringify(match)
+	}
 }
 
 export default new DataService();
