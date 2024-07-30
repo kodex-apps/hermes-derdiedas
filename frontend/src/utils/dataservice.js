@@ -23,6 +23,7 @@ class DataService {
 	}
 
 	async update(match) {
+		console.log("Sending body: " + JSON.stringify(match));
 		const res = await fetch(config.fetchUrl + '/update', {
 			method: "PUT",
 			headers: {
@@ -31,7 +32,6 @@ class DataService {
 			// http bodies are always strings
 			body: JSON.stringify(match)
 		});
-		console.log("Sending body: " + JSON.stringify(match));
 
 		return res;
 	}
