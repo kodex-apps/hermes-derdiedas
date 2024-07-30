@@ -44,6 +44,8 @@ const Lobby = (props) => {
 
 	//TODO: Popup that asks for the player's name
 	useEffect(() => {
+		let done = false;
+		if (!done) {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then((response) => {
@@ -71,6 +73,9 @@ const Lobby = (props) => {
 						.then((response2) => setLoadedMatch(response));
 				}
 			});
+		}
+
+		return () => { done = true; }
 	},[]);
 	
 	const changeUserName = (newUserName) => {
