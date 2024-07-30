@@ -1,8 +1,8 @@
 const config = require("./config");
 
 class DataService {
-	async post(ownerName) {
-		const res = await fetch(config.fetchUrl + `/create/${ownerName}`, {
+	async post() {
+		const res = await fetch(config.fetchUrl + `/create`, {
 			method: "POST",
 			headers: {
 				"content-type": "application/json",
@@ -29,7 +29,7 @@ class DataService {
 				"content-type": "application/json"
 			},
 			body: JSON.stringify(match)
-		}
+		});
 
 		return res;
 	}

@@ -1,5 +1,6 @@
 import {React, useEffect} from 'react';
-import getMatch from '../utils/getnewmatch';
+//import getMatch from '../utils/getnewmatch';
+import DataService from '../utils/dataservice.js';
 import {useNavigate} from 'react-router-dom';
 
 
@@ -10,7 +11,7 @@ const PreLobby = () => {
 	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
 	useEffect(() => {
 		const handleLoad = () => {
-			getMatch("Spieler")
+			DataService.post()
 				.then((response) => response.json())
 				.then((response) => {
 					navigate(`/${response._id}`);
