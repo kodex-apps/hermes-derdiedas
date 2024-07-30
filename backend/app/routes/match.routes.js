@@ -5,7 +5,7 @@ module.exports = (app, router) => {
 	router.get("/:matchId", matchController.findOne);
 
 	// Create a match providing the first player's name (aka owner)
-	router.post("/create/", matchController.create);
+	router.post("/create", matchController.create);
 
 	// Update a match providing the updated match (it'll know which one to updated through its id)
 	router.put("/update", matchController.update);
