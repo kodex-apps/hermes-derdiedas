@@ -64,12 +64,13 @@ exports.create = (req, res) => {
 
 
 exports.update = (req, res) => {
-	// Get the Match object that comes with the request
+	// Get the Match object that comes with the request and initialise a Match object with it
 	const match = new Match(JSON.parse(req.body));
 
 	match
 		.save(match)
 		.then((data) => {
+			console.log("Updating match:" + data);
 			res.send(data);
 		})
 		.catch(err => {

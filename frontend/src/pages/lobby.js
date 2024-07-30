@@ -36,9 +36,9 @@ const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
 	const {matchId} = useParams();
 	// TODO: One solution would be to create matches with no Player in playerList, that way the first person to join (which would have to be the owner) would get isOwner: true, any subsequent users would get normal Players. getUsername might have to be modified to adjust since its version is old.
-	const [playerName, setPlayerName] = useState(getUsername(matchId));
+	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
+	const [playerName, setPlayerName] = useState(props.playerName);
 	const [showDialog, setShowDialog] = useState(false);
-	const [playerList, setPlayerList] = useState([]);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
 	let oldPlayerName = playerName;
 
@@ -47,10 +47,29 @@ const Lobby = (props) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then((response) => {
+				let matchWasModified = false;
 				console.log(response);
 				setLoadedMatch(response);
-				//TODO: Commented out until playerList is configured properly in backend
-				//setPlayerList(response.playerList); 
+				if (!playerName) setPlayerName(getUsername(response.playerList));
+				// If there is no playerList present, make own player owner
+				if (!response.playerList) {
+					response.playerList.push({
+						name: playerName,
+						isOwner: true
+					});
+					matchWasModified = true;
+				} 
+				// If there is a playerList and the playerName doesn't appear, add him
+				else if ((response.playerList.findIndex(e => e.name === playerName)) === -1) {
+					response.playerList.push({
+						name: playerName
+					});
+					matchWasModified = true;
+				}
+				if (matchWasModified) {
+					dataService.update(response)
+						.then((response2) => setLoadedMatch(response));
+				}
 			});
 	},[]);
 	
@@ -62,7 +81,8 @@ const Lobby = (props) => {
 					newUserName;
 				oldPlayerName = newUserName;
 				setPlayerName(newUserName);
-				setPlayerList(fetchedPlayerList);
+				// Commented out since setPlayerList is deprecated, it's better to get the match, modify the playerList, and update that state
+				//setPlayerList(fetchedPlayerList);
 			}
 		});
 	};
