@@ -28,6 +28,7 @@ class DataService {
 			headers: {
 				"content-type": "application/json"
 			},
+			// http bodies are always strings
 			body: JSON.stringify(match)
 		});
 

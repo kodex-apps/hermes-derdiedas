@@ -65,5 +65,17 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
 	// Get the Match object that comes with the request
-	const Match = req.body;
+	const match = new Match(JSON.parse(req.body));
+
+	match
+		.save(match)
+		.then((data) => {
+			res.send(data);
+		})
+		.catch(err => {
+			console.log(err.message);
+			res.status(500).send({
+				message: err.message || "Unknown error updating the match."
+			});
+		});
 }
