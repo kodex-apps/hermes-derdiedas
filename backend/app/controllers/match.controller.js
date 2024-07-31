@@ -68,7 +68,7 @@ exports.update = (req, res) => {
 	const match = new Match(req.body);
 
 	match
-		.save(match)
+		.findByIdAndUpdate(match._id, match)
 		.then((data) => {
 			console.log("Updating match:" + data);
 			res.send(data);
