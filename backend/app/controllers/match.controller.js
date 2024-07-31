@@ -66,9 +66,10 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
 	// Get the Match object that comes with the request and initialise a Match object with it
 	const match = new Match(req.body);
+	console.log(`About to update: ${match}`);
 
 	match
-		.findByIdAndUpdate(match._id, match)
+		.replaceOne(match)
 		.then((data) => {
 			console.log("Updating match:" + data);
 			res.send(data);
