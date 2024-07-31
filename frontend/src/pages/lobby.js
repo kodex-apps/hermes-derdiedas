@@ -50,21 +50,27 @@ const Lobby = (props) => {
 			.then((response) => response.json())
 			.then((response) => {
 				let matchWasModified = false;
+				// Local playerName variable so we have an updated value for subsequent ops
+				let localPlayerName = playerName;
 				console.log(response);
 				setLoadedMatch(response);
-				if (!playerName) setPlayerName(getUsername(response.playerList));
+				if (!localPlayerName) {
+					localPlayerName = getUsername(response.playerList);
+					setPlayerName(localPlayerName);
+				}
+				console.log("Our name is: " + localPlayerName);
 				// If there is no playerList present, make own player owner
 				if (!response.playerList) {
 					response.playerList.push({
-						name: playerName,
+						name: localPlayerName,
 						isOwner: true
 					});
 					matchWasModified = true;
 				} 
 				// If there is a playerList and the playerName doesn't appear, add him
-				else if ((response.playerList.findIndex(e => e.name === playerName)) === -1) {
+				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
 					response.playerList.push({
-						name: playerName
+						name: localPlayerName
 					});
 					matchWasModified = true;
 				}
