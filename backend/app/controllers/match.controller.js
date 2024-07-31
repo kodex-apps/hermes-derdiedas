@@ -65,7 +65,7 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
 	// Get the Match object that comes with the request and initialise a Match object with it
-	const match = new Match(JSON.parse(req.body));
+	const match = new Match(req.body);
 
 	match
 		.save(match)
