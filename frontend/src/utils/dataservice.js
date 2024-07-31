@@ -30,7 +30,7 @@ class DataService {
 				"content-type": "application/json"
 			},
 			// http bodies are always strings
-			body: match
+			body: JSON.stringify(match)
 		});
 
 		return res;
