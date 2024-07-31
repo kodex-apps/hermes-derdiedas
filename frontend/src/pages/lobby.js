@@ -60,7 +60,7 @@ const Lobby = (props) => {
 				}
 				console.log("Our name is: " + localPlayerName);
 				// If there is no playerList present, make own player owner
-				if (!response.playerList) {
+				if (response.playerList.length === 0) {
 					response.playerList.push({
 						name: localPlayerName,
 						isOwner: true
