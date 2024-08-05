@@ -4,7 +4,7 @@ import Button from "../components/button";
 import PlayerList from "../components/lobby.playerlist";
 import getUsername from "../utils/getusername";
 import PopupName from "../components/popup.name";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import dataService from '../utils/dataservice.js';
 
 // Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
@@ -83,7 +83,22 @@ const Lobby = (props) => {
 
 		return () => { done = true; }
 	},[]);
+
+	const startMatch = () => {
+		const navigate = useNavigate();
+		dataService.get(matchId)
+			.then((response) => response.json())
+			.then((response) => {
+				response.isOngoig = true;
+				return response;
+				})
+			.then((response) => {
+				dataService.update(response)
+					.then((response) => navigate(`/spiel/${matchId}`));
+			});
+			}
 	
+	// BROKEN! TODO: Update this function with the correct variable
 	const changeUserName = (newUserName) => {
 		loadedMatch.playerList.forEach((playerElement) => {
 			if (playerElement.name === oldPlayerName) {
@@ -116,7 +131,7 @@ const Lobby = (props) => {
 				</div>
 				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
-						<Link to={`/spiel/${loadedMatch._id}`}>
+						<Link >
 							<Button>SPIEL STARTEN</Button>
 						</Link>
 					</div>
