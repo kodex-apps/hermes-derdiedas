@@ -24,6 +24,7 @@ exports.create = (req, res) => {
 	// Create the Match object to be inserted to the DB
 	const newMatch = new Match({
 		_id: newId,
+		playerList: [],
 		isOngoing: false
 	});
 	console.log(newMatch);
@@ -49,33 +50,37 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
 	// Get the Match object that comes with the request and initialise a Match object with it
 	const player = req.body;
-	console.log(`About to update player: ${player}`);
-	let latestMatch = Match.find({ _id: req.params.matchId });
-	const indexOfPlayer = latestMatch.playerList.findIndex(e => e.id === player.id);
+	console.log(player);
+	Match.find({ _id: req.params.matchId })
+		.then((latestMatchArray) => {
+			latestMatch = latestMatchArray[0];
+			console.log("Found match to update with id: " + req.params.matchId);
+			console.log(latestMatch);
+			const indexOfPlayer = latestMatch.playerList.findIndex(e => e.id === player.id);
+;
+			// We assume we will only receive player objects here.
+			// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
+			if (indexOfPlayer != -1) latestMatch.playerList[indexOfPlayer] = player;
+			else {
+				// Add the player id (last id + 1)
+				player.id = latestMatch.playerList.length;
+				latestMatch.playerList.push(player);
+			}
+			latestMatch
+				.replaceOne(latestMatch)
+				.then((data) => {
+					console.log("Updating match:" + data);
+					res.send(data);
+				})
+				.catch(err => {
+					console.log(err.message);
+					res.status(500).send({
+						message: err.message || "Unknown error updating the match."
+					});
+				});
 
-
-	// We assume we will only receive player objects here.
-	// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
-	if (indexOfPlayer != -1) latestMatch.playerList[indexOfPlayer] = player;
-	else {
-		// Add the player id (last id + 1)
-		player.id = latestMatch.playerList.length - 1;
-		latestMatch.playerList.push(player);
-	}
-	latestMatch
-		.replaceOne(latestMatch)
-		.then((data) => {
-			console.log("Updating match:" + data);
-			res.send(data);
-		})
-		.catch(err => {
-			console.log(err.message);
-			res.status(500).send({
-				message: err.message || "Unknown error updating the match."
-			});
+			// TODO: If you're setting the last player to wordsComplete = 10, also set the match to isOngoing = false
 		});
-
-	// TODO: If you're setting the last player to wordsComplete = 10, also set the match to isOngoing = false
 }
 
 exports.startMatch = (req, res) => {
