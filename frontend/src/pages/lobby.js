@@ -4,7 +4,7 @@ import Button from "../components/button";
 import PlayerList from "../components/lobby.playerlist";
 import getUsername from "../utils/getusername";
 import PopupName from "../components/popup.name";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import dataService from '../utils/dataservice.js';
 
 // Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
@@ -36,24 +36,69 @@ const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
 	const {matchId} = useParams();
 	// TODO: One solution would be to create matches with no Player in playerList, that way the first person to join (which would have to be the owner) would get isOwner: true, any subsequent users would get normal Players. getUsername might have to be modified to adjust since its version is old.
-	const [playerName, setPlayerName] = useState(getUsername(matchId));
+	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
+	const [playerName, setPlayerName] = useState(props.playerName);
 	const [showDialog, setShowDialog] = useState(false);
-	const [playerList, setPlayerList] = useState([]);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
 	let oldPlayerName = playerName;
 
 	//TODO: Popup that asks for the player's name
 	useEffect(() => {
+		let done = false;
+		if (!done) {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then((response) => {
+				let matchWasModified = false;
+				// Local playerName variable so we have an updated value for subsequent ops
+				let localPlayerName = playerName;
 				console.log(response);
 				setLoadedMatch(response);
-				//TODO: Commented out until playerList is configured properly in backend
-				//setPlayerList(response.playerList); 
+				if (!localPlayerName) {
+					localPlayerName = getUsername(response.playerList);
+					setPlayerName(localPlayerName);
+				}
+				console.log("Our name is: " + localPlayerName);
+				// If there is no playerList present, make own player owner
+				if (response.playerList.length === 0) {
+					response.playerList.push({
+						name: localPlayerName,
+						isOwner: true
+					});
+					matchWasModified = true;
+				} 
+				// If there is a playerList and the playerName doesn't appear, add him
+				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
+					response.playerList.push({
+						name: localPlayerName
+					});
+					matchWasModified = true;
+				}
+				if (matchWasModified) {
+					dataService.update(response)
+						.then((response2) => setLoadedMatch(response));
+				}
 			});
+		}
+
+		return () => { done = true; }
 	},[]);
+
+	const startMatch = () => {
+		const navigate = useNavigate();
+		dataService.get(matchId)
+			.then((response) => response.json())
+			.then((response) => {
+				response.isOngoig = true;
+				return response;
+				})
+			.then((response) => {
+				dataService.update(response)
+					.then((response) => navigate(`/spiel/${matchId}`));
+			});
+			}
 	
+	// BROKEN! TODO: Update this function with the correct variable
 	const changeUserName = (newUserName) => {
 		loadedMatch.playerList.forEach((playerElement) => {
 			if (playerElement.name === oldPlayerName) {
@@ -62,7 +107,8 @@ const Lobby = (props) => {
 					newUserName;
 				oldPlayerName = newUserName;
 				setPlayerName(newUserName);
-				setPlayerList(fetchedPlayerList);
+				// Commented out since setPlayerList is deprecated, it's better to get the match, modify the playerList, and update that state
+				//setPlayerList(fetchedPlayerList);
 			}
 		});
 	};
@@ -85,7 +131,7 @@ const Lobby = (props) => {
 				</div>
 				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
-						<Link to={`/spiel/${loadedMatch._id}`}>
+						<Link >
 							<Button>SPIEL STARTEN</Button>
 						</Link>
 					</div>
