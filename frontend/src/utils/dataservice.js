@@ -14,6 +14,7 @@ class DataService {
 
 	async get(id) {
 		const res = await fetch(config.fetchUrl + `/${id}`, {
+			// GET is the default so we omit declaring it
 			headers: {
 				"content-type": "application/json"
 			}
@@ -36,7 +37,7 @@ class DataService {
 		return res;
 	}
 
-	startMatch(matchId) {
+	async startMatch(matchId) {
 		const res = await fetch(config.fetchUrl + `/startMatch/${matchId}`, {
 			method: "PUT",
 			headers: {

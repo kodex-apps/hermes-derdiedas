@@ -41,6 +41,7 @@ const Lobby = (props) => {
 	const [showDialog, setShowDialog] = useState(false);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
 	let oldPlayerName = playerName;
+	const navigate = useNavigate();
 
 	//TODO: Popup that asks for the player's name
 	useEffect(() => {
@@ -78,7 +79,7 @@ const Lobby = (props) => {
 					matchWasModified = true;
 				}
 				if (matchWasModified) {
-					dataService.update(response._id, response.playerList)
+					dataService.update(response.playerList, response._id)
 						.then((response2) => setLoadedMatch(response));
 				}
 			});
@@ -88,7 +89,6 @@ const Lobby = (props) => {
 	},[]);
 
 	const startMatch = () => {
-		const navigate = useNavigate();
 		dataService.startMatch(loadedMatch._id)
 			.then(() => navigate(`/spiel/${loadedMatch._id}`));
 	}
