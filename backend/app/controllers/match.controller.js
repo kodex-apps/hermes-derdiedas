@@ -7,7 +7,7 @@ exports.findOne = (req, res) => {
 	const matchId = req.params.matchId;
 
 	Match.find({ _id: matchId })
-		.then((data) => {match
+		.then((data) => {
 			if (!data) res.status(404).send({ message: `Couldn't find match ${id}` });
 			else res.send(data[0]);
 		})
@@ -48,7 +48,7 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
 	// Get the Match object that comes with the request and initialise a Match object with it
-	const player = new Match(req.body);
+	const player = req.body;
 	console.log(`About to update player: ${player}`);
 	let latestMatch = Match.find({ _id: req.params.matchId });
 	const indexOfPlayer = latestMatch.playerList.findIndex(e => e.id === player.id);
