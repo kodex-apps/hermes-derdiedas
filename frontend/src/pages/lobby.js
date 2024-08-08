@@ -62,6 +62,7 @@ const Lobby = (props) => {
 				// If there is no playerList present, make own player owner
 				if (response.playerList.length === 0) {
 					response.playerList.push({
+						id: 0,
 						name: localPlayerName,
 						isOwner: true
 					});
@@ -75,7 +76,7 @@ const Lobby = (props) => {
 					matchWasModified = true;
 				}
 				if (matchWasModified) {
-					dataService.update(response)
+					dataService.update(response._id, response.playerList)
 						.then((response2) => setLoadedMatch(response));
 				}
 			});
@@ -86,17 +87,9 @@ const Lobby = (props) => {
 
 	const startMatch = () => {
 		const navigate = useNavigate();
-		dataService.get(matchId)
-			.then((response) => response.json())
-			.then((response) => {
-				response.isOngoig = true;
-				return response;
-				})
-			.then((response) => {
-				dataService.update(response)
-					.then((response) => navigate(`/spiel/${matchId}`));
-			});
-			}
+		dataService.startMatch(loadedMatch._id)
+			.then(() => navigate(`/spiel/${loadedMatch._id}`));
+	}
 	
 	// BROKEN! TODO: Update this function with the correct variable
 	const changeUserName = (newUserName) => {
@@ -131,7 +124,7 @@ const Lobby = (props) => {
 				</div>
 				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
-						<Link >
+						<Link onClick={startMatch}>
 							<Button>SPIEL STARTEN</Button>
 						</Link>
 					</div>
