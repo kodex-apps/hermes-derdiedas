@@ -68,6 +68,7 @@ exports.update = (req, res) => {
 	const match = new Match(req.body);
 	console.log(`About to update: ${match}`);
 
+	// TODO: When receiving a player object, if it already exists, compare its values with the one in the db and update the new ones. If it's a new one, just add it to the match. 
 	match
 		.replaceOne(match)
 		.then((data) => {

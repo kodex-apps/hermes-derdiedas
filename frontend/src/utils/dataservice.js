@@ -22,15 +22,15 @@ class DataService {
 		return res;
 	}
 
-	async update(match) {
+	async update(object, matchId) {
 		//console.log("Sending body: " + JSON.stringify(match));
-		const res = await fetch(config.fetchUrl + '/update', {
+		const res = await fetch(config.fetchUrl + `/update/${matchId}`, {
 			method: "PUT",
 			headers: {
 				"content-type": "application/json"
 			},
 			// http bodies are always strings
-			body: JSON.stringify(match)
+			body: JSON.stringify(object)
 		});
 
 		return res;
