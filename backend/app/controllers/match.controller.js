@@ -48,12 +48,22 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
 	// Get the Match object that comes with the request and initialise a Match object with it
-	const match = new Match(req.body);
-	console.log(`About to update: ${match}`);
+	const player = new Match(req.body);
+	console.log(`About to update player: ${player}`);
+	let latestMatch = Match.find({ _id: req.params.matchId });
+	const indexOfPlayer = latestMatch.playerList.findIndex(e => e.id === player.id);
 
-	// TODO: When receiving a player object, if it already exists, compare its values with the one in the db and update the new ones. If it's a new one, just add it to the match. 
-	match
-		.replaceOne(match)
+
+	// We assume we will only receive player objects here.
+	// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
+	if (indexOfPlayer != -1) latestMatch.playerList[indexOfPlayer] = player;
+	else {
+		// Add the player id (last id + 1)
+		player.id = latestMatch.playerList.length - 1;
+		latestMatch.playerList.push(player);
+	}
+	latestMatch
+		.replaceOne(latestMatch)
 		.then((data) => {
 			console.log("Updating match:" + data);
 			res.send(data);
