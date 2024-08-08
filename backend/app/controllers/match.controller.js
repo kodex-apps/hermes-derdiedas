@@ -95,10 +95,12 @@ exports.startMatch = (req, res) => {
 		{ article: "die", word: "Mitfahrgelegenheit", isCurrentWord: false, isCorrectWord: null }
 	];
 
-	let match = await Match.find({ _id: matchId });
-	match.wordList = loadedWords;
-	match.isOngoig = true;
-	match.save(match)
-		.then(() => res.status(200).send())
-		.catch((error) => res.status(500).send({ message: error.message }));
+	Match.find({ _id: matchId })
+		.then((match) => {
+			match.wordList = loadedWords;
+			match.isOngoig = true;
+			match.save(match)
+				.then(() => res.status(200).send())
+				.catch((error) => res.status(500).send({ message: error.message }));
+		});
 }
