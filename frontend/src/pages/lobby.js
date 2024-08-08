@@ -64,14 +64,16 @@ const Lobby = (props) => {
 					response.playerList.push({
 						id: 0,
 						name: localPlayerName,
-						isOwner: true
+						isOwner: true,
+						wordsCompleted: 0
 					});
 					matchWasModified = true;
 				} 
 				// If there is a playerList and the playerName doesn't appear, add him
 				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
 					response.playerList.push({
-						name: localPlayerName
+						name: localPlayerName,
+						wordsCompleted: 0
 					});
 					matchWasModified = true;
 				}
