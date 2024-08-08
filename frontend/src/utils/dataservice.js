@@ -35,6 +35,17 @@ class DataService {
 
 		return res;
 	}
+
+	startMatch(matchId) {
+		const res = await fetch(config.fetchUrl + `/startMatch/${matchId}`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json"
+			},
+		});
+
+		return res;
+	}
 }
 
 export default new DataService();
