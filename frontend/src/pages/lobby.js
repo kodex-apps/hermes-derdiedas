@@ -53,6 +53,7 @@ const Lobby = (props) => {
 				let matchWasModified = false;
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
+				let playerObject;
 				console.log(response);
 				setLoadedMatch(response);
 				if (!localPlayerName) {
@@ -62,24 +63,26 @@ const Lobby = (props) => {
 				console.log("Our name is: " + localPlayerName);
 				// If there is no playerList present, make own player owner
 				if (response.playerList.length === 0) {
-					response.playerList.push({
+					playerObject = {
 						id: 0,
 						name: localPlayerName,
 						isOwner: true,
 						wordsCompleted: 0
-					});
+					}
+					response.playerList.push(playerObject);
 					matchWasModified = true;
 				} 
 				// If there is a playerList and the playerName doesn't appear, add him
 				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
-					response.playerList.push({
+					playerObject = {
 						name: localPlayerName,
 						wordsCompleted: 0
-					});
+					}
+					response.playerList.push(playerObject);
 					matchWasModified = true;
 				}
 				if (matchWasModified) {
-					dataService.update(response.playerList, response._id)
+					dataService.update(playerObject, response._id)
 						.then((response2) => setLoadedMatch(response));
 				}
 			});

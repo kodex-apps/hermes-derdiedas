@@ -49,7 +49,7 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
 	// Get the Match object that comes with the request and initialise a Match object with it
-	const player = req.body[0];
+	const player = req.body;
 	console.log("Updating match with following object:");
 	console.log(player);
 	Match.find({ _id: req.params.matchId })
