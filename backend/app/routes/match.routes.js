@@ -10,5 +10,8 @@ module.exports = (app, router) => {
 	// Update a match providing the updated match (it'll know which one to updated through its id)
 	router.put("/update/:matchId", matchController.update);
 
+	// Set a match isOngoing to true and assign a wordList
+	router.put("/startMatch/:matchId", matchController.startMatch);
+
 	app.use("/", router);
 };
