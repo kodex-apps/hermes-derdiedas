@@ -108,9 +108,10 @@ exports.startMatch = (req, res) => {
 
 	Match.find({ _id: matchId })
 		.then((match) => {
-			match.wordList = loadedWords;
-			match.isOngoig = true;
-			match.save(match)
+			let retrievedMatch = match[0];
+			retrievedMatch.wordList = loadedWords;
+			retrievedMatch.isOngoig = true;
+			retrievedMatch.save(retrievedMatch)
 				.then(() => res.status(200).send())
 				.catch((error) => res.status(500).send({ message: error.message }));
 		});
