@@ -6,6 +6,7 @@ import getUsername from "../utils/getusername";
 import PopupName from "../components/popup.name";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import dataService from '../utils/dataservice.js';
+import getPlayerObject from '../utils/getplayerobject.js';
 
 // Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
 const fetchedPlayerList = [
@@ -30,7 +31,7 @@ const fetchedPlayerList = [
 ];
 
 /* 
-The match Lobby should be where you see the player list and can click SPIEL STARTEN (TBD) 
+The match Lobby should be where you see the player list and can click SPIEL STARTEN 
 */
 const Lobby = (props) => {
 	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
@@ -69,6 +70,7 @@ const Lobby = (props) => {
 						isOwner: true,
 						wordsCompleted: 0
 					}
+					// It shouldn't really matter to push to this current playerList our playerObject since that's handled in the backend, but cba to touch anything
 					response.playerList.push(playerObject);
 					matchWasModified = true;
 				} 
@@ -93,7 +95,7 @@ const Lobby = (props) => {
 
 	const startMatch = () => {
 		dataService.startMatch(loadedMatch._id)
-			.then(() => navigate(`/spiel/${loadedMatch._id}`));
+			.then(() => navigate(`/spiel/${loadedMatch._id}`, { state: { playerObject: getPlayerObject(loadedMatch, playerName) } }));
 	}
 	
 	// BROKEN! TODO: Update this function with the correct variable

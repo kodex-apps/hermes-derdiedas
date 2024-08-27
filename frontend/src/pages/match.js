@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "./match.css";
 import TextBox from "../components/match.textbox";
 import setNextWord from "../utils/setnextword";
@@ -14,6 +14,9 @@ const validArticles = ["der", "die", "das"];
 const Match = (props) => {
 	const {matchId} = useParams();
 	const [wordList, setWordList] = useState(["Lade..."]);
+	const { state } = useLocation();
+	const [playerObject, setPlayerObject] = useState(state.playerObject);
+	console.log(playerObject);
 	let currentWord = wordList.find((e) => e.isCurrentWord);
 	const articleInputRef = useRef(null);
 	const animatedText = useRef(null);
