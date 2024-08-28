@@ -64,7 +64,7 @@ exports.update = (req, res) => {
 			if (indexOfPlayer != -1) {
 				latestMatch.playerList[indexOfPlayer] = player;
 				// Check if all players have wordsCompleted = 10 and the match is still onGoing to finish it
-				if ((latestMatch.playerList.findIndex(e => e.wordsCompleted != 10) = -1) && latestMatch.isOngoing) {
+				if ((latestMatch.playerList.findIndex(e => e.wordsCompleted != 10) === -1) && latestMatch.isOngoing) {
 					latestMatch.isOngoig = false;
 				}
 				console.log("Player was found in match, substituting.");
