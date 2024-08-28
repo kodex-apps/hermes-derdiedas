@@ -60,6 +60,9 @@ const Match = (props) => {
 				articleInputRef.current.value = "";
 				// Apply the fadeout animation
 				animatedText.current.classList.add("fadeout-class");
+				// Add one to the wordsCompleted number
+				playerObject.wordsCompleted++;
+				dataService.update(playerObject, matchId);
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
