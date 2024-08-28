@@ -47,6 +47,10 @@ const Lobby = (props) => {
 	//TODO: Popup that asks for the player's name
 	useEffect(() => {
 		let done = false;
+		setInterval(() => {
+			updateMatch();
+			console.log("Updating Match Data");
+		}, 3000);
 		if (!done) {
 		dataService.get(matchId)
 			.then((response) => response.json())
@@ -112,6 +116,12 @@ const Lobby = (props) => {
 			}
 		});
 	};
+
+	// function to update the match data with the latest one
+	const updateMatch = () => {
+		dataService.get(matchId)
+			.then(match => setLoadedMatch(match));
+	}
 	return (
 		<>
 			<PopupName
