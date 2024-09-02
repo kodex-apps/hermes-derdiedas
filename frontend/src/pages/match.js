@@ -40,7 +40,6 @@ const Match = (props) => {
 	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:
 	 * 1. If it's equivalent, do an animation where the article + the word scroll up and fade out.
 	 * 2. Set the wordList to be the next one (there's a util for that)
-	 * 3. Make the new word come fade in from the bottom next to the textbox (where the last word was before guessing)
 	 */
 	const handleChange = (event) => {
 		const input = event.target.value.slice(-3).toLowerCase();
@@ -63,6 +62,15 @@ const Match = (props) => {
 				// Add one to the wordsCompleted number
 				playerObject.wordsCompleted++;
 				dataService.update(playerObject, matchId);
+
+				// If we just completed the last word, put the count of correct words as the users score
+				if (playerObject.wordsCompleted === 10) {
+					playerObject.score = 0;
+					wordList.forEach(e => {
+						if (e.isCorrectWord) playerObject.score++;
+					});
+				}
+				console.log(playerObject);
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
