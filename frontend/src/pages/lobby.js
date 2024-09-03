@@ -68,7 +68,8 @@ const Lobby = (props) => {
 						id: 0,
 						name: localPlayerName,
 						isOwner: true,
-						wordsCompleted: 0
+						wordsCompleted: 0,
+						score: 0
 					}
 					// It shouldn't really matter to push to this current playerList our playerObject since that's handled in the backend, but cba to touch anything
 					response.playerList.push(playerObject);
@@ -78,7 +79,8 @@ const Lobby = (props) => {
 				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
 					playerObject = {
 						name: localPlayerName,
-						wordsCompleted: 0
+						wordsCompleted: 0,
+						score: 0
 					}
 					response.playerList.push(playerObject);
 					matchWasModified = true;
@@ -92,6 +94,7 @@ const Lobby = (props) => {
 		setInterval(() => {
 			updateMatch();
 			console.log("Updating Match Data");
+			if (loadedMatch.isOngoing && getPlayerObject(loadedMatch, playerName).score === 0) startMatch();
 		}, 3000);
 
 		return () => { done = true; }
@@ -99,7 +102,9 @@ const Lobby = (props) => {
 
 	const startMatch = () => {
 		dataService.startMatch(loadedMatch._id)
-			.then(() => navigate(`/spiel/${loadedMatch._id}`, { state: { playerObject: getPlayerObject(loadedMatch, playerName) } }));
+			.then(() => {
+				navigate(`/spiel/${loadedMatch._id}`, { state: { playerObject: getPlayerObject(loadedMatch, playerName) } });
+			});
 	}
 	
 	// BROKEN! TODO: Update this function with the correct variable
