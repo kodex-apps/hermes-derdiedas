@@ -91,13 +91,12 @@ const Lobby = (props) => {
 				}
 			});
 		}
-		setInterval(() => {
-			updateMatch();
-			console.log("Updating Match Data");
-			if (loadedMatch.isOngoing && getPlayerObject(loadedMatch, playerName).score === 0) startMatch();
-		}, 3000);
-
-		return () => { done = true; }
+		const intervalId = setInterval(updateMatch, 3000, getPlayerObject);
+		
+		return () => { 
+			done = true;
+			clearInterval(intervalId);
+		}
 	},[]);
 
 	const startMatch = () => {
@@ -123,15 +122,20 @@ const Lobby = (props) => {
 	};
 
 	// function to update the match data with the latest one
-	const updateMatch = () => {
+	const updateMatch = (getPlayerObject) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
-				console.log("Updating with new match:");
-				console.log(match);
+				//console.log("Updating with new match:");
+				//console.log(match);
 				setLoadedMatch(match);
-			});
-
+				console.log(`loadedMatch.isOngoing = ${match.isOngoing}, score is ${getPlayerObject(match, playerName).score}`);
+				if (match.isOngoing && getPlayerObject(match, playerName).score === 0) {
+					navigate(`/spiel/${match._id}`, { state: { playerObject: this.getPlayerObject(match, playerName) } });
+					console.log("This would send the user to match");
+				}
+			})
+			.catch(e => console.log(e));
 	}
 	return (
 		<>
