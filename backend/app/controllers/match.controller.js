@@ -59,6 +59,7 @@ exports.update = (req, res) => {
 			console.log("Found match to update with id: " + req.params.matchId);
 			console.log(latestMatch);
 			const indexOfPlayer = latestMatch.playerList.findIndex(e => (e.name === player.name) || (e.id === player.id));
+			console.log(`The index of ${player.name} is ${indexOfPlayer}`);
 ;
 			// We assume we will only receive player objects here.
 			// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
