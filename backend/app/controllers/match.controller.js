@@ -116,7 +116,12 @@ exports.startMatch = (req, res) => {
 			let retrievedMatch = match[0];
 			retrievedMatch.wordList = loadedWords;
 			retrievedMatch.isOngoing = true;
-			retrievedMatch.playerList.forEach(e => e.score = 0);
+			retrievedMatch.playerList.forEach(e => { 
+				e.score = 0;
+				e.wordsCompleted = 0;
+			});
+			console.log('Starting following match: ');
+			console.log(retrievedMatch);
 			retrievedMatch.save(retrievedMatch)
 				.then(() => res.status(200).send())
 				.catch((error) => res.status(500).send({ message: error.message }));

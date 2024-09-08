@@ -117,10 +117,8 @@ const Lobby = (props) => {
 
 	const startMatch = () => {
 		dataService.startMatch(loadedMatch._id)
-			.then(() => {
-				navigate(`/spiel/${loadedMatch._id}`, { state: { playerObject: getPlayerObject(loadedMatch, playerName) } });
-			});
-	}
+			.catch(e => console.log(e));
+			}
 	
 	// BROKEN! TODO: Update this function with the correct variable
 	const changeUserName = (newUserName) => {
@@ -142,8 +140,8 @@ const Lobby = (props) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
-				//console.log("Updating with new match:");
-				//console.log(match);
+				console.log("Updating with new match:");
+				console.log(match);
 				setLoadedMatch(match);
 				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
