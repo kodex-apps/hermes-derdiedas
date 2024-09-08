@@ -111,6 +111,8 @@ exports.startMatch = (req, res) => {
 		{ article: "die", word: "Mitfahrgelegenheit", isCurrentWord: false, isCorrectWord: null }
 	];
 
+	Match.playerList.forEach(e => e.score = 0);
+
 	Match.find({ _id: matchId })
 		.then((match) => {
 			let retrievedMatch = match[0];

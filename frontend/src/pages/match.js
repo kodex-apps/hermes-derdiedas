@@ -39,11 +39,8 @@ const Match = (props) => {
 	useEffect(() => {
 		let done = false;
 		if (!done) {
+			console.log("At 10 it should navigate to lobby: " + playerObject.wordsCompleted);
 			if (playerObject.wordsCompleted === 10) {
-				playerObject.hasPlayed = true;
-				dataService.update(playerObject, matchId)
-					.catch(e => console.log(e));
-				navigate(`/${matchId}`, { state: { playerObject: playerObject } });
 			}
 		}
 
@@ -83,6 +80,11 @@ const Match = (props) => {
 					wordList.forEach(e => {
 						if (e.isCorrectWord) playerObject.score++;
 					});
+					console.log("Setting to hasPlayed = true and sending to lobby");
+					playerObject.hasPlayed = true;
+					dataService.update(playerObject, matchId)
+						.catch(e => console.log(e));
+					navigate(`/${matchId}`, { state: { playerObject: playerObject } });
 				}
 				console.log(playerObject);
 			} else {
