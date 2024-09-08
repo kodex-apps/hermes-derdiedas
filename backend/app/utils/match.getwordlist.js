@@ -7,7 +7,7 @@ function getWordList() {
 	try {
 		const data = fs.readFileSync('app/utils/wortschatz', 'utf8');
 		// Get the full word list and assign 10 random of them to our wordList
-		let fullWordList = data.split("\n").sort(() => 0.5 - Math.random());
+		let fullWordList = data.splice(-1).split("\n").sort(() => 0.5 - Math.random());
 		// Getting 10 strings of words from the random fullWordList
 		rawWordList = fullWordList.slice(0, 10);
 		console.log("Raw World List: ");
