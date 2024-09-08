@@ -123,8 +123,11 @@ const Lobby = (props) => {
 	// BROKEN! TODO: Update this function with the correct variable
 	const changeUserName = (newUserName) => {
 		let newPlayerObject = getPlayerObject(loadedMatch, playerName);
+		console.log(`playerName: ${playerName}, newUserName: ${newUserName}`);
 		newPlayerObject.name = newUserName;
-		dataService.update(matchId, newPlayerObject);
+		setPlayerName(newUserName);
+		dataService.update(newPlayerObject, matchId);
+		oldPlayerName = newUserName;
 	}
 
 	// function to update the match data with the latest one
