@@ -16,10 +16,10 @@ const Match = (props) => {
 	const [wordList, setWordList] = useState(["Lade..."]);
 	const { state } = useLocation();
 	const [playerObject, setPlayerObject] = useState(state.playerObject);
-	console.log(playerObject);
 	let currentWord = wordList.find((e) => e.isCurrentWord);
 	const articleInputRef = useRef(null);
 	const animatedText = useRef(null);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		let done = false;
@@ -35,6 +35,20 @@ const Match = (props) => {
 
 		return () => { done = true; }
 	},[]);
+
+	useEffect(() => {
+		let done = false;
+		if (!done) {
+			if (playerObject.wordsCompleted === 10) {
+				playerObject.hasPlayed = true;
+				dataService.update(playerObject, matchId)
+					.catch(e => console.log(e));
+				navigate(`/${matchId}`, { state: { playerObject: playerObject } });
+			}
+		}
+
+		return () => done = true;
+	}, [playerObject]);
 
 	/*
 	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:

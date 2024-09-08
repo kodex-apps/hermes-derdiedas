@@ -4,7 +4,7 @@ import Button from "../components/button";
 import PlayerList from "../components/lobby.playerlist";
 import getUsername from "../utils/getusername";
 import PopupName from "../components/popup.name";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import dataService from '../utils/dataservice.js';
 import getPlayerObject from '../utils/getplayerobject.js';
 
@@ -35,10 +35,11 @@ The match Lobby should be where you see the player list and can click SPIEL STAR
 */
 const Lobby = (props) => {
 	const {matchId} = useParams();
+	const { state } = useLocation();
 	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
-	const [playerName, setPlayerName] = useState(props.playerName);
+	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : props.playerName);
 	const [showDialog, setShowDialog] = useState(false);
-	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", placement: 1, isOwner: false}]});
+	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", isOwner: false}]});
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
 
@@ -67,9 +68,10 @@ const Lobby = (props) => {
 						name: localPlayerName,
 						isOwner: true,
 						wordsCompleted: 0,
-						score: 0
+						score: 0,
+						hasPlayed: false,
 					}
-					if (response.isOngoing) playerObject.score = '-';
+					if (response.isOngoing) playerObject.hasPlayed = true;
 					// It shouldn't really matter to push to this current playerList our playerObject since that's handled in the backend, but cba to touch anything
 					response.playerList.push(playerObject);
 					matchWasModified = true;
@@ -79,9 +81,10 @@ const Lobby = (props) => {
 					playerObject = {
 						name: localPlayerName,
 						wordsCompleted: 0,
-						score: 0
+						score: 0,
+						hasPlayed: false,
 					}
-					if (response.isOngoing) playerObject.score = '-';
+					if (response.isOngoing) playerObject.hasPlayed = true;
 					response.playerList.push(playerObject);
 					matchWasModified = true;
 				}
@@ -142,8 +145,7 @@ const Lobby = (props) => {
 				//console.log("Updating with new match:");
 				//console.log(match);
 				setLoadedMatch(match);
-				console.log(`loadedMatch.isOngoing = ${match.isOngoing}, score is ${getPlayerObject(match, playerName).score}`);
-				if (match.isOngoing && getPlayerObject(match, playerName).score === 0) {
+				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 					console.log("This would send the user to match");
 				}
