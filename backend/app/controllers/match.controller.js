@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const Match = db.match;
 const getNewId = require('../utils/match.getnewid');
+const getWordList = require('../utils/match.getwordlist');
 
 // Function to return a Match. It will return a match object by its id
 exports.findOne = (req, res) => {
@@ -20,27 +21,11 @@ exports.findOne = (req, res) => {
 
 // Function to create a new Lobby, it will return a new matchId. It will create a Match document with the given playerList and the created matchId
 exports.create = (req, res) => { 
-	// Temp shortId for testing purposes. TODO: Create the actual generation of a short and unique id for each match, made of numbers 1. If there isn't a matchId, check db for the oldest available Id and apply it to this match. This could be maybe done by getting a list of all matchIds, then starting with 001 it checks the array until one matchId is available and set that to the Match being created. To do this, sort the array of matchIds, and compare each element with its index, as soon as you find one where the index+1 isn't equivalent to the matchId (because we don't start with 0 in the matchIds) it means the number below the current matchId is free to take. 2. Get 10 random words + articles and send them as a single array (let the client do the processing into an object, although maybe it'll be easier to maintain the model that already puts the article + word into a single object 3. Put them into a Match object and respond with it
-	
-	// Temp wordList for testing purposes.
-	const loadedWords = [
-		{ article: "die", word: "Limousine", isCurrentWord: true, isCorrectWord: null },
-		{ article: "die", word: "Frau", isCurrentWord: false, isCorrectWord: null },
-		{ article: "der", word: "Mann", isCurrentWord: false, isCorrectWord: null },
-		{ article: "das", word: "Interesse", isCurrentWord: false, isCorrectWord: null },
-		{ article: "der", word: "Meister", isCurrentWord: false, isCorrectWord: null },
-		{ article: "die", word: "Bremse", isCurrentWord: false, isCorrectWord: null },
-		{ article: "der", word: "Junge", isCurrentWord: false, isCorrectWord: null },
-		{ article: "das", word: "Kind", isCurrentWord: false, isCorrectWord: null },
-		{ article: "die", word: "Mermelade", isCurrentWord: false, isCorrectWord: null },
-		{ article: "die", word: "Mitfahrgelegenheit", isCurrentWord: false, isCorrectWord: null }
-	];
-
 	getNewId().then(newId => {
 	// Create the Match object to be inserted to the DB
 	const newMatch = new Match({
 		_id: newId,
-		wordList: loadedWords,
+		playerList: [],
 		isOngoing: false
 	});
 	console.log(newMatch);
@@ -64,20 +49,72 @@ exports.create = (req, res) => {
 
 
 exports.update = (req, res) => {
-	// Get the Match object that comes with the request and initialise a Match object with it
-	const match = new Match(req.body);
-	console.log(`About to update: ${match}`);
+	const player = req.body;
+	console.log("Updating match with following object:");
+	console.log(player);
+	Match.find({ _id: req.params.matchId })
+		.then((latestMatchArray) => {
+			// The result comes in an array so we get the object
+			latestMatch = latestMatchArray[0];
+			console.log("Found match to update with id: " + req.params.matchId);
+			console.log(latestMatch);
+			const indexOfPlayer = latestMatch.playerList.findIndex(e => (e.name === player.name) || (e.id === player.id));
+			console.log(`The index of ${player.name} is ${indexOfPlayer}`);
+;
+			// We assume we will only receive player objects here.
+			// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
+			if (indexOfPlayer != -1) {
+				latestMatch.playerList[indexOfPlayer] = player;
+				latestMatch.playerList[indexOfPlayer].id = indexOfPlayer;
+				// Check if all players have wordsCompleted = 10 and the match is still onGoing to finish it
+				if ((latestMatch.playerList.findIndex(e => e.wordsCompleted != 10) === -1) && latestMatch.isOngoing) {
+					latestMatch.isOngoing = false;
+					console.log(`Finishing match: ${latestMatch._id}`);
+				}
+				console.log("Player was found in match, substituting.");
+			}
+			else {
+				console.log("Player not found, assigning id: " + latestMatch.playerList.length);
+				// Add the player id (last id + 1)
+				player.id = latestMatch.playerList.length;
+				latestMatch.playerList.push(player);
+			}
+			latestMatch
+				.replaceOne(latestMatch)
+				.then((data) => {
+					console.log("Updating match:");
+					console.log(latestMatch);
+					res.send(latestMatch);
+				})
+				.catch(err => {
+					console.log(err.message);
+					res.status(500).send({
+						message: err.message || "Unknown error updating the match."
+					});
+				});
+		});
+}
 
-	match
-		.replaceOne(match)
-		.then((data) => {
-			console.log("Updating match:" + data);
-			res.send(data);
-		})
-		.catch(err => {
-			console.log(err.message);
-			res.status(500).send({
-				message: err.message || "Unknown error updating the match."
+exports.startMatch = (req, res) => {
+	// Receive a matchId and set that match isOngoing variable to true and assign words to it
+	const matchId = req.params.matchId;
+	// Temp wordList for testing purposes.
+	const loadedWords = getWordList();
+
+	Match.find({ _id: matchId })
+		.then((match) => {
+			let retrievedMatch = match[0];
+			retrievedMatch.wordList = loadedWords;
+			retrievedMatch.isOngoing = true;
+			retrievedMatch.playerList.forEach(e => { 
+				e.score = 0;
+				e.wordsCompleted = 0;
+				e.hasPlayed = false;
 			});
+			console.log('Starting following match: ');
+			console.log(retrievedMatch);
+			retrievedMatch.replaceOne(retrievedMatch)
+				.then(() => res.status(200).send())
+				.catch((error) => res.status(500).send({ message: error.message }));
 		});
 }

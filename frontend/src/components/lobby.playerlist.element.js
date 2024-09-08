@@ -13,6 +13,20 @@ const PlayerListElement = (props) => {
 		props.setShowDialog(true);
 	};
 
+	// Function that will show the score unless the player hasn't wordsCompleted = 10, then it'll show that he's still playing
+	function showScore(playerElement) {
+		console.log("showScore working with:");
+		console.log(playerElement);
+		if (playerElement.wordsCompleted < 10) {
+			console.log("less than 10 words in playerElement");
+			return '...';
+		}
+		else {
+			console.log("10 words or more in playerEALement");
+			return playerElement.score;
+		}
+	}
+
 	// TODO: Add a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
 	return (
 		<tr className="PLE">
@@ -30,7 +44,7 @@ const PlayerListElement = (props) => {
 					</div>
 				)}
 			</td>
-			<td className="PLE__score">{props.playerElement.winPercentage}</td>
+			<td className="PLE__score">{props.playerElement.hasPlayed ? props.playerElement.score : '...'}</td>
 			{props.playerList.some((e) => e.name === props.userName && e.isOwner) && (
 				<td className="PLE__delete">
 					<img

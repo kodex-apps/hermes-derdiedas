@@ -14,6 +14,7 @@ class DataService {
 
 	async get(id) {
 		const res = await fetch(config.fetchUrl + `/${id}`, {
+			// GET is the default so we omit declaring it
 			headers: {
 				"content-type": "application/json"
 			}
@@ -22,15 +23,26 @@ class DataService {
 		return res;
 	}
 
-	async update(match) {
+	async update(object, matchId) {
 		//console.log("Sending body: " + JSON.stringify(match));
-		const res = await fetch(config.fetchUrl + '/update', {
+		const res = await fetch(config.fetchUrl + `/update/${matchId}`, {
 			method: "PUT",
 			headers: {
 				"content-type": "application/json"
 			},
 			// http bodies are always strings
-			body: JSON.stringify(match)
+			body: JSON.stringify(object)
+		});
+
+		return res;
+	}
+
+	async startMatch(matchId) {
+		const res = await fetch(config.fetchUrl + `/startMatch/${matchId}`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json"
+			},
 		});
 
 		return res;
