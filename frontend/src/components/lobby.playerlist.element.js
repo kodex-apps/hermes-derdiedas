@@ -30,7 +30,7 @@ const PlayerListElement = (props) => {
 					</div>
 				)}
 			</td>
-			<td className="PLE__score">{props.playerElement.winPercentage}</td>
+			<td className="PLE__score">{props.playerElement.score}</td>
 			{props.playerList.some((e) => e.name === props.userName && e.isOwner) && (
 				<td className="PLE__delete">
 					<img

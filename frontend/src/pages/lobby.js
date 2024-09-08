@@ -34,9 +34,7 @@ const fetchedPlayerList = [
 The match Lobby should be where you see the player list and can click SPIEL STARTEN 
 */
 const Lobby = (props) => {
-	// Should be useState(getUsername(playerList)) but we're using a placeholder for testing purposes
 	const {matchId} = useParams();
-	// TODO: One solution would be to create matches with no Player in playerList, that way the first person to join (which would have to be the owner) would get isOwner: true, any subsequent users would get normal Players. getUsername might have to be modified to adjust since its version is old.
 	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
 	const [playerName, setPlayerName] = useState(props.playerName);
 	const [showDialog, setShowDialog] = useState(false);
@@ -71,6 +69,7 @@ const Lobby = (props) => {
 						wordsCompleted: 0,
 						score: 0
 					}
+					if (response.isOngoing) playerObject.score = '-';
 					// It shouldn't really matter to push to this current playerList our playerObject since that's handled in the backend, but cba to touch anything
 					response.playerList.push(playerObject);
 					matchWasModified = true;
@@ -82,6 +81,7 @@ const Lobby = (props) => {
 						wordsCompleted: 0,
 						score: 0
 					}
+					if (response.isOngoing) playerObject.score = '-';
 					response.playerList.push(playerObject);
 					matchWasModified = true;
 				}
@@ -111,6 +111,7 @@ const Lobby = (props) => {
 			clearInterval(intervalId);
 		}
 	}, [playerName, loadedMatch]);
+
 	const startMatch = () => {
 		dataService.startMatch(loadedMatch._id)
 			.then(() => {
