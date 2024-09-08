@@ -26,6 +26,8 @@ function getWordList() {
 
 	console.log("Final Word List: ");
 	console.log(wordList);
+
+	return wordList;
 }
 
 module.exports = getWordList;
