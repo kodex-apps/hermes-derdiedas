@@ -119,6 +119,7 @@ exports.startMatch = (req, res) => {
 			retrievedMatch.playerList.forEach(e => { 
 				e.score = 0;
 				e.wordsCompleted = 0;
+				e.hasPlayed = false;
 			});
 			console.log('Starting following match: ');
 			console.log(retrievedMatch);
