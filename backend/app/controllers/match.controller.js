@@ -65,6 +65,7 @@ exports.update = (req, res) => {
 			// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
 			if (indexOfPlayer != -1) {
 				latestMatch.playerList[indexOfPlayer] = player;
+				latestMatch.playerList[indexOfPlayer].id = indexOfPlayer;
 				// Check if all players have wordsCompleted = 10 and the match is still onGoing to finish it
 				if ((latestMatch.playerList.findIndex(e => e.wordsCompleted != 10) === -1) && latestMatch.isOngoing) {
 					latestMatch.isOngoing = false;
