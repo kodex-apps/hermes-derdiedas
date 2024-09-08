@@ -57,7 +57,7 @@ exports.update = (req, res) => {
 			latestMatch = latestMatchArray[0];
 			console.log("Found match to update with id: " + req.params.matchId);
 			console.log(latestMatch);
-			const indexOfPlayer = latestMatch.playerList.findIndex(e => e.id === player.id);
+			const indexOfPlayer = latestMatch.playerList.findIndex(e => e.name === player.name);
 ;
 			// We assume we will only receive player objects here.
 			// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
@@ -66,6 +66,7 @@ exports.update = (req, res) => {
 				// Check if all players have wordsCompleted = 10 and the match is still onGoing to finish it
 				if ((latestMatch.playerList.findIndex(e => e.wordsCompleted != 10) === -1) && latestMatch.isOngoing) {
 					latestMatch.isOngoig = false;
+					console.log(`Finishing match: ${latestMatch._id}`);
 				}
 				console.log("Player was found in match, substituting.");
 			}
