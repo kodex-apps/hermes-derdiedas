@@ -90,8 +90,6 @@ exports.update = (req, res) => {
 						message: err.message || "Unknown error updating the match."
 					});
 				});
-
-			// TODO: If you're setting the last player to wordsComplete = 10, also set the match to isOngoing = false
 		});
 }
 

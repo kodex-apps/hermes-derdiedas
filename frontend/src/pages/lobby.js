@@ -8,28 +8,6 @@ import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import dataService from '../utils/dataservice.js';
 import getPlayerObject from '../utils/getplayerobject.js';
 
-// Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
-const fetchedPlayerList = [
-	{
-		placement: 3,
-		name: "Lorenz",
-		winPercentage: null,
-		isOwner: true,
-	},
-	{
-		placement: 2,
-		name: "Super super long name aaaa",
-		winPercentage: "90%",
-		isOwner: false,
-	},
-	{
-		placement: 1,
-		name: "Fefran",
-		winPercentage: "60%",
-		isOwner: false,
-	},
-];
-
 /* 
 The match Lobby should be where you see the player list and can click SPIEL STARTEN 
 */
@@ -39,7 +17,7 @@ const Lobby = (props) => {
 	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
 	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : props.playerName);
 	const [showDialog, setShowDialog] = useState(false);
-	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", isOwner: false}]});
+	const [loadedMatch, setLoadedMatch] = useState({playerList: []});
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
 
