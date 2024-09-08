@@ -91,14 +91,26 @@ const Lobby = (props) => {
 				}
 			});
 		}
-		const intervalId = setInterval(updateMatch, 3000, getPlayerObject);
-		
+
 		return () => { 
 			done = true;
-			clearInterval(intervalId);
 		}
 	},[]);
 
+	// useEffect to set up the setInterval every time the playerName changes
+	useEffect(() => {
+		let finished = false;
+		let intervalId;
+
+		if (!finished) {
+			intervalId = setInterval(updateMatch, 3000, getPlayerObject);
+		}
+
+		return () => {
+			finished = true;
+			clearInterval(intervalId);
+		}
+	}, [playerName, loadedMatch]);
 	const startMatch = () => {
 		dataService.startMatch(loadedMatch._id)
 			.then(() => {
@@ -131,12 +143,13 @@ const Lobby = (props) => {
 				setLoadedMatch(match);
 				console.log(`loadedMatch.isOngoing = ${match.isOngoing}, score is ${getPlayerObject(match, playerName).score}`);
 				if (match.isOngoing && getPlayerObject(match, playerName).score === 0) {
-					navigate(`/spiel/${match._id}`, { state: { playerObject: this.getPlayerObject(match, playerName) } });
+					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 					console.log("This would send the user to match");
 				}
 			})
 			.catch(e => console.log(e));
 	}
+
 	return (
 		<>
 			<PopupName
