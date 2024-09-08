@@ -1,0 +1,184 @@
+import { React, useState, useEffect } from "react";
+import "./lobby.css";
+import Button from "../components/button";
+import PlayerList from "../components/lobby.playerlist";
+import getUsername from "../utils/getusername";
+import PopupName from "../components/popup.name";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import dataService from '../utils/dataservice.js';
+import getPlayerObject from '../utils/getplayerobject.js';
+
+// Placeholder variable for playerList. This playerList is a frozen version of the state variable version, every time the latter changes it will have this as a reference of what it used to look like. Mainly using this so players can change their username
+const fetchedPlayerList = [
+	{
+		placement: 3,
+		name: "Lorenz",
+		winPercentage: null,
+		isOwner: true,
+	},
+	{
+		placement: 2,
+		name: "Super super long name aaaa",
+		winPercentage: "90%",
+		isOwner: false,
+	},
+	{
+		placement: 1,
+		name: "Fefran",
+		winPercentage: "60%",
+		isOwner: false,
+	},
+];
+
+/* 
+The match Lobby should be where you see the player list and can click SPIEL STARTEN 
+*/
+const Lobby = (props) => {
+	const {matchId} = useParams();
+	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
+	const [playerName, setPlayerName] = useState(props.playerName);
+	const [showDialog, setShowDialog] = useState(false);
+	const [loadedMatch, setLoadedMatch] = useState({playerList: [{playerName: "Laden...", isOwner: false}]});
+	let oldPlayerName = playerName;
+	const navigate = useNavigate();
+
+	//TODO: Popup that asks for the player's name
+	useEffect(() => {
+		let done = false;
+		if (!done) {
+		dataService.get(matchId)
+			.then((response) => response.json())
+			.then((response) => {
+				let matchWasModified = false;
+				// Local playerName variable so we have an updated value for subsequent ops
+				let localPlayerName = playerName;
+				let playerObject;
+				console.log(response);
+				setLoadedMatch(response);
+				if (!localPlayerName) {
+					localPlayerName = getUsername(response.playerList);
+					setPlayerName(localPlayerName);
+				}
+				console.log("Our name is: " + localPlayerName);
+				// If there is no playerList present, make own player owner
+				if (response.playerList.length === 0) {
+					playerObject = {
+						id: 0,
+						name: localPlayerName,
+						isOwner: true,
+						wordsCompleted: 0,
+						score: 0,
+						hasPlayed = false,
+					}
+					if (response.isOngoing) playerObject.hasPlayed = true;
+					// It shouldn't really matter to push to this current playerList our playerObject since that's handled in the backend, but cba to touch anything
+					response.playerList.push(playerObject);
+					matchWasModified = true;
+				} 
+				// If there is a playerList and the playerName doesn't appear, add him
+				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
+					playerObject = {
+						name: localPlayerName,
+						wordsCompleted: 0,
+						score: 0,
+						hasPlayed = false,
+					}
+					if (response.isOngoing) playerObject.hasPlayed = true;
+					response.playerList.push(playerObject);
+					matchWasModified = true;
+				}
+				if (matchWasModified) {
+					dataService.update(playerObject, response._id)
+						.then((response2) => setLoadedMatch(response));
+				}
+			});
+		}
+
+		return () => { 
+			done = true;
+		}
+	},[]);
+
+	// useEffect to set up the setInterval every time the playerName changes
+	useEffect(() => {
+		let finished = false;
+		let intervalId;
+
+		if (!finished) {
+			intervalId = setInterval(updateMatch, 3000, getPlayerObject);
+		}
+
+		return () => {
+			finished = true;
+			clearInterval(intervalId);
+		}
+	}, [playerName, loadedMatch]);
+
+	const startMatch = () => {
+		dataService.startMatch(loadedMatch._id)
+			.then(() => {
+				navigate(`/spiel/${loadedMatch._id}`, { state: { playerObject: getPlayerObject(loadedMatch, playerName) } });
+			});
+	}
+	
+	// BROKEN! TODO: Update this function with the correct variable
+	const changeUserName = (newUserName) => {
+		loadedMatch.playerList.forEach((playerElement) => {
+			if (playerElement.name === oldPlayerName) {
+				//TODO: Remove fetchedPlayerList from here since it's a placeholder var
+				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)].name =
+					newUserName;
+				oldPlayerName = newUserName;
+				setPlayerName(newUserName);
+				// Commented out since setPlayerList is deprecated, it's better to get the match, modify the playerList, and update that state
+				//setPlayerList(fetchedPlayerList);
+			}
+		});
+	};
+
+	// function to update the match data with the latest one
+	const updateMatch = (getPlayerObject) => {
+		dataService.get(matchId)
+			.then((response) => response.json())
+			.then(match => {
+				//console.log("Updating with new match:");
+				//console.log(match);
+				setLoadedMatch(match);
+				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
+					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
+					console.log("This would send the user to match");
+				}
+			})
+			.catch(e => console.log(e));
+	}
+
+	return (
+		<>
+			<PopupName
+				setUserName={changeUserName}
+				showDialog={showDialog}
+				setShowDialog={setShowDialog}
+				originalName={oldPlayerName}
+				playerList={loadedMatch.playerList}
+			/>
+			<div className="room">
+				<div className="playerlist">
+					<PlayerList
+						playerList={loadedMatch.playerList}
+						playerName={playerName}
+						setShowDialog={setShowDialog}
+					/>
+				</div>
+				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
+					<div className="start-game">
+						<Link onClick={startMatch}>
+							<Button>SPIEL STARTEN</Button>
+						</Link>
+					</div>
+				)}
+			</div>
+		</>
+	);
+};
+
+export default Lobby;

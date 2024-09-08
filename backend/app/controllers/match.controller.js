@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const Match = db.match;
 const getNewId = require('../utils/match.getnewid');
+const getWordList = require('../utils/match.getwordlist');
 
 // Function to return a Match. It will return a match object by its id
 exports.findOne = (req, res) => {
@@ -98,18 +99,7 @@ exports.startMatch = (req, res) => {
 	// Receive a matchId and set that match isOngoing variable to true and assign words to it
 	const matchId = req.params.matchId;
 	// Temp wordList for testing purposes.
-	const loadedWords = [
-		{ article: "die", word: "Limousine", isCurrentWord: true, isCorrectWord: null },
-		{ article: "die", word: "Frau", isCurrentWord: false, isCorrectWord: null },
-		{ article: "der", word: "Mann", isCurrentWord: false, isCorrectWord: null },
-		{ article: "das", word: "Interesse", isCurrentWord: false, isCorrectWord: null },
-		{ article: "der", word: "Meister", isCurrentWord: false, isCorrectWord: null },
-		{ article: "die", word: "Bremse", isCurrentWord: false, isCorrectWord: null },
-		{ article: "der", word: "Junge", isCurrentWord: false, isCorrectWord: null },
-		{ article: "das", word: "Kind", isCurrentWord: false, isCorrectWord: null },
-		{ article: "die", word: "Mermelade", isCurrentWord: false, isCorrectWord: null },
-		{ article: "die", word: "Mitfahrgelegenheit", isCurrentWord: false, isCorrectWord: null }
-	];
+	const loadedWords = getWordList();
 
 	Match.find({ _id: matchId })
 		.then((match) => {
