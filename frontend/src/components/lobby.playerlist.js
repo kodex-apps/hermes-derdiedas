@@ -8,8 +8,8 @@ The playerlist shows PlayerListElements for each player and ordered according to
 const PlayerList = (props) => {
 	// Sort the playerList by placement
 	props.playerList.sort((a, b) => {
-		if (a.placement > b.placement) return 1;
-		else if (a.placement < b.placement) return -1;
+		if ((a.score > b.score) || (a.score === b.score)) return 1;
+		else if (a.score < b.score) return -1;
 	});
 	//TODO: Add conditional to the table header to show a % column if there is one
 	return (
