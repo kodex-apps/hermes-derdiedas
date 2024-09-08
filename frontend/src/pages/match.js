@@ -36,17 +36,6 @@ const Match = (props) => {
 		return () => { done = true; }
 	},[]);
 
-	useEffect(() => {
-		let done = false;
-		if (!done) {
-			console.log("At 10 it should navigate to lobby: " + playerObject.wordsCompleted);
-			if (playerObject.wordsCompleted === 10) {
-			}
-		}
-
-		return () => done = true;
-	}, [playerObject]);
-
 	/*
 	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:
 	 * 1. If it's equivalent, do an animation where the article + the word scroll up and fade out.

@@ -122,18 +122,10 @@ const Lobby = (props) => {
 	
 	// BROKEN! TODO: Update this function with the correct variable
 	const changeUserName = (newUserName) => {
-		loadedMatch.playerList.forEach((playerElement) => {
-			if (playerElement.name === oldPlayerName) {
-				//TODO: Remove fetchedPlayerList from here since it's a placeholder var
-				fetchedPlayerList[fetchedPlayerList.indexOf(playerElement)].name =
-					newUserName;
-				oldPlayerName = newUserName;
-				setPlayerName(newUserName);
-				// Commented out since setPlayerList is deprecated, it's better to get the match, modify the playerList, and update that state
-				//setPlayerList(fetchedPlayerList);
-			}
-		});
-	};
+		let newPlayerObject = getPlayerObject(loadedMatch, playerName);
+		newPlayerObject.name = newUserName;
+		dataService.update(matchId, newPlayerObject);
+	}
 
 	// function to update the match data with the latest one
 	const updateMatch = (getPlayerObject) => {
