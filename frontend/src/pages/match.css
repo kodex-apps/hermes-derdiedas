@@ -70,6 +70,22 @@
 	}
 }
 
+.shake-class {
+	animation-name: shake;
+	animation-duration: 0.3s;
+	animation-iteration-count: 1;
+	animation-direction: normal;
+	animation-fill-mode: forwards;
+}
+
+@keyframes shake {
+	0% { transform: translateX(0) }
+	25% { transform: translateX(5px) }
+	50% { transform: translateX(-5px) }
+	75% { transform: translateX(5px) }
+	100% { transform: translateX(0) }
+}
+
 @media (max-width:641px)  { /* below portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
 	
 	.word-span {
