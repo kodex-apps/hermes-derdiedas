@@ -25,12 +25,12 @@ const PopupName = (props) => {
 						ref={inputRef}
 						type="text"
 						size="8"
-						onChange={handleOnChange}
 					/>
 					<br />
 					<br />
 					<Button
 						onClick={() => {
+							handleOnChange();
 							props.setShowDialog(false);
 						}}
 					>
