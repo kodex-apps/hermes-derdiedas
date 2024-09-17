@@ -1,0 +1,5 @@
+# syntax=docker/dockerfile:1
+
+FROM mongo:latest 
+WORKDIR . 
+COPY ./queries.js ./docker-entrypoint-initdb.d/
