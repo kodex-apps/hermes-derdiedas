@@ -17,7 +17,7 @@ const PlayerList = (props) => {
 		<tbody>
 			<tr className="playerlist__playernames">
 				<th className="playerlist__headerelement">Name</th>
-				<th className="playerlist__headerelement-percentage">%</th>
+				<th className="playerlist__headerelement-percentage">Punkte</th>
 			</tr>
 			{props.playerList.map((playerElement) => (
 				<PlayerListElement

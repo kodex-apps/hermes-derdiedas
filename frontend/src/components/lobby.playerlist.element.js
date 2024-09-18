@@ -44,7 +44,7 @@ const PlayerListElement = (props) => {
 					</div>
 				)}
 			</td>
-			<td className="PLE__score">{props.playerElement.hasPlayed ? props.playerElement.score : '...'}</td>
+			<td className="PLE__score">{props.playerElement.hasPlayed ? props.playerElement.score+'/10' : '...'}</td>
 			{props.playerList.some((e) => e.name === props.userName && e.isOwner) && (
 				<td className="PLE__delete">
 					<img

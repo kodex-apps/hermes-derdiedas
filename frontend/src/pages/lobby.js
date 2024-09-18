@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import "./lobby.css";
 import Button from "../components/button";
 import PlayerList from "../components/lobby.playerlist";
@@ -18,6 +18,7 @@ const Lobby = (props) => {
 	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : props.playerName);
 	const [showDialog, setShowDialog] = useState(false);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: []});
+	const [buttonName, setButtonName] = useState("SPIEL STARTEN");
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
 
@@ -93,7 +94,9 @@ const Lobby = (props) => {
 		}
 	}, [playerName, loadedMatch]);
 
-	const startMatch = () => {
+	const startMatch = (e) => {
+		console.log("Clicked:");
+		setButtonName("Laden...");
 		dataService.startMatch(loadedMatch._id)
 			.catch(e => console.log(e));
 			}
@@ -145,9 +148,7 @@ const Lobby = (props) => {
 				</div>
 				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
-						<Link onClick={startMatch}>
-							<Button>SPIEL STARTEN</Button>
-						</Link>
+							<Button onClick={startMatch}>{buttonName}</Button>
 					</div>
 				)}
 			</div>
