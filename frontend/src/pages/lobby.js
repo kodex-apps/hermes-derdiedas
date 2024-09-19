@@ -96,7 +96,7 @@ const Lobby = (props) => {
 
 	const startMatch = (e) => {
 		console.log("Clicked:");
-		setButtonName("Laden...");
+		setButtonName("LADEN...");
 		dataService.startMatch(loadedMatch._id)
 			.catch(e => console.log(e));
 			}
