@@ -20,6 +20,7 @@ const Match = (props) => {
 	const articleInputRef = useRef(null);
 	const animatedText = useRef(null);
 	const navigate = useNavigate();
+	const wordSpan = useRef(null);
 
 	useEffect(() => {
 		let done = false;
@@ -43,6 +44,7 @@ const Match = (props) => {
 	 */
 	const handleChange = (event) => {
 		const input = event.target.value.slice(-3).toLowerCase();
+		wordSpan.current.classList.remove("shake-class");
 		// Check if user wrote an article
 		if (validArticles.includes(input)) {
 			if (input.slice(-3) === currentWord.article) {
@@ -81,6 +83,7 @@ const Match = (props) => {
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
 					false;
 				articleInputRef.current.value = "";
+				wordSpan.current.classList.add("shake-class");
 			}
 		} else {
 			animatedText.current.classList.remove("fadeout-class");
@@ -97,7 +100,7 @@ const Match = (props) => {
 			(<div>
 				<div><TextBox articleInputRef={articleInputRef} onChange={handleChange} />
 				<div ref={animatedText} className="animated-text"/></div>
-				<span className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
+				<span ref={wordSpan} className="word-span">{wordList.find((e) => e.isCurrentWord).word}</span>
 			</div>) : 
 			(<p className="game-ended">Lade Punktestand...</p>)}
 		</div>
