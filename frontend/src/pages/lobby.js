@@ -14,8 +14,11 @@ The match Lobby should be where you see the player list and can click SPIEL STAR
 const Lobby = (props) => {
 	const {matchId} = useParams();
 	const { state } = useLocation();
+	// localStorage variable to store the playerName
+	const lsPlayerName = localStorage.getItem('playerName');
 	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
-	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : props.playerName);
+	// if state is null, we get lsPlayerName which is the localStorage
+	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : lsPlayerName);
 	const [showDialog, setShowDialog] = useState(false);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: []});
 	const [buttonName, setButtonName] = useState("SPIEL STARTEN");
@@ -38,6 +41,7 @@ const Lobby = (props) => {
 				if (!localPlayerName) {
 					localPlayerName = getUsername(response.playerList);
 					setPlayerName(localPlayerName);
+					localStorage.setItem('playerName', localPlayerName);
 				}
 				console.log("Our name is: " + localPlayerName);
 				// If there is no playerList present, make own player owner
@@ -96,7 +100,7 @@ const Lobby = (props) => {
 
 	const startMatch = (e) => {
 		console.log("Clicked:");
-		setButtonName("Laden...");
+		setButtonName("LADEN...");
 		dataService.startMatch(loadedMatch._id)
 			.catch(e => console.log(e));
 			}
@@ -108,6 +112,7 @@ const Lobby = (props) => {
 			console.log(`playerName: ${playerName}, newUserName: ${newUserName}`);
 			newPlayerObject.name = newUserName;
 			setPlayerName(newUserName);
+			localStorage.setItem('playerName', newUserName);
 			dataService.update(newPlayerObject, matchId);
 			oldPlayerName = newUserName;
 		}

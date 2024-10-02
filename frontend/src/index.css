@@ -6,7 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --palette-background:  #803D3B;
+  --palette-background:  white;
   --palette-background-2: #E4C59E;
   --palette-element: #AF8260;
   --palette-element-2: #9FBB73;

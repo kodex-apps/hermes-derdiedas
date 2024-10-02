@@ -24,6 +24,7 @@
 
 .word-span {
 	font-size: 60px;
+	display: block;
 }
 
 .game-ended {
