@@ -73,6 +73,7 @@ const Match = (props) => {
 					});
 					console.log("Setting to hasPlayed = true and sending to lobby");
 					playerObject.hasPlayed = true;
+					localStorage.setItem('playerName', playerObject.name);
 					dataService.update(playerObject, matchId)
 						.catch(e => console.log(e));
 					navigate(`/${matchId}`, { state: { playerObject: playerObject } });
