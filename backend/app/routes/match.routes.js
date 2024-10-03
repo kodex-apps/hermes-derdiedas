@@ -13,5 +13,7 @@ module.exports = (app, router) => {
 	// Set a match isOngoing to true and assign a wordList
 	router.put("/startMatch/:matchId", matchController.startMatch);
 
+	router.put("/removePlayer", matchController.removePlayer);
+
 	app.use("/", router);
 };

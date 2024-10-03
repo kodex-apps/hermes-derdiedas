@@ -47,6 +47,21 @@ class DataService {
 
 		return res;
 	}
+	
+	async removePlayer(matchId, playerName) {
+		const res = await fetch(config.fetchUrl + `/removePlayer`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json"
+			},
+			body: JSON.stringify({
+				"matchId" : matchId,
+				"playerName" : playerName
+			})
+		});
+
+		return res;
+	}
 }
 
 export default new DataService();

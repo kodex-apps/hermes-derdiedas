@@ -1,13 +1,17 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import "./lobby.playerlist.element.css";
 import editIcon from "../img/edit.png";
 import deleteIcon from "../img/delete.png";
+import dataService from "../utils/dataservice.js";
 
 /* 
 A playerlist element is composed of a name to the left side, a winPercentage number if there is one (don't have one at the stat),
 an edit button in case you want to edit your name
 */
 const PlayerListElement = (props) => {
+	// Get the matchId property from the URL
+	const {matchId} = useParams();
 	// Function to show the PopupName dialog, state variable function is passed in the props
 	const showDialog = () => {
 		props.setShowDialog(true);
@@ -26,6 +30,12 @@ const PlayerListElement = (props) => {
 			return playerElement.score;
 		}
 	}
+
+	const handleKick = (e) => {
+		dataService.removePlayer(matchId, e.target.id)
+			.then(data => console.log(data));
+	}
+
 
 	// TODO: Add a delete button (if you're the owner, maybe pass as a prop your player name and check if isOwner)
 	return (
@@ -50,7 +60,9 @@ const PlayerListElement = (props) => {
 					<img
 						alt="Delete Button"
 						className="PLE__img--delete"
+						id={props.userName}
 						src={deleteIcon}
+						onClick={handleKick}
 					/>
 				</td>
 			)}
