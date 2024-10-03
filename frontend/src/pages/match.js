@@ -75,9 +75,9 @@ const Match = (props) => {
 					playerObject.hasPlayed = true;
 					localStorage.setItem('playerName', playerObject.name);
 					dataService.update(playerObject, matchId)
+						.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
 						.catch(e => console.log(e));
-					navigate(`/${matchId}`, { state: { playerObject: playerObject } });
-				}
+									}
 				console.log(playerObject);
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
