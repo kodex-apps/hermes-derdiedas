@@ -1,18 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "./button";
 import './popup.name.css';
 
 const PopupName = (props) => {
 	const inputRef = useRef(null);
 	// Variable to hold the final name the user wants
-	let finalName;
+	const [finalName, setFinalName] = useState('');
 	// Set focus on the input as soon as PopupName renders
 	useEffect(() => {
 		inputRef.current.focus();
 	});
 	// If the input name is null or if it's already on the list, cancel the change and set the name back to the last saved name
 	const handleOnChange = e => {
-		finalName = e.target.value;
+		setFinalName(e.target.value);
 	}
 
 	const handleOnClick = e => {
