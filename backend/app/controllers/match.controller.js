@@ -124,13 +124,13 @@ exports.removePlayer = (req, res) => {
 	console.log(req.body);
 	const playerName = req.body.playerName;
 	const matchId = req.body.matchId;
-	console.log(`About to remove ${playerName} of match ${matchId}`);
+	console.log(`About to remove player id ${playerName} of match ${matchId}`);
 
 	Match.find({ _id: matchId }).
 		then((data) => {
 			let retrievedMatch = data[0];
 			retrievedMatch.playerList.splice(
-				retrievedMatch.playerList.findIndex((e) => e.name === playerName),
+				retrievedMatch.playerList.findIndex((e) => e.id === playerName),
 				1);
 			retrievedMatch.replaceOne(retrievedMatch)
 				.then(() => res.status(200).send())
