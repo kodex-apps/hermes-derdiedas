@@ -76,9 +76,8 @@ const Match = (props) => {
 					localStorage.setItem('playerName', playerObject.name);
 					dataService.update(playerObject, matchId)
 						.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
-						.catch(e => console.log(e));
+						.catch(e => alert(e.message));
 									}
-				console.log(playerObject);
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
