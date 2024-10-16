@@ -6,7 +6,7 @@ import title from "./title_placeholder.png";
 const Root = (props) => {
 	return (
 		<div className="main-container">
-			<div className="title"><img alt="Title" src={title} /></div>
+			<div className="title">DER DIE DAS SPIEL</div>
 			{props.children}
 		</div>
 	);
