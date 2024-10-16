@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Lobby from "./pages/lobby";
 import Match from "./pages/match";
 import PreLobby from './pages/prelobby';
+import ErrorPage from './pages/errorpage';
 
 const router = createBrowserRouter([
 	{
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
 	{
 		path: "/spiel/:matchId",
 		element: <Match />,
+	},
+	{
+		path: "/error",
+		element: <ErrorPage />,
 	},
 ]);
 
