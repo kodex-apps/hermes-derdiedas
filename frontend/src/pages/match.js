@@ -28,8 +28,6 @@ const Match = (props) => {
 			dataService.get(matchId)
 				.then((response) => response.json())
 				.then((response) => {
-					console.log("Loaded Match:");
-					console.log(response);
 					setWordList(response.wordList);
 				});
 		}
@@ -66,7 +64,7 @@ const Match = (props) => {
 				dataService.update(playerObject, matchId);
 
 				// If we just completed the last word, put the count of correct words as the users score
-				if (playerObject.wordsCompleted === 10) {
+				if (playerObject.wordsCompleted >= 10) {
 					playerObject.score = 0;
 					wordList.forEach(e => {
 						if (e.isCorrectWord) playerObject.score++;
@@ -96,7 +94,7 @@ const Match = (props) => {
 	}
 
 	return <div onClick={handleMatchClick} className="match">
-			{(wordList.some(e => e.isCurrentWord) === true) ? 
+			{((wordList.some(e => e.isCurrentWord) === true) && (playerObject.wordsCompleted < 10)) ? 
 			(<div>
 				<div><TextBox articleInputRef={articleInputRef} onChange={handleChange} />
 				<div ref={animatedText} className="animated-text"/></div>
