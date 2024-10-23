@@ -1,12 +1,12 @@
 /* CSS */
 .button {
   appearance: button;
-   background-color: #708844;  /* Adjust this in case of palette change */
+  background-color: #decc35;  /* Adjust this in case of palette change */
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
   box-sizing: border-box;
-  color: white;
+  color: black;
   cursor: pointer;
   display: inline-block;
   font-family: din-round,sans-serif;
@@ -31,7 +31,7 @@
 
 .button:after {
   background-clip: padding-box;
-  background-color: var(--palette-element-2);
+  background-color: var(--palette-element);
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
