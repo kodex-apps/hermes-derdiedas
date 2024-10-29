@@ -10,14 +10,11 @@ const PreLobby = () => {
 	// If there is no match being passed to Lobby, create a new one
 	// TODO: Fetch the created match's playerList and assign it to fetchedPlayerList
 	useEffect(() => {
-		const handleLoad = () => {
-			DataService.post()
-				.then((response) => response.json())
-				.then((response) => {
-					navigate(`/${response._id}`);
-				});
-		}
-		window.addEventListener('load', handleLoad);
+		DataService.post()
+			.then((response) => response.json())
+			.then((response) => {
+				navigate(`/${response._id}`);
+			});
 		//commenting out for debugging purposes
 		//return () => window.removeEventListener('load', handleLoad);
 	},[]);
