@@ -18,8 +18,9 @@ const PreLobby = () => {
 				});
 		}
 		window.addEventListener('load', handleLoad);
-		return () => window.removeEventListener('load', handleLoad);
-	});
+		//commenting out for debugging purposes
+		//return () => window.removeEventListener('load', handleLoad);
+	},[]);
 
 	return <h1>Laden...</h1>;
 }
