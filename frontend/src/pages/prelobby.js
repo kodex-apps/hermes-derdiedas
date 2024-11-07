@@ -15,8 +15,6 @@ const PreLobby = () => {
 			.then((response) => {
 				navigate(`/${response._id}`);
 			});
-		//commenting out for debugging purposes
-		//return () => window.removeEventListener('load', handleLoad);
 	},[]);
 
 	return <h1>Laden...</h1>;

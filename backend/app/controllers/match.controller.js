@@ -113,6 +113,8 @@ exports.startMatch = (req, res) => {
 			});
 			console.log('Starting following match: ');
 			console.log(retrievedMatch);
+			// Set the updateAt value to current date
+			retrievedMatch.updatedAt = new Date();
 			retrievedMatch.replaceOne(retrievedMatch)
 				.then(() => res.status(200).send())
 				.catch((error) => res.status(500).send({ message: error.message }));

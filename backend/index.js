@@ -25,3 +25,17 @@ db.mongoose
 
 // Add API routes
 require("./app/routes/match.routes")(app, router);
+
+// TODO: Commented out because I need to test how dates are shown in mongodb
+// Clean up Matches that haven't been updated in the last 5m, every hour.
+// For how long a match may be abandoned before it applies for removal in ms (60k ms in a minute, the second value are the minutes you want)
+const MATCH_REMOVE_RATE = 60000 * 30;
+setInterval(() => {
+	currentDate = new Date();
+	// Check if currentDate minutes is 00 (this will run every minute), if so, we can execute the cleanup function
+	if (currentDate.getMinutes == 00) {
+		db.match.deleteMany({updatedAt: {$lte: new Date(currentDate.valueOf() - MATCH_REMOVE_RATE)}})
+			.then((data) => console.log(`Deleted ${data.deletedCount} matches`));
+	}
+	
+}, 60000);
