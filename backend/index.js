@@ -33,7 +33,7 @@ const MATCH_REMOVE_RATE = 60000 * 30;
 setInterval(() => {
 	currentDate = new Date();
 	// Check if currentDate minutes is 00 (this will run every minute), if so, we can execute the cleanup function
-	if (currentDate.getMinutes == 00) {
+	if (currentDate.getMinutes() == 00) {
 		db.match.deleteMany({updatedAt: {$lte: new Date(currentDate.valueOf() - MATCH_REMOVE_RATE)}})
 			.then((data) => console.log(`Deleted ${data.deletedCount} matches`));
 	}
