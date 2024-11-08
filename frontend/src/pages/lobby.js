@@ -75,6 +75,9 @@ const Lobby = (props) => {
 					dataService.update(playerObject, response._id)
 						.then((response2) => setLoadedMatch(response));
 				}
+			})
+			.catch((err) => {
+				navigate(`/`);
 			});
 		}
 
