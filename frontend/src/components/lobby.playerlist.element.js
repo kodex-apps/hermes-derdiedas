@@ -19,14 +19,10 @@ const PlayerListElement = (props) => {
 
 	// Function that will show the score unless the player hasn't wordsCompleted = 10, then it'll show that he's still playing
 	function showScore(playerElement) {
-		console.log("showScore working with:");
-		console.log(playerElement);
 		if (playerElement.wordsCompleted < 10) {
-			console.log("less than 10 words in playerElement");
 			return '...';
 		}
 		else {
-			console.log("10 words or more in playerEALement");
 			return playerElement.score;
 		}
 	}

@@ -36,14 +36,12 @@ const Lobby = (props) => {
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
 				let playerObject;
-				console.log(response);
 				setLoadedMatch(response);
 				if (!localPlayerName) {
 					localPlayerName = getUsername(response.playerList);
 					setPlayerName(localPlayerName);
 					localStorage.setItem('playerName', localPlayerName);
 				}
-				console.log("Our name is: " + localPlayerName);
 				// If there is no playerList present, make own player owner
 				if (response.playerList.length === 0) {
 					playerObject = {
@@ -102,7 +100,6 @@ const Lobby = (props) => {
 	}, [playerName, loadedMatch]);
 
 	const startMatch = (e) => {
-		console.log("Clicked:");
 		setButtonName("LADEN...");
 		dataService.startMatch(loadedMatch._id)
 			.catch(e => console.log(e));
@@ -112,7 +109,6 @@ const Lobby = (props) => {
 	const changeUserName = (newUserName) => {
 		if (loadedMatch.playerList.length > 0) {
 			let newPlayerObject = getPlayerObject(loadedMatch, playerName);
-			console.log(`playerName: ${playerName}, newUserName: ${newUserName}`);
 			newPlayerObject.name = newUserName;
 			setPlayerName(newUserName);
 			localStorage.setItem('playerName', newUserName);
@@ -126,12 +122,9 @@ const Lobby = (props) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
-				console.log("Updating with new match:");
-				console.log(match);
 				setLoadedMatch(match);
 				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
-					console.log("This would send the user to match");
 				}
 			})
 			.catch(e => console.log(e));

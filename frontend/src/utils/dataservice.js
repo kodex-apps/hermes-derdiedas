@@ -24,7 +24,6 @@ class DataService {
 	}
 
 	async update(object, matchId) {
-		//console.log("Sending body: " + JSON.stringify(match));
 		const res = await fetch(config.fetchUrl + `/update/${matchId}`, {
 			method: "PUT",
 			headers: {

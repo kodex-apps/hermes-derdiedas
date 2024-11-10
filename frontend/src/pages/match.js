@@ -69,7 +69,6 @@ const Match = (props) => {
 					wordList.forEach(e => {
 						if (e.isCorrectWord) playerObject.score++;
 					});
-					console.log("Setting to hasPlayed = true and sending to lobby");
 					playerObject.hasPlayed = true;
 					localStorage.setItem('playerName', playerObject.name);
 					dataService.update(playerObject, matchId)
