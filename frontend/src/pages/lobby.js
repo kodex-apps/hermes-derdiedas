@@ -16,9 +16,11 @@ const Lobby = (props) => {
 	const { state } = useLocation();
 	// localStorage variable to store the playerName
 	const lsPlayerName = localStorage.getItem('playerName');
+	// We get an array containing the player's last Match and his Id in it. Later on, if they match, the player will be assigned that match and id should they reload
+	const lsPlayerId = localStorage.getItem('playerIdArray') || '0-0';
 	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
 	// if state is null, we get lsPlayerName which is the localStorage
-	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : lsPlayerName);
+	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : null);
 	const [showDialog, setShowDialog] = useState(false);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: []});
 	const [buttonName, setButtonName] = useState("SPIEL STARTEN");
@@ -35,9 +37,20 @@ const Lobby = (props) => {
 				let matchWasModified = false;
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
+				console.log(`localPlayerName ${localPlayerName}`);
 				let playerObject;
 				setLoadedMatch(response);
-				if (!localPlayerName) {
+				// If the localStorage match-id fits with a player in this lobby, assign our playerName to it
+				// else if the playerName exists but the match-id doesn't fit, assign a new one
+				// else if we don't have any playerName at all, assign a new one
+				const localPlayerIdArray = lsPlayerId.split('-');
+				const localPlayerId = parseInt(localPlayerIdArray[1]);
+				const localPlayerMatch = parseInt(localPlayerIdArray[0]);
+				if (((localPlayerMatch === response._id) && (response.playerList.findIndex(element => (element.name === lsPlayerName) && (element.id === localPlayerId)) != -1)) || ((localPlayerMatch != 0) && (response.playerList.findIndex(element => lsPlayerName === element.name) === -1))) {
+					localPlayerName = lsPlayerName; 
+					setPlayerName(localPlayerName);
+				}
+				else if (!localPlayerName) {
 					localPlayerName = getUsername(response.playerList);
 					setPlayerName(localPlayerName);
 					localStorage.setItem('playerName', localPlayerName);
@@ -71,10 +84,19 @@ const Lobby = (props) => {
 				}
 				if (matchWasModified) {
 					dataService.update(playerObject, response._id)
-						.then((response2) => setLoadedMatch(response));
+						.then((response2) => response2.json())
+						.then((response) => {
+							setLoadedMatch(response);
+							console.log(response);
+							let localPlayerId = response.playerList.find((a) => a.name === localPlayerName).id;
+							localStorage.setItem('playerIdArray', `${response._id}-${localPlayerId}`);
+
+						});
 				}
 			})
+			// On error just send the player to a new match
 			.catch((err) => {
+				console.log(err);
 				navigate(`/`);
 			});
 		}
