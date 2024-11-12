@@ -6,7 +6,8 @@ async function getNewId() {
 	let idArray = [];
 	let idFound = false;
 	const MatchModel = db.match;
-	let returnId = 9999;
+	// Get a random number between 0 and 9999 to be the id of the match (it will then keep reducing it until it has found a match id that is available)
+	let returnId = Math.floor(Math.random() * 9999);
 
 	// Load into idArray all the _id keys of Matches
 	await MatchModel.distinct('_id', {})
