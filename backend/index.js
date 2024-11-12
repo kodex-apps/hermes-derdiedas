@@ -4,11 +4,14 @@ const app = express();
 const db = require("./app/models/");
 const router = require("express").Router();
 const cors = require('cors');
+const https = require('node:https');
+const fs = require('node:fs');
 
-const corsOptions = {
-	origin: '192.168.1.138'
+// Set up options for https
+const options = {
+	key: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/privkey.pem'),
+	cert: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/fullchain.pem')
 }
-
 app.use(cors());
 app.use(express.json());
 
@@ -17,9 +20,15 @@ db.mongoose
 	.connect(db.url)
 	.then(() => {
 		console.log("Connected to MongoDB.");
-		app.listen(3030, () => {
-			console.log("Listening on port 3030.");
-		});
+		// Listen to 3030 with a secure connection
+		https.createServer(options, (req, res) => {
+			res.writeHead(200);
+			res.end('Connection succesful');
+		}).listen(3030);
+		// Leaving this commented out in case I need it in the future
+		//app.listen(3030, () => {
+			//console.log("Listening on port 3030.");
+		//});
 	})
 	.catch((err) => console.log(`MongoDB connection refused: ${err}.`));
 
