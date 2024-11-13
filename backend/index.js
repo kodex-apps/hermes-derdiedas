@@ -11,10 +11,13 @@ const fs = require('node:fs');
 const options = {
 	key: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/privkey.pem'),
 	cert: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/fullchain.pem'),
-	uniqueHeaders: ['Access-Control-Allow-Header', 'https://derdiedasspiel.de']
+	uniqueHeaders: ['Access-Control-Allow-Origin', 'https://derdiedasspiel.de']
 }
 app.use(cors());
 app.use(express.json());
+
+// Add API routes
+require("./app/routes/match.routes")(app, router);
 
 // Connect to MongoDB, if succesful, start listening on port 3030.
 db.mongoose
@@ -29,9 +32,6 @@ db.mongoose
 		//});
 	})
 	.catch((err) => console.log(`MongoDB connection refused: ${err}.`));
-
-// Add API routes
-require("./app/routes/match.routes")(app, router);
 
 // Clean up Matches that haven't been updated in the last 5m, every hour.
 // For how long a match may be abandoned before it applies for removal in ms (60k ms in a minute, the second value are the minutes you want)
