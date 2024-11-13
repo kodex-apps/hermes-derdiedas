@@ -10,7 +10,8 @@ const fs = require('node:fs');
 // Set up options for https
 const options = {
 	key: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/privkey.pem'),
-	cert: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/fullchain.pem')
+	cert: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/fullchain.pem'),
+	uniqueHeaders: ['Access-Control-Allow-Header', 'https://derdiedasspiel.de']
 }
 app.use(cors());
 app.use(express.json());
@@ -21,10 +22,7 @@ db.mongoose
 	.then(() => {
 		console.log("Connected to MongoDB.");
 		// Listen to 3030 with a secure connection
-		https.createServer(options, (req, res) => {
-			res.writeHead(200);
-			res.end('Connection succesful');
-		}).listen(3030);
+		https.createServer(options, app).listen(3030);
 		// Leaving this commented out in case I need it in the future
 		//app.listen(3030, () => {
 			//console.log("Listening on port 3030.");
@@ -35,7 +33,6 @@ db.mongoose
 // Add API routes
 require("./app/routes/match.routes")(app, router);
 
-// TODO: Commented out because I need to test how dates are shown in mongodb
 // Clean up Matches that haven't been updated in the last 5m, every hour.
 // For how long a match may be abandoned before it applies for removal in ms (60k ms in a minute, the second value are the minutes you want)
 const MATCH_REMOVE_RATE = 60000 * 30;
