@@ -43,22 +43,23 @@ const Match = (props) => {
 	const handleChange = (event) => {
 		const input = event.target.value.slice(-3).toLowerCase();
 		wordSpan.current.classList.remove("shake-class");
-		// Check if user wrote an article
+		// Check if user wrote a valid article
 		if (validArticles.includes(input)) {
+			// Get the last three characters of user input (der, die, das are always three) and check if they are the article belonging to the current word
 			if (input.slice(-3) === currentWord.article) {
 				// Set the isCorrectWord = true if it wasn't marked as false before (because the user got it wrong)
-				if (currentWord.isCorrectWord === null)
-					wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
-						true;
+				if (currentWord.isCorrectWord === null) wordList.find((e) => e.isCurrentWord).isCorrectWord = true;
 				// Set the current word into the fadeout element before it changes value
 				animatedText.current.innerHTML = currentWord.article.replace(currentWord.article.charAt(0), currentWord.article.charAt(0).toUpperCase()) + " " + currentWord.word;
-				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else
-				// it wouldn't re-render thinking it's the same array
+				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else it wouldn't re-render thinking it's the same array
 				setWordList([...setNextWord(wordList)]);
 				currentWord = wordList.find((e) => e.isCurrentWord);
+				// Empty the text input element
 				articleInputRef.current.value = "";
 				// Apply the fadeout animation
 				animatedText.current.classList.add("fadeout-class");
+				// If the playerobject is falsey (for example it doesn't exist because they refresh the match page), send them to the lobby
+				if (!playerObject) navigate(`/${matchId}`);
 				// Add one to the wordsCompleted number
 				playerObject.wordsCompleted++;
 				dataService.update(playerObject, matchId);
@@ -77,8 +78,8 @@ const Match = (props) => {
 									}
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
-				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord =
-					false;
+				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord = false;
+				// Empty the text input element
 				articleInputRef.current.value = "";
 				wordSpan.current.classList.add("shake-class");
 			}
