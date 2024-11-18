@@ -37,7 +37,6 @@ const Lobby = (props) => {
 				let matchWasModified = false;
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
-				console.log(`localPlayerName ${localPlayerName}`);
 				let playerObject;
 				setLoadedMatch(response);
 				// If the localStorage match-id fits with a player in this lobby, assign our playerName to it
@@ -87,7 +86,6 @@ const Lobby = (props) => {
 						.then((response2) => response2.json())
 						.then((response) => {
 							setLoadedMatch(response);
-							console.log(response);
 							let localPlayerId = response.playerList.find((a) => a.name === localPlayerName).id;
 							localStorage.setItem('playerIdArray', `${response._id}-${localPlayerId}`);
 
