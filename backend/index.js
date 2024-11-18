@@ -7,15 +7,17 @@ const cors = require('cors');
 const https = require('node:https');
 const fs = require('node:fs');
 
+let options = {};
 // Check if we're in developement mode or not (so we don't have to bother with SSL certificate)
 if (process.env.NODE_ENV != 'dev' || !process.env.NODE_ENV) {
 	// Set up options for https
-	const options = {
+	options = {
 		key: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/privkey.pem'),
 		cert: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/fullchain.pem'),
 		uniqueHeaders: ['Access-Control-Allow-Origin', 'https://derdiedasspiel.de']
 	}
 }
+
 app.use(cors());
 app.use(express.json());
 
