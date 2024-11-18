@@ -7,11 +7,14 @@ const cors = require('cors');
 const https = require('node:https');
 const fs = require('node:fs');
 
-// Set up options for https
-const options = {
-	key: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/privkey.pem'),
-	cert: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/fullchain.pem'),
-	uniqueHeaders: ['Access-Control-Allow-Origin', 'https://derdiedasspiel.de']
+// Check if we're in developement mode or not (so we don't have to bother with SSL certificate)
+if (process.env.NODE_ENV != 'dev') {
+	// Set up options for https
+	const options = {
+		key: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/privkey.pem'),
+		cert: fs.readFileSync('/etc/letsencrypt/live/derdiedasspiel.de/fullchain.pem'),
+		uniqueHeaders: ['Access-Control-Allow-Origin', 'https://derdiedasspiel.de']
+	}
 }
 app.use(cors());
 app.use(express.json());
@@ -25,11 +28,14 @@ db.mongoose
 	.then(() => {
 		console.log("Connected to MongoDB.");
 		// Listen to 3030 with a secure connection
-		https.createServer(options, app).listen(3030);
-		// Leaving this commented out in case I need it in the future
-		//app.listen(3030, () => {
-			//console.log("Listening on port 3030.");
-		//});
+		if (process.env.NODE_ENV != 'dev') {
+			https.createServer(options, app).listen(3030);
+			console.log("Listening on port 3030 in prod mode.");
+		} else {
+			app.listen(3030, () => {
+			console.log("Listening on port 3030 in dev mode.");
+		});
+		}
 	})
 	.catch((err) => console.log(`MongoDB connection refused: ${err}.`));
 
