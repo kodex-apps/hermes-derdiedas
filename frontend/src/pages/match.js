@@ -12,14 +12,25 @@ import dataService from "../utils/dataservice.js";
 const validArticles = ["der", "die", "das"];
 
 const Match = (props) => {
+	// Get the player's match and id array in case the playerObject gets lost on the way (format is matchId-playerId)
+	const lsPlayerIdArray = (localStorage.getItem('playerIdArray') || '0-0').split('-');
+	// Get the matchId from the URL
 	const {matchId} = useParams();
+	// Load a placeholder wordList for now (wordList is always an array)
 	const [wordList, setWordList] = useState(["Lade..."]);
+	// Load in the state variable
 	const { state } = useLocation();
+	// Assign the state variable to the playerObject variable
 	const [playerObject, setPlayerObject] = useState(state.playerObject);
+	// Set the currentWord variable, the backend already sets isCurrentWord for the first word in the list
 	let currentWord = wordList.find((e) => e.isCurrentWord);
+	// Initialise the variable for the text input
 	const articleInputRef = useRef(null);
+	// Initialise the variable for the floating text when you get a correct word
 	const animatedText = useRef(null);
+	// Navigate variable is for sending the user through different routes programmatically
 	const navigate = useNavigate();
+	// Initialise the variable for the span element containing the word
 	const wordSpan = useRef(null);
 
 	useEffect(() => {
@@ -29,8 +40,20 @@ const Match = (props) => {
 				.then((response) => response.json())
 				.then((response) => {
 					setWordList(response.wordList);
+					// If we have no playerObject and no localStorage of the player, send them to the lobby
+					// if the playerObject is valid use that, if not retreive the playerObject through the localStorage
+					if (!playerObject && lsPlayerIdArray[0] === '0') {
+						navigate(`/${matchId}`);
+					} else if (!playerObject && (lsPlayerIdArray[0] === matchId)) {
+						setPlayerObject(response.playerList.find(e => e.id === lsPlayerIdArray[1]));
+					}
 				});
 		}
+
+
+
+
+
 
 		return () => { done = true; }
 	},[]);
