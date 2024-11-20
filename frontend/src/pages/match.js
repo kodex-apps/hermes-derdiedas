@@ -39,6 +39,7 @@ const Match = (props) => {
 			dataService.get(matchId)
 				.then((response) => response.json())
 				.then((response) => {
+					console.log(response.wordList);
 					setWordList(response.wordList);
 					// If we have no playerObject and no localStorage of the player, send them to the lobby
 					// if the playerObject is valid use that, if not retreive the playerObject through the localStorage
@@ -68,7 +69,7 @@ const Match = (props) => {
 		// Check if user wrote a valid article
 		if (validArticles.includes(input)) {
 			// Get the last three characters of user input (der, die, das are always three) and check if they are the article belonging to the current word
-			if (input.slice(-3) === currentWord.article) {
+			if (currentWord.article.includes(input)) {
 				// Set the isCorrectWord = true if it wasn't marked as false before (because the user got it wrong)
 				if (currentWord.isCorrectWord === null) wordList.find((e) => e.isCurrentWord).isCorrectWord = true;
 				// Set the current word into the fadeout element before it changes value
