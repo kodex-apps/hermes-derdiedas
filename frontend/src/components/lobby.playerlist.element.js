@@ -56,7 +56,7 @@ const PlayerListElement = (props) => {
 					<img
 						alt="Delete Button"
 						className="PLE__img--delete"
-						id={props.id}
+						id={props.playerElement.id}
 						src={deleteIcon}
 						onClick={handleKick}
 					/>
