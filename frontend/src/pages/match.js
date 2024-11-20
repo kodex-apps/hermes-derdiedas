@@ -39,7 +39,6 @@ const Match = (props) => {
 			dataService.get(matchId)
 				.then((response) => response.json())
 				.then((response) => {
-					console.log(response.wordList);
 					setWordList(response.wordList);
 					// If we have no playerObject and no localStorage of the player, send them to the lobby
 					// if the playerObject is valid use that, if not retreive the playerObject through the localStorage
@@ -53,10 +52,10 @@ const Match = (props) => {
 		return () => { done = true; }
 	},[]);
 
-	// useEffect to control the width of font size of the current word (wordSpan)
+	/* TODO: useEffect to control the width of font size of the current word (wordSpan)
 	useEffect(() => {
 		if (wordSpan.current) console.log("wordSpan width: " + wordSpan.current);
-	}, [wordSpan.current]);
+	}, [wordSpan.current]);*/
 
 	/*
 	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:
