@@ -21,7 +21,7 @@ const Match = (props) => {
 	// Load in the state variable
 	const { state } = useLocation();
 	// Assign the state variable to the playerObject variable
-	const [playerObject, setPlayerObject] = useState(state.playerObject);
+	const [playerObject, setPlayerObject] = useState(state ? state.playerObject : null);
 	// Set the currentWord variable, the backend already sets isCurrentWord for the first word in the list
 	let currentWord = wordList.find((e) => e.isCurrentWord);
 	// Initialise the variable for the text input
@@ -42,21 +42,20 @@ const Match = (props) => {
 					setWordList(response.wordList);
 					// If we have no playerObject and no localStorage of the player, send them to the lobby
 					// if the playerObject is valid use that, if not retreive the playerObject through the localStorage
-					if (!playerObject && lsPlayerIdArray[0] === '0') {
+					if (!playerObject && lsPlayerIdArray[0] !== matchId) {
 						navigate(`/${matchId}`);
 					} else if (!playerObject && (lsPlayerIdArray[0] === matchId)) {
 						setPlayerObject(response.playerList.find(e => e.id === lsPlayerIdArray[1]));
 					}
 				});
 		}
-
-
-
-
-
-
 		return () => { done = true; }
 	},[]);
+
+	// useEffect to control the width of font size of the current word (wordSpan)
+	useEffect(() => {
+		if (wordSpan.current) console.log("wordSpan width: " + wordSpan.current);
+	}, [wordSpan.current]);
 
 	/*
 	 * Function that will check if the last 3 characters of TextBox match with the article of the current word:
@@ -117,7 +116,7 @@ const Match = (props) => {
 	}
 
 	return <div onClick={handleMatchClick} className="match">
-			{((wordList.some(e => e.isCurrentWord) === true) && (playerObject.wordsCompleted < 10)) ? 
+			{(playerObject && ((wordList.some(e => e.isCurrentWord) === true) && (playerObject.wordsCompleted < 10))) ? 
 			(<div>
 				<div><TextBox articleInputRef={articleInputRef} onChange={handleChange} />
 				<div ref={animatedText} className="animated-text"/></div>
