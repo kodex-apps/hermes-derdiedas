@@ -18,7 +18,7 @@ function getWordList() {
 
 	// Add aditional data for the app to each word
 	rawWordList.forEach(e => {
-		currentWord = e.replace(' ', '').split('-');
+		currentWord = e.replace(' ', '').split('$');
 		wordList.push({	article: currentWord[0], word: currentWord[1], isCurrentWord: false, isCorrectWord: null});
 	});
 	// Set the first word to be the current word (match.js expects one to have it)
