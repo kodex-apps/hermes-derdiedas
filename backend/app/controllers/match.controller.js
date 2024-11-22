@@ -124,6 +124,7 @@ exports.startMatch = (req, res) => {
 exports.removePlayer = (req, res) => {
 	console.log("Recieved delete req");
 	console.log(req.body);
+	// This is actually the id but I cba to change the var name
 	const playerName = req.body.playerName;
 	const matchId = req.body.matchId;
 	console.log(`About to remove player id ${playerName} of match ${matchId}`);
@@ -132,7 +133,7 @@ exports.removePlayer = (req, res) => {
 		then((data) => {
 			let retrievedMatch = data[0];
 			retrievedMatch.playerList.splice(
-				retrievedMatch.playerList.findIndex((e) => e.id === playerName),
+				retrievedMatch.playerList.findIndex((e) => e.id === Number(playerName)),
 				1);
 			retrievedMatch.replaceOne(retrievedMatch)
 				.then(() => res.status(200).send())
