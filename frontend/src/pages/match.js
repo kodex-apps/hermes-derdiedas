@@ -45,12 +45,35 @@ const Match = (props) => {
 					if (!playerObject && lsPlayerIdArray[0] !== matchId) {
 						navigate(`/${matchId}`);
 					} else if (!playerObject && (lsPlayerIdArray[0] === matchId)) {
-						setPlayerObject(response.playerList.find(e => e.id === lsPlayerIdArray[1]));
+						// Created a temp variable to use that isn't really necessary but cba to change it
+						const newPlayerObject = response.playerList.find(e => e.id === Number(lsPlayerIdArray[1])) 
+						setPlayerObject(newPlayerObject);
+						let updatedWordList = response.wordList;
+						updatedWordList.find(e => e.isCurrentWord).isCurrentWord = false;
+						// Use the completedWords as index for the currentWord unless it's 10 (which means we done)
+						if (newPlayerObject.wordsCompleted < 10) {
+							updatedWordList[newPlayerObject.wordsCompleted].isCurrentWord = true;
+							setWordList(updatedWordList);
+						}
+						checkWordsCompleted();
 					}
 				});
 		}
 		return () => { done = true; }
 	},[]);
+
+	// Function to check the wordsCompleted and send them to lobby if they're done
+	const checkWordsCompleted = () => {
+		// If user has completed 10 words (or more, just in case), end the match and send them to lobby
+		if (playerObject.wordsCompleted >= 10) {
+			playerObject.hasPlayed = true;
+			localStorage.setItem('playerName', playerObject.name);
+			dataService.update(playerObject, matchId)
+				.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
+				.catch(e => console.log(e.message));
+		}
+
+	}
 
 	/* TODO: useEffect to control the width of font size of the current word (wordSpan)
 	useEffect(() => {
@@ -69,8 +92,10 @@ const Match = (props) => {
 		if (validArticles.includes(input)) {
 			// Get the last three characters of user input (der, die, das are always three) and check if they are the article belonging to the current word
 			if (currentWord.article.includes(input)) {
-				// Set the isCorrectWord = true if it wasn't marked as false before (because the user got it wrong)
-				if (currentWord.isCorrectWord === null) wordList.find((e) => e.isCurrentWord).isCorrectWord = true;
+				// If the playerobject is falsey (for example it doesn't exist because they refresh the match page), send them to the lobby
+				if (!playerObject) navigate(`/${matchId}`);
+				// Increase the score by 1 if the word wasn't input incorrectly before
+				if (currentWord.isCorrectWord === null) playerObject.score++;
 				// Set the current word into the fadeout element before it changes value
 				animatedText.current.innerHTML = currentWord.article.replace(currentWord.article.charAt(0), currentWord.article.charAt(0).toUpperCase()) + " " + currentWord.word;
 				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else it wouldn't re-render thinking it's the same array
@@ -80,24 +105,10 @@ const Match = (props) => {
 				articleInputRef.current.value = "";
 				// Apply the fadeout animation
 				animatedText.current.classList.add("fadeout-class");
-				// If the playerobject is falsey (for example it doesn't exist because they refresh the match page), send them to the lobby
-				if (!playerObject) navigate(`/${matchId}`);
 				// Add one to the wordsCompleted number
 				playerObject.wordsCompleted++;
 				dataService.update(playerObject, matchId);
-
-				// If we just completed the last word, put the count of correct words as the users score
-				if (playerObject.wordsCompleted >= 10) {
-					playerObject.score = 0;
-					wordList.forEach(e => {
-						if (e.isCorrectWord) playerObject.score++;
-					});
-					playerObject.hasPlayed = true;
-					localStorage.setItem('playerName', playerObject.name);
-					dataService.update(playerObject, matchId)
-						.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
-						.catch(e => alert(e.message));
-									}
+				checkWordsCompleted();
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord = false;
