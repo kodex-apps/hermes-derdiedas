@@ -34,6 +34,7 @@ const Lobby = (props) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then((response) => {
+				// matchWasModified will be checked in the end, if true, we will update the match with the response variable
 				let matchWasModified = false;
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
@@ -64,6 +65,7 @@ const Lobby = (props) => {
 						score: 0,
 						hasPlayed: false,
 					}
+					// This is (presumably) so new players don't get thrown into an already running match
 					if (response.isOngoing) playerObject.hasPlayed = true;
 					// It shouldn't really matter to push to this current playerList our playerObject since that's handled in the backend, but cba to touch anything
 					response.playerList.push(playerObject);
@@ -144,6 +146,8 @@ const Lobby = (props) => {
 			.then(match => {
 				setLoadedMatch(match);
 				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
+					const playerObject = getPlayerObject(match, playerName) || undefined;
+					console.log(`Sending player ${playerObject.name} with wordsCompleted ${playerObject.wordsCompleted}, hasPlayed = ${playerObject.hasPlayed} and a score of ${playerObject.score}`);
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 				}
 			})
