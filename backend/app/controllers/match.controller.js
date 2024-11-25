@@ -124,21 +124,26 @@ exports.startMatch = (req, res) => {
 exports.removePlayer = (req, res) => {
 	console.log("Recieved delete req");
 	console.log(req.body);
-	// This is actually the id but I cba to change the var name
-	const playerName = req.body.playerName;
+	const playerId = Number(req.body.playerId);
 	const matchId = req.body.matchId;
-	console.log(`About to remove player id ${playerName} of match ${matchId}`);
+	const playerName = req.body.playerName;
+	console.log(`Deleting ${playerName} (ID ${playerId}) from match ${matchId}`);
 
 	Match.find({ _id: matchId }).
 		then((data) => {
-			let retrievedMatch = data[0];
-			retrievedMatch.playerList.splice(
-				retrievedMatch.playerList.findIndex((e) => e.id === Number(playerName)),
-				1);
-			retrievedMatch.replaceOne(retrievedMatch)
-				.then(() => res.status(200).send())
-				.catch(e => res.status(500).send( { message: error.message }));
+			const match = data[0];
+			const playerToDelete = match.playerList.find(e => e.id === playerId);
+			// If the playerToDelete fits with the playerName the user wants to delete, remove it from the playerList.
+			if (playerToDelete.name === playerName) {
+				match.playerList.splice(match.playerList.findIndex((e) => e.id === playerId), 1);
+				match.replaceOne(match)
+					.then(() => res.status(200).send())
+					.catch(e => res.status(500).send( { message: error.message }));
+			} else {
+				res.status(500).send('Player and id mismatch, probably kicking too fast.');
+			}
 		});
+
 }
 
 	

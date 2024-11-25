@@ -17,18 +17,8 @@ const PlayerListElement = (props) => {
 		props.setShowDialog(true);
 	};
 
-	// Function that will show the score unless the player hasn't wordsCompleted = 10, then it'll show that he's still playing
-	function showScore(playerElement) {
-		if (playerElement.wordsCompleted < 10) {
-			return '...';
-		}
-		else {
-			return playerElement.score;
-		}
-	}
-
 	const handleKick = (e) => {
-		dataService.removePlayer(matchId, e.target.id)
+		dataService.removePlayer(matchId, e.target.id, props.playerElement.name)
 			.then(data => console.log(data));
 	}
 

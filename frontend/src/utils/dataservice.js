@@ -47,7 +47,7 @@ class DataService {
 		return res;
 	}
 	
-	async removePlayer(matchId, playerName) {
+	async removePlayer(matchId, playerId, playerName) {
 		const res = await fetch(config.fetchUrl + `/removePlayer`, {
 			method: "PUT",
 			headers: {
@@ -55,6 +55,7 @@ class DataService {
 			},
 			body: JSON.stringify({
 				"matchId" : matchId,
+				"playerId" : playerId,
 				"playerName" : playerName
 			})
 		});
