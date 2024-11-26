@@ -53,6 +53,8 @@ exports.create = (req, res) => {
  * The format of the explanation will be the commandName, then the argument/s received, and a short explanation.
  * 1, newName: change the name of the player
  * 2, count: set the wordsCompleted key
+ * 3: finish that match for that player
+ * 4, score: set the score
  */
 exports.updatePlayer = (req, res) => {
 	const matchId = req.params.matchId;
@@ -60,23 +62,25 @@ exports.updatePlayer = (req, res) => {
 	const commandName = req.body.commandName;
 	// Description of the command for logging purposes
 	let commandNameString;
-	const commandArg = req.body.commandArg;
+	const commandArg = req.body.commandArg || 'No Arg.';
 
 	Match.find({ _id: matchId })
 		.then(data => {
 			let match = data[0];
 			const player = match.playerList.find(e => e.name === playerName);
-
 			switch (commandName) {
-				case 1: player.name = commandArg; commandNameString = 'Name Change'; break;
-				case 2: player.wordsCompleted = commandArg; commandNameString = 'Words Completed Change'; break;
+				case 1: player.name = commandArg; commandNameString = 'setName'; break;
+				case 2: player.wordsCompleted = commandArg; commandNameString = 'setWordsCompleted'; break;
+				case 3: player.hasPlayed = true; commandNameString = 'finishMatch'; break;
+				case 4: player.score = commandArg; commandNameString = 'setScore'; break;
 			}
 			// If the player got to 10 wordsCompleted and everyone else did as well, finish the match.
 			if ((player.wordsCompleted >= 10) && match.isOngoing && !match.playerList.some(e => e.wordsCompleted < 10)) match.isOngoing = false;
 			match.playerList[match.playerList.findIndex(e => e.id === player.id)] = player;
-			console.log(match);
 			return match.save();})
-		.then(() => console.log(`Succesfully updated ${playerName}. Command ${commandNameString} with argument ${commandArg}`))
+		.then(() => {
+			console.log(`Succesfully updated ${playerName}. Command ${commandNameString} with argument: ${commandArg}`);
+			res.status(200).send();})
 		.catch(error => {
 			console.log(`Error updating player to match ${matchId}. ${error.name}: ${error.message}`);
 			res.status(500).send(`Error updating player to match ${matchId}. ${error.name}: ${error.message}`);

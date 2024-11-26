@@ -42,9 +42,13 @@ const Match = (props) => {
 					setWordList(response.wordList);
 					// If we have no playerObject and no localStorage of the player, send them to the lobby
 					// if the playerObject is valid use that, if not retreive the playerObject through the localStorage
+					//
+					// Check if the playerObject has the same wordsCompleted is his version of the db, so we can set the db version so he can continue the game
+					let hasMatchingWordsCompleted;
+					if (playerObject) hasMatchingWordsCompleted = response.playerList.find(e => (e.playerName === playerObject.name) && (e.wordsCompleted != playerObject.wordsCompleted));
 					if (!playerObject && lsPlayerIdArray[0] !== matchId) {
 						navigate(`/${matchId}`);
-					} else if (!playerObject && (lsPlayerIdArray[0] === matchId)) {
+					} else if ((!playerObject || !hasMatchingWordsCompleted) && (lsPlayerIdArray[0] === matchId)) {
 						// Created a temp variable to use that isn't really necessary but cba to change it
 						const newPlayerObject = response.playerList.find(e => e.id === Number(lsPlayerIdArray[1])) 
 						setPlayerObject(newPlayerObject);
@@ -65,10 +69,15 @@ const Match = (props) => {
 	// Function to check the wordsCompleted and send them to lobby if they're done
 	const checkWordsCompleted = () => {
 		// If user has completed 10 words (or more, just in case), end the match and send them to lobby
-		if (playerObject.wordsCompleted >= 10) {
+		if (playerObject && playerObject.wordsCompleted >= 10) {
 			playerObject.hasPlayed = true;
 			localStorage.setItem('playerName', playerObject.name);
-			dataService.update(playerObject, matchId)
+			// Commenting out instead of deleting just in case because the new and valid one is below
+			//dataService.update(playerObject, matchId)
+			//	.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
+			//	.catch(e => console.log(e.message));
+			dataService.updatePlayer(matchId, playerObject.name, 4, playerObject.score)
+				.then(() => dataService.updatePlayer(matchId, playerObject.name, 3, undefined))
 				.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
 				.catch(e => console.log(e.message));
 		}
@@ -109,13 +118,15 @@ const Match = (props) => {
 				playerObject.wordsCompleted++;
 				// We log the current playerObject for debugging purposes
 				console.log(`Player ${playerObject.name} with wordsCompleted ${playerObject.wordsCompleted}, score ${playerObject.score}, hasPlayed ${playerObject.hasPlayed}`);
-				dataService.update(playerObject, matchId)
-					.then((response) => response.json())
-					.then((response) => {
-						// we log the response playerObject to see what we set in the server
-						const rplayerObject = response.playerList.find(e => e.id === Number(playerObject.id));
-						console.log(`Player ${rplayerObject.name} with wordsCompleted ${rplayerObject.wordsCompleted}, score ${rplayerObject.score}, hasPlayed ${rplayerObject.hasPlayed}`);
-					});
+				dataService.updatePlayer(matchId, playerObject.name, 2, playerObject.wordsCompleted);
+				// Commenting out instead of deleting just in case.
+				//dataService.update(playerObject, matchId)
+				//	.then((response) => response.json())
+				//	.then((response) => {
+				//		// we log the response playerObject to see what we set in the server
+				//		const rplayerObject = response.playerList.find(e => e.id === Number(playerObject.id));
+				//		console.log(`Player ${rplayerObject.name} with wordsCompleted ${rplayerObject.wordsCompleted}, score ${rplayerObject.score}, hasPlayed ${rplayerObject.hasPlayed}`);
+				//	});
 				checkWordsCompleted();
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
