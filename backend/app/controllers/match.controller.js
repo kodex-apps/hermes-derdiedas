@@ -47,51 +47,65 @@ exports.create = (req, res) => {
 	
 	};
 
+/*
+ * This function will update a part of a player depending on the command that's send.
+ * It will always receive these parameters: matchId, playerName (to make sure the correct player is modified in case page doesn't have fresh info)
+ * The format of the explanation will be the commandName, then the argument/s received, and a short explanation.
+ * 1, newName: change the name of the player
+ * 2, count: set the wordsCompleted key
+ */
+exports.updatePlayer = (req, res) => {
+	const matchId = req.params.matchId;
+	const playerName = req.body.playerName;
+	const commandName = req.body.commandName;
+	// Description of the command for logging purposes
+	let commandNameString;
+	const commandArg = req.body.commandArg;
 
-exports.update = (req, res) => {
-	const player = req.body;
-	console.log("Updating match with following object:");
-	console.log(player);
-	Match.find({ _id: req.params.matchId })
-		.then((latestMatchArray) => {
-			// The result comes in an array so we get the object
-			latestMatch = latestMatchArray[0];
-			console.log("Found match to update with id: " + req.params.matchId);
-			console.log(latestMatch);
-			const indexOfPlayer = latestMatch.playerList.findIndex(e => (e.name === player.name) || (e.id === player.id));
-			console.log(`The index of ${player.name} is ${indexOfPlayer}`);
-;
-			// We assume we will only receive player objects here.
-			// If the player already exists, substitute it with the new player object. If it's new, assign it an id and add it to the playerList.
-			if (indexOfPlayer != -1) {
-				latestMatch.playerList[indexOfPlayer] = player;
-				latestMatch.playerList[indexOfPlayer].id = indexOfPlayer;
-				// Check if all players have wordsCompleted = 10 and the match is still onGoing to finish it
-				if ((latestMatch.playerList.findIndex(e => e.wordsCompleted != 10) === -1) && latestMatch.isOngoing) {
-					latestMatch.isOngoing = false;
-					console.log(`Finishing match: ${latestMatch._id}`);
-				}
-				console.log("Player was found in match, substituting.");
+	Match.find({ _id: matchId })
+		.then(data => {
+			let match = data[0];
+			const player = match.playerList.find(e => e.name === playerName);
+
+			switch (commandName) {
+				case 1: player.name = commandArg; commandNameString = 'Name Change'; break;
+				case 2: player.wordsCompleted = commandArg; commandNameString = 'Words Completed Change'; break;
 			}
-			else {
-				console.log("Player not found, assigning id: " + latestMatch.playerList.length);
-				// Add the player id (last id + 1)
-				player.id = latestMatch.playerList.length;
-				latestMatch.playerList.push(player);
-			}
-			latestMatch
-				.replaceOne(latestMatch)
-				.then((data) => {
-					console.log("Updating match:");
-					console.log(latestMatch);
-					res.send(latestMatch);
-				})
-				.catch(err => {
-					console.log(err.message);
-					res.status(500).send({
-						message: err.message || "Unknown error updating the match."
-					});
-				});
+			// If the player got to 10 wordsCompleted and everyone else did as well, finish the match.
+			if ((player.wordsCompleted >= 10) && match.isOngoing && !match.playerList.some(e => e.wordsCompleted < 10)) match.isOngoing = false;
+			match.playerList[match.playerList.findIndex(e => e.id === player.id)] = player;
+			console.log(match);
+			return match.save();})
+		.then(() => console.log(`Succesfully updated ${playerName}. Command ${commandNameString} with argument ${commandArg}`))
+		.catch(error => {
+			console.log(`Error updating player to match ${matchId}. ${error.name}: ${error.message}`);
+			res.status(500).send(`Error updating player to match ${matchId}. ${error.name}: ${error.message}`);
+		});
+}
+
+/*
+ * This function will add a player to a match.
+ * It will receive the following parameters:
+ * matchId
+ * playerObject: Full fledged object built in the front end which we will just add as a document.
+ */
+exports.addPlayer = (req, res) => {
+	const matchId = req.params.matchId;
+	let playerObject = req.body;
+	
+	Match.find({ _id: matchId })
+		.then(data => {
+			let match = data[0];
+
+			// Check if a player with that name exists already
+			if (match.playerList.some(e => e.name === playerObject.name)) throw new Error('Player name already taken');
+			playerObject.id = match.playerList.length;
+			match.playerList.push(playerObject);
+			return match.save();})
+		.then(() => console.log(`Succesfully added player ${playerObject.name} (ID: ${playerObject.id}) to match ${matchId}`))
+		.catch(error => {
+			console.log(`Error adding player to match ${matchId}. ${error.name}: ${error.message}`);
+			res.status(500).send(`Error adding player to match ${matchId}. ${error.name}: ${error.message}`);
 		});
 }
 

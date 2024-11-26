@@ -23,16 +23,34 @@ class DataService {
 		return res;
 	}
 
-	async update(object, matchId) {
-		const res = await fetch(config.fetchUrl + `/update/${matchId}`, {
+	async addPlayer(matchId, playerObject) {
+		const res = await fetch(config.fetchUrl + `/addPlayer/${matchId}`, {
 			method: "PUT",
 			headers: {
 				"content-type": "application/json"
 			},
 			// http bodies are always strings
-			body: JSON.stringify(object)
+			body: JSON.stringify(playerObject)
 		});
 
+		return res;
+	}
+
+	async updatePlayer(matchId, playerName, commandName, commandArg) {
+		const res = await fetch(config.fetchUrl + `/updatePlayer/${matchId}`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json"
+			},
+			// http bodies are always strings
+			body: JSON.stringify({
+				"matchId": matchId,
+				"playerName": playerName,
+				"commandName": commandName,
+				"commandArg": commandArg
+			})
+		});
+		
 		return res;
 	}
 

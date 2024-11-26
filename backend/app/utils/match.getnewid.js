@@ -20,7 +20,7 @@ async function getNewId() {
 			// On the case the are no more available IDs, increase the scope
 			if (returnId === 0) returnId = 999999;
 		}
-		console.log("Exiting while, creating match with id " + returnId);
+		console.log("Creating match with id " + returnId);
 	})  
 	.catch(err => console.log(err.message || "Unknown error"));
 

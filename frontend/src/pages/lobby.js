@@ -34,8 +34,6 @@ const Lobby = (props) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then((response) => {
-				// matchWasModified will be checked in the end, if true, we will update the match with the response variable
-				let matchWasModified = false;
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
 				let playerObject;
@@ -46,7 +44,7 @@ const Lobby = (props) => {
 				const localPlayerIdArray = lsPlayerId.split('-');
 				const localPlayerId = parseInt(localPlayerIdArray[1]);
 				const localPlayerMatch = parseInt(localPlayerIdArray[0]);
-				if (((localPlayerMatch === response._id) && (response.playerList.findIndex(element => (element.name === lsPlayerName) && (element.id === localPlayerId)) != -1)) || ((localPlayerMatch != 0) && (response.playerList.findIndex(element => lsPlayerName === element.name) === -1))) {
+				if (((localPlayerMatch === response._id) && (response.playerList.some(element => (element.name === lsPlayerName) && (element.id === localPlayerId)))) || ((localPlayerMatch != 0) && (!response.playerList.some(element => lsPlayerName === element.name)))) {
 					localPlayerName = lsPlayerName; 
 					setPlayerName(localPlayerName);
 				}
@@ -58,18 +56,17 @@ const Lobby = (props) => {
 				// If there is no playerList present, make own player owner
 				if (response.playerList.length === 0) {
 					playerObject = {
-						id: 0,
 						name: localPlayerName,
 						isOwner: true,
 						wordsCompleted: 0,
 						score: 0,
 						hasPlayed: false,
 					}
-					// This is (presumably) so new players don't get thrown into an already running match
-					if (response.isOngoing) playerObject.hasPlayed = true;
-					// It shouldn't really matter to push to this current playerList our playerObject since that's handled in the backend, but cba to touch anything
-					response.playerList.push(playerObject);
-					matchWasModified = true;
+					// This is (presumably) so new players don't get thrown into an already running match. COmmenting out because if a match has no players it's impossible it's onGoing
+					// if (response.isOngoing) playerObject.hasPlayed = true;
+
+					console.log('Adding new player');
+					return dataService.addPlayer(matchId, playerObject);
 				} 
 				// If there is a playerList and the playerName doesn't appear, add him
 				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
@@ -80,24 +77,15 @@ const Lobby = (props) => {
 						hasPlayed: false,
 					}
 					if (response.isOngoing) playerObject.hasPlayed = true;
-					response.playerList.push(playerObject);
-					matchWasModified = true;
-				}
-				if (matchWasModified) {
-					dataService.update(playerObject, response._id)
-						.then((response2) => response2.json())
-						.then((response) => {
-							setLoadedMatch(response);
-							let localPlayerId = response.playerList.find((a) => a.name === localPlayerName).id;
-							localStorage.setItem('playerIdArray', `${response._id}-${localPlayerId}`);
-
-						});
+					return dataService.addPlayer(matchId, playerObject);
 				}
 			})
 			// On error just send the player to a new match
 			.catch((err) => {
-				console.log(err);
-				navigate(`/`);
+				if (err.status === 404) {
+					navigate(`/`);
+					console.log(err);
+				}
 			});
 		}
 
@@ -105,6 +93,13 @@ const Lobby = (props) => {
 			done = true;
 		}
 	},[]);
+
+	useEffect(() => {
+		console.log(loadedMatch);
+		if (loadedMatch.playerList.length != 0) localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName).id}`);
+	}, [loadedMatch]);
+
+
 
 	// useEffect to set up the setInterval every time the playerName changes
 	useEffect(() => {
@@ -127,14 +122,13 @@ const Lobby = (props) => {
 			.catch(e => console.log(e));
 			}
 	
-	// BROKEN! TODO: Update this function with the correct variable
 	const changeUserName = (newUserName) => {
 		if (loadedMatch.playerList.length > 0) {
 			let newPlayerObject = getPlayerObject(loadedMatch, playerName);
 			newPlayerObject.name = newUserName;
 			setPlayerName(newUserName);
 			localStorage.setItem('playerName', newUserName);
-			dataService.update(newPlayerObject, matchId);
+			dataService.updatePlayer(matchId, oldPlayerName, 1, newUserName);
 			oldPlayerName = newUserName;
 		}
 	}
@@ -164,13 +158,13 @@ const Lobby = (props) => {
 				playerList={loadedMatch.playerList}
 			/>
 			<div className="room">
-				<div className="playerlist">
+		{loadedMatch.playerList.length > 0 ? (<div className="playerlist">
 					<PlayerList
 						playerList={loadedMatch.playerList}
 						playerName={playerName}
 						setShowDialog={setShowDialog}
 					/>
-				</div>
+				</div>) : (<h1>Laden...</h1>)}
 				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
 					<div className="start-game">
 							<Button onClick={startMatch}>{buttonName}</Button>

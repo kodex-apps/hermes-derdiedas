@@ -7,8 +7,11 @@ module.exports = (app, router) => {
 	// Create a match providing the first player's name (aka owner)
 	router.post("/create", matchController.create);
 
-	// Update a match providing the updated match (it'll know which one to updated through its id)
-	router.put("/update/:matchId", matchController.update);
+	// Update a player's key depending on the commandName (check matchController explanation)
+	router.put("/updatePlayer/:matchId", matchController.updatePlayer);
+
+	// Add a new player to a match
+	router.put("/addPlayer/:matchId", matchController.addPlayer);
 
 	// Set a match isOngoing to true and assign a wordList
 	router.put("/startMatch/:matchId", matchController.startMatch);
