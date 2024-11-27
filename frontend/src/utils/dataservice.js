@@ -36,6 +36,18 @@ class DataService {
 		return res;
 	}
 
+	async checkMatch(matchId) {
+		const res = await fetch(config.fetchUrl + `/checkMatch/${matchId}`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json"
+			}
+		});
+
+		return res;
+	}
+
+
 	async updatePlayer(matchId, playerName, commandName, commandArg) {
 		const res = await fetch(config.fetchUrl + `/updatePlayer/${matchId}`, {
 			method: "PUT",

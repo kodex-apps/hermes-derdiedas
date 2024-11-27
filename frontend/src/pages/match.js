@@ -81,7 +81,6 @@ const Match = (props) => {
 				.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
 				.catch(e => console.log(e.message));
 		}
-
 	}
 
 	/* TODO: useEffect to control the width of font size of the current word (wordSpan)

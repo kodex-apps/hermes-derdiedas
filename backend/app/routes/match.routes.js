@@ -13,6 +13,8 @@ module.exports = (app, router) => {
 	// Add a new player to a match
 	router.put("/addPlayer/:matchId", matchController.addPlayer);
 
+	router.put("/checkMatch/:matchId", matchController.checkMatch);
+
 	// Set a match isOngoing to true and assign a wordList
 	router.put("/startMatch/:matchId", matchController.startMatch);
 

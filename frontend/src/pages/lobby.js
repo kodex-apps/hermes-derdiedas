@@ -135,14 +135,25 @@ const Lobby = (props) => {
 
 	// function to update the match data with the latest one
 	const updateMatch = (getPlayerObject) => {
+		let foundDuplicateId;
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
 				setLoadedMatch(match);
+				let matchPlayerIds = [];
+				match.playerList.forEach(e => {
+					if (matchPlayerIds.includes(e.id)) foundDuplicateId = true;
+					matchPlayerIds.push(e.id);
+				});
 				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
 					const playerObject = getPlayerObject(match, playerName) || undefined;
 					console.log(`Sending player ${playerObject.name} with wordsCompleted ${playerObject.wordsCompleted}, hasPlayed = ${playerObject.hasPlayed} and a score of ${playerObject.score}`);
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
+				}
+			})
+			.then(() => {
+				if (foundDuplicateId) {
+					dataService.checkMatch(matchId);
 				}
 			})
 			.catch(e => console.log(e));

@@ -164,4 +164,41 @@ exports.removePlayer = (req, res) => {
 
 }
 
+/* 
+ * Absolute fuck-up of a function because I can't be arsed to fix the architecture of the app.
+ * When a client finds several matching player IDs (yeah fuck concurrency) it will send a signal for the backend to check it and fix it
+ */
+exports.checkMatch = (req, res) => {
+	const matchId = req.params.matchId;
+	let foundDuplicateId;
+	let duplicateId;
+	Match.find({ _id: matchId })
+		.then((data) => {
+			let match = data[0];
+			let matchPlayerIds = [];
+
+			match.playerList.forEach(e => {
+				console.log(`Checking ${e.name} with ID ${e.id}`);
+				if (matchPlayerIds.includes(e.id)) {
+					foundDuplicateId = true;
+					duplicateId = e.id;
+				}
+				matchPlayerIds.push(e.id);
+			})
+			if (foundDuplicateId) {
+				console.log(`Found duplicate id ${duplicateId}`);
+				match.playerList[match.playerList.findIndex(e => e.id === duplicateId)].id = match.playerList.length;
+				return match.save();
+			}})
+		.then((data) => {
+			console.log(data);
+			console.log(`Succesfully checked match ${matchId}`);
+			res.status(200).send();})
+		.catch(error => {
+			console.log(`Error checking match ${matchId}. ${error.name}: ${error.message}`);
+			res.status(500).send(`Error checking match  ${matchId}. ${error.name}: ${error.message}`);});
+
+}
+
+
 	
