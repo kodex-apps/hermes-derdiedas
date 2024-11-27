@@ -24,6 +24,7 @@ const Lobby = (props) => {
 	const [showDialog, setShowDialog] = useState(false);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: []});
 	const [buttonName, setButtonName] = useState("SPIEL STARTEN");
+	const foundDuplicatePlayerIds = useRef(false);
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
 
@@ -114,7 +115,14 @@ const Lobby = (props) => {
 			finished = true;
 			clearInterval(intervalId);
 		}
+	// TODO: Why tf does this list playerName and loadedMatch as a dependency?
 	}, [playerName, loadedMatch]);
+
+	// Check for duplicates if the the variable is set to true
+	useEffect(() => 
+		{
+			if (foundDuplicatePlayerIds) dataService.checkMatch(matchId);
+		}, [foundDuplicatePlayerIds]); 
 
 	const startMatch = (e) => {
 		setButtonName("LADEN...");
@@ -133,16 +141,16 @@ const Lobby = (props) => {
 		}
 	}
 
+	// Check the match for duplicate player IDs every time it is updated
 	// function to update the match data with the latest one
 	const updateMatch = (getPlayerObject) => {
-		let foundDuplicateId;
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
 				setLoadedMatch(match);
 				let matchPlayerIds = [];
 				match.playerList.forEach(e => {
-					if (matchPlayerIds.includes(e.id)) foundDuplicateId = true;
+					if (matchPlayerIds.includes(e.id)) foundDuplicatePlayerIds.current = true;
 					matchPlayerIds.push(e.id);
 				});
 				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
@@ -151,11 +159,12 @@ const Lobby = (props) => {
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 				}
 			})
-			.then(() => {
-				if (foundDuplicateId) {
-					dataService.checkMatch(matchId);
-				}
-			})
+			/* Commenting out to try and put this somewhere else
+			 * .then(() => {
+			*	if (foundDuplicateId) {
+			*		dataService.checkMatch(matchId);
+			*	}
+			})*/
 			.catch(e => console.log(e));
 	}
 
