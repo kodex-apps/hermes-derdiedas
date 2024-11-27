@@ -38,7 +38,6 @@ const Lobby = (props) => {
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
 				let playerObject;
-				setLoadedMatch(response);
 				// If the localStorage match-id fits with a player in this lobby, assign our playerName to it
 				// else if the playerName exists but the match-id doesn't fit, assign a new one
 				// else if we don't have any playerName at all, assign a new one
@@ -80,6 +79,15 @@ const Lobby = (props) => {
 					if (response.isOngoing) playerObject.hasPlayed = true;
 					return dataService.addPlayer(matchId, playerObject);
 				}
+				console.log('First render non promise data');
+				console.log(response);
+				setLoadedMatch(response);
+			})
+			.then((data) => data.json())
+			.then((data) => {
+				console.log('First render promise data');
+				console.log(data);
+				setLoadedMatch(data);
 			})
 			// On error just send the player to a new match
 			.catch((err) => {
@@ -96,8 +104,11 @@ const Lobby = (props) => {
 	},[]);
 
 	useEffect(() => {
+		console.log("localStorage useEffect loadedMatch with length" + loadedMatch.playerList.length);
 		console.log(loadedMatch);
-		if (loadedMatch.playerList.length != 0) localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName).id}`);
+		if (loadedMatch.playerList.length > 0) {
+			localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName).id}`);
+		}
 	}, [loadedMatch]);
 
 
@@ -119,10 +130,10 @@ const Lobby = (props) => {
 	}, [playerName, loadedMatch]);
 
 	// Check for duplicates if the the variable is set to true
-	useEffect(() => 
-		{
-			if (foundDuplicatePlayerIds) dataService.checkMatch(matchId);
-		}, [foundDuplicatePlayerIds]); 
+	//useEffect(() => 
+	//	{
+	//		if (foundDuplicatePlayerIds) dataService.checkMatch(matchId);
+	//	}, [foundDuplicatePlayerIds]); 
 
 	const startMatch = (e) => {
 		setButtonName("LADEN...");
@@ -147,7 +158,7 @@ const Lobby = (props) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
-				setLoadedMatch(match);
+				//setLoadedMatch(match);
 				let matchPlayerIds = [];
 				match.playerList.forEach(e => {
 					if (matchPlayerIds.includes(e.id)) foundDuplicatePlayerIds.current = true;
@@ -158,6 +169,14 @@ const Lobby = (props) => {
 					console.log(`Sending player ${playerObject.name} with wordsCompleted ${playerObject.wordsCompleted}, hasPlayed = ${playerObject.hasPlayed} and a score of ${playerObject.score}`);
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 				}
+				if (foundDuplicatePlayerIds) dataService.checkMatch(matchId);
+				else setLoadedMatch(match);
+			})
+			.then((data) => data.json())
+			.then(data => {
+				console.log('Update match promise data');
+				console.log(data);
+				setLoadedMatch(data);
 			})
 			/* Commenting out to try and put this somewhere else
 			 * .then(() => {
@@ -165,6 +184,7 @@ const Lobby = (props) => {
 			*		dataService.checkMatch(matchId);
 			*	}
 			})*/
+		.then((data) => data.json())
 			.catch(e => console.log(e));
 	}
 

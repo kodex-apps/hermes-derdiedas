@@ -78,9 +78,9 @@ exports.updatePlayer = (req, res) => {
 			if ((player.wordsCompleted >= 10) && match.isOngoing && !match.playerList.some(e => e.wordsCompleted < 10)) match.isOngoing = false;
 			match.playerList[match.playerList.findIndex(e => e.id === player.id)] = player;
 			return match.save();})
-		.then(() => {
-			console.log(`Succesfully updated ${playerName}. Command ${commandNameString} with argument: ${commandArg}`);
-			res.status(200).send();})
+		.then((data) => {
+			console.log(`Match ${matchId} - Succesfully updated ${playerName}. Command ${commandNameString} with argument: ${commandArg}`);
+			res.send(data);})
 		.catch(error => {
 			console.log(`Error updating player to match ${matchId}. ${error.name}: ${error.message}`);
 			res.status(500).send(`Error updating player to match ${matchId}. ${error.name}: ${error.message}`);
@@ -106,7 +106,10 @@ exports.addPlayer = (req, res) => {
 			playerObject.id = match.playerList.length;
 			match.playerList.push(playerObject);
 			return match.save();})
-		.then(() => console.log(`Succesfully added player ${playerObject.name} (ID: ${playerObject.id}) to match ${matchId}`))
+		.then((data) => {
+			console.log(`Succesfully added player ${playerObject.name} (ID: ${playerObject.id}) to match ${matchId}`);
+			res.send(data);
+		})
 		.catch(error => {
 			console.log(`Error adding player to match ${matchId}. ${error.name}: ${error.message}`);
 			res.status(500).send(`Error adding player to match ${matchId}. ${error.name}: ${error.message}`);
@@ -191,14 +194,9 @@ exports.checkMatch = (req, res) => {
 				return match.save();
 			}})
 		.then((data) => {
-			console.log(data);
 			console.log(`Succesfully checked match ${matchId}`);
-			res.status(200).send();})
+			res.status(200).send(data);})
 		.catch(error => {
 			console.log(`Error checking match ${matchId}. ${error.name}: ${error.message}`);
 			res.status(500).send(`Error checking match  ${matchId}. ${error.name}: ${error.message}`);});
-
 }
-
-
-	
