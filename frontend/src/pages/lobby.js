@@ -33,8 +33,12 @@ const Lobby = (props) => {
 		let done = false;
 		if (!done) {
 		dataService.get(matchId)
-			.then((response) => response.json())
 			.then((response) => {
+				if (response.status === 404) navigate('/');
+				else return response.json();
+			})
+			.then((response) => {
+
 				// Local playerName variable so we have an updated value for subsequent ops
 				let localPlayerName = playerName;
 				let playerObject;
@@ -84,7 +88,6 @@ const Lobby = (props) => {
 				setLoadedMatch(response);
 			})
 			.then((data) => {
-				console.log('DEBUG: First render promise data RAW');
 				console.log(data);
 				return data.json();})
 			.then((data) => {
@@ -96,7 +99,6 @@ const Lobby = (props) => {
 			.catch((err) => {
 				if (err.status === 404) {
 					navigate(`/`);
-					console.log(err);
 				}
 			});
 		}
@@ -162,6 +164,8 @@ const Lobby = (props) => {
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
+				console.log(`DEBUG: updateMatch match:`);
+				console.log(match);
 				//setLoadedMatch(match);
 				let matchPlayerIds = [];
 				match.playerList.forEach(e => {

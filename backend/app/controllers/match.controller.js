@@ -9,7 +9,9 @@ exports.findOne = (req, res) => {
 
 	Match.find({ _id: matchId })
 		.then((data) => {
-			if (!data) res.status(404).send({ message: `Couldn't find match ${id}` });
+			if (!data || !data[0]) {
+				res.status(404).send({ message: `Couldn't find match ${matchId}` });
+			}
 			else res.send(data[0]);
 		})
 		.catch((err) => {
