@@ -62,7 +62,7 @@ exports.updatePlayer = (req, res) => {
 	const commandName = req.body.commandName;
 	// Description of the command for logging purposes
 	let commandNameString;
-	const commandArg = req.body.commandArg || 'No Arg.';
+	const commandArg = req.body.commandArg || '0';
 
 	Match.find({ _id: matchId })
 		.then(data => {
