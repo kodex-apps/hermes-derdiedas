@@ -55,7 +55,7 @@ const Match = (props) => {
 						let updatedWordList = response.wordList;
 						updatedWordList.find(e => e.isCurrentWord).isCurrentWord = false;
 						// Use the completedWords as index for the currentWord unless it's 10 (which means we done)
-						if (newPlayerObject.wordsCompleted && newPlayerObject.wordsCompleted < 10) {
+						if (newPlayerObject.wordsCompleted < 10) {
 							updatedWordList[newPlayerObject.wordsCompleted].isCurrentWord = true;
 							setWordList(updatedWordList);
 						}
