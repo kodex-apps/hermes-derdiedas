@@ -119,16 +119,7 @@ const Match = (props) => {
 				// Add one to the wordsCompleted number
 				playerObject.wordsCompleted++;
 				// We log the current playerObject for debugging purposes
-				console.log(`Player ${playerObject.name} with wordsCompleted ${playerObject.wordsCompleted}, score ${playerObject.score}, hasPlayed ${playerObject.hasPlayed}`);
 				dataService.updatePlayer(matchId, playerObject.name, 2, playerObject.wordsCompleted);
-				// Commenting out instead of deleting just in case.
-				//dataService.update(playerObject, matchId)
-				//	.then((response) => response.json())
-				//	.then((response) => {
-				//		// we log the response playerObject to see what we set in the server
-				//		const rplayerObject = response.playerList.find(e => e.id === Number(playerObject.id));
-				//		console.log(`Player ${rplayerObject.name} with wordsCompleted ${rplayerObject.wordsCompleted}, score ${rplayerObject.score}, hasPlayed ${rplayerObject.hasPlayed}`);
-				//	});
 				checkWordsCompleted();
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once

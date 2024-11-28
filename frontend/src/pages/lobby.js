@@ -69,7 +69,6 @@ const Lobby = (props) => {
 					// This is (presumably) so new players don't get thrown into an already running match. COmmenting out because if a match has no players it's impossible it's onGoing
 					// if (response.isOngoing) playerObject.hasPlayed = true;
 
-					console.log('Adding new player');
 					return dataService.addPlayer(matchId, playerObject);
 				} 
 				// If there is a playerList and the playerName doesn't appear, add him
@@ -83,16 +82,10 @@ const Lobby = (props) => {
 					if (response.isOngoing) playerObject.hasPlayed = true;
 					return dataService.addPlayer(matchId, playerObject);
 				}
-				console.log('First render non promise data');
-				console.log(response);
 				setLoadedMatch(response);
 			})
+			.then((data) => data.json())
 			.then((data) => {
-				console.log(data);
-				return data.json();})
-			.then((data) => {
-				console.log('First render promise data');
-				console.log(data);
 				setLoadedMatch(data);
 			})
 			// On error just send the player to a new match
@@ -109,8 +102,6 @@ const Lobby = (props) => {
 	},[]);
 
 	useEffect(() => {
-		console.log("localStorage useEffect loadedMatch with length" + loadedMatch.playerList.length);
-		console.log(loadedMatch);
 		if (loadedMatch.playerList.length > 0) {
 			localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName).id}`);
 		}
@@ -160,22 +151,17 @@ const Lobby = (props) => {
 	// Check the match for duplicate player IDs every time it is updated
 	// function to update the match data with the latest one
 	const updateMatch = (getPlayerObject) => {
-		console.log(`DEBUG: foundDuplicatePlayerIds: ${foundDuplicatePlayerIds.current}`);
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
-				console.log(`DEBUG: updateMatch match:`);
-				console.log(match);
 				//setLoadedMatch(match);
 				let matchPlayerIds = [];
 				match.playerList.forEach(e => {
-					console.log(`DEBUG: Checking for duplicate IDs ${e.name} with ${e.id} the array ${matchPlayerIds.toString()}`);
 					if (matchPlayerIds.includes(e.id)) foundDuplicatePlayerIds.current = true;
 					matchPlayerIds.push(e.id);
 				});
 				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
 					const playerObject = getPlayerObject(match, playerName) || undefined;
-					console.log(`Sending player ${playerObject.name} with wordsCompleted ${playerObject.wordsCompleted}, hasPlayed = ${playerObject.hasPlayed} and a score of ${playerObject.score}`);
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 				}
 				// Make the client check for duplicate player IDs because fuck him
@@ -183,8 +169,6 @@ const Lobby = (props) => {
 					dataService.checkMatch(matchId)
 						.then((data) => data.json())
 						.then((data) => {
-							console.log('Update match promise data');
-							console.log(data);
 							setLoadedMatch(data);
 						})
 						.then(() => foundDuplicatePlayerIds.current = false)

@@ -30,7 +30,6 @@ exports.create = (req, res) => {
 		playerList: [],
 		isOngoing: false
 	});
-	console.log(newMatch);
 	// Save the Match object in the DB
 	newMatch
 		.save(newMatch)
@@ -145,8 +144,6 @@ exports.startMatch = (req, res) => {
 }
 
 exports.removePlayer = (req, res) => {
-	console.log("Recieved delete req");
-	console.log(req.body);
 	const playerId = Number(req.body.playerId);
 	const matchId = req.body.matchId;
 	const playerName = req.body.playerName;
@@ -160,7 +157,7 @@ exports.removePlayer = (req, res) => {
 			if (playerToDelete.name === playerName) {
 				match.playerList.splice(match.playerList.findIndex((e) => e.id === playerId), 1);
 				match.replaceOne(match)
-					.then(() => res.status(200).send())
+					.then(() => res.status(200).send(`Removed player ${playerName}`))
 					.catch(e => res.status(500).send( { message: error.message }));
 			} else {
 				res.status(500).send('Player and id mismatch, probably kicking too fast.');
@@ -183,7 +180,6 @@ exports.checkMatch = (req, res) => {
 			let matchPlayerIds = [];
 
 			match.playerList.forEach(e => {
-				console.log(`Checking ${e.name} with ID ${e.id}`);
 				if (matchPlayerIds.includes(e.id)) {
 					foundDuplicateId = true;
 					duplicateId = e.id;
@@ -199,8 +195,6 @@ exports.checkMatch = (req, res) => {
 		})
 		.then((data) => {
 			console.log(`Succesfully checked match ${matchId}`);
-			console.log(`DEBUG: checkMatch promise data:`);
-			console.log(data);
 			res.send(data);})
 		.catch(error => {
 			console.log(`Error checking match ${matchId}. ${error.name}: ${error.message}`);

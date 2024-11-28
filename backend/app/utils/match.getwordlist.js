@@ -10,8 +10,6 @@ function getWordList() {
 		let fullWordList = data.split("\n").slice(0, -1).sort(() => 0.5 - Math.random());
 		// Getting 10 strings of words from the random fullWordList
 		rawWordList = fullWordList.slice(0, 10);
-		console.log("Raw World List: ");
-		console.log(rawWordList);
 	} catch (err) {
 		console.error(err); return;
 	}
@@ -23,9 +21,6 @@ function getWordList() {
 	});
 	// Set the first word to be the current word (match.js expects one to have it)
 	wordList[0].isCurrentWord = true;
-
-	console.log("Final Word List: ");
-	console.log(wordList);
 
 	return wordList;
 }
