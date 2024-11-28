@@ -90,8 +90,7 @@ const Lobby = (props) => {
 			})
 			// On error just send the player to a new match
 			.catch((err) => {
-				if (err.status === 404) {
-					navigate(`/`);
+				navigate(`/`);
 				}
 			});
 		}
