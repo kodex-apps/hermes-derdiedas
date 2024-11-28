@@ -179,10 +179,9 @@ const Lobby = (props) => {
 					dataService.checkMatch(matchId)
 						.then((data) => data.json())
 						.then((data) => {
-							const match = data[0];
 							console.log('Update match promise data');
-							console.log(match);
-							setLoadedMatch(match);
+							console.log(data);
+							setLoadedMatch(data);
 						})
 						.then(() => foundDuplicatePlayerIds.current = false)
 						.catch(e => console.log(e));
