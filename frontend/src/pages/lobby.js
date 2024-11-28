@@ -83,7 +83,10 @@ const Lobby = (props) => {
 				console.log(response);
 				setLoadedMatch(response);
 			})
-			.then((data) => data.json())
+			.then((data) => {
+				console.log('DEBUG: First render promise data RAW');
+				console.log(data);
+				return data.json();})
 			.then((data) => {
 				console.log('First render promise data');
 				console.log(data);
@@ -155,12 +158,14 @@ const Lobby = (props) => {
 	// Check the match for duplicate player IDs every time it is updated
 	// function to update the match data with the latest one
 	const updateMatch = (getPlayerObject) => {
+		console.log(`DEBUG: foundDuplicatePlayerIds: ${foundDuplicatePlayerIds.current}`);
 		dataService.get(matchId)
 			.then((response) => response.json())
 			.then(match => {
 				//setLoadedMatch(match);
 				let matchPlayerIds = [];
 				match.playerList.forEach(e => {
+					console.log(`DEBUG: Checking for duplicate IDs ${e.name} with ${e.id} the array ${matchPlayerIds.toString()}`);
 					if (matchPlayerIds.includes(e.id)) foundDuplicatePlayerIds.current = true;
 					matchPlayerIds.push(e.id);
 				});
@@ -169,14 +174,22 @@ const Lobby = (props) => {
 					console.log(`Sending player ${playerObject.name} with wordsCompleted ${playerObject.wordsCompleted}, hasPlayed = ${playerObject.hasPlayed} and a score of ${playerObject.score}`);
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 				}
-				if (foundDuplicatePlayerIds) dataService.checkMatch(matchId);
-				else setLoadedMatch(match);
-			})
-			.then((data) => data.json())
-			.then(data => {
-				console.log('Update match promise data');
-				console.log(data);
-				setLoadedMatch(data);
+				// Make the client check for duplicate player IDs because fuck him
+				if (foundDuplicatePlayerIds.current) {
+					dataService.checkMatch(matchId)
+						.then((data) => data.json())
+						.then((data) => {
+							const match = data[0];
+							console.log('Update match promise data');
+							console.log(match);
+							setLoadedMatch(match);
+						})
+						.then(() => foundDuplicatePlayerIds.current = false)
+						.catch(e => console.log(e));
+				}
+				else {
+					setLoadedMatch(match);
+				}
 			})
 			/* Commenting out to try and put this somewhere else
 			 * .then(() => {
@@ -184,7 +197,6 @@ const Lobby = (props) => {
 			*		dataService.checkMatch(matchId);
 			*	}
 			})*/
-		.then((data) => data.json())
 			.catch(e => console.log(e));
 	}
 

@@ -1,3 +1,4 @@
 node_modules/
 dockerfile
 queries.js
+*.swp

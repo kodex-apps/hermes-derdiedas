@@ -192,10 +192,14 @@ exports.checkMatch = (req, res) => {
 				console.log(`Found duplicate id ${duplicateId}`);
 				match.playerList[match.playerList.findIndex(e => e.id === duplicateId)].id = match.playerList.length;
 				return match.save();
-			}})
+			}
+			else return data;
+		})
 		.then((data) => {
 			console.log(`Succesfully checked match ${matchId}`);
-			res.status(200).send(data);})
+			console.log(`DEBUG: checkMatch promise data:`);
+			console.log(data);
+			res.send(data);})
 		.catch(error => {
 			console.log(`Error checking match ${matchId}. ${error.name}: ${error.message}`);
 			res.status(500).send(`Error checking match  ${matchId}. ${error.name}: ${error.message}`);});
