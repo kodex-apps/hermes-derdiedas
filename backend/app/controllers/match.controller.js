@@ -133,8 +133,7 @@ exports.startMatch = (req, res) => {
 				e.wordsCompleted = 0;
 				e.hasPlayed = false;
 			});
-			console.log('Starting following match: ');
-			console.log(retrievedMatch);
+			console.log(`Starting match ${matchId}`);
 			// Set the updateAt value to current date
 			retrievedMatch.updatedAt = new Date();
 			retrievedMatch.replaceOne(retrievedMatch)

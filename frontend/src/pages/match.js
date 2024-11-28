@@ -51,7 +51,6 @@ const Match = (props) => {
 					} else if ((!playerObject || !hasMatchingWordsCompleted) && (lsPlayerIdArray[0] === matchId)) {
 						// Created a temp variable to use that isn't really necessary but cba to change it
 						const newPlayerObject = response.playerList.find(e => e.id === Number(lsPlayerIdArray[1])) 
-						console.log(newPlayerObject);
 						setPlayerObject(newPlayerObject);
 						let updatedWordList = response.wordList;
 						updatedWordList.find(e => e.isCurrentWord).isCurrentWord = false;
