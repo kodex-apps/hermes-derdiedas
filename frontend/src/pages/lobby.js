@@ -17,7 +17,7 @@ const Lobby = (props) => {
 	// localStorage variable to store the playerName
 	const lsPlayerName = localStorage.getItem('playerName');
 	// We get an array containing the player's last Match and his Id in it. Later on, if they match, the player will be assigned that match and id should they reload
-	const lsPlayerId = localStorage.getItem('playerIdArray') || '0-0';
+	const lsPlayerId = localStorage.getItem('playerIdArray') || '0-1000000';
 	// playerName is props.playerName so it can be attached when loading the lobby again after a match, if the playerName is unassigned that's when getUsername is called and a name is assigned
 	// if state is null, we get lsPlayerName which is the localStorage
 	const [playerName, setPlayerName] = useState(state ? state.playerObject.name : null);
@@ -90,7 +90,8 @@ const Lobby = (props) => {
 			})
 			// On error just send the player to a new match
 			.catch((err) => {
-				navigate(`/`);
+				if (err.status === 404) {
+					navigate(`/`);
 				}
 			});
 		}

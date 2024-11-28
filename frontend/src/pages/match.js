@@ -13,7 +13,7 @@ const validArticles = ["der", "die", "das"];
 
 const Match = (props) => {
 	// Get the player's match and id array in case the playerObject gets lost on the way (format is matchId-playerId)
-	const lsPlayerIdArray = (localStorage.getItem('playerIdArray') || '0-0').split('-');
+	const lsPlayerIdArray = (localStorage.getItem('playerIdArray') || '0-1000000').split('-');
 	// Get the matchId from the URL
 	const {matchId} = useParams();
 	// Load a placeholder wordList for now (wordList is always an array)
@@ -51,6 +51,7 @@ const Match = (props) => {
 					} else if ((!playerObject || !hasMatchingWordsCompleted) && (lsPlayerIdArray[0] === matchId)) {
 						// Created a temp variable to use that isn't really necessary but cba to change it
 						const newPlayerObject = response.playerList.find(e => e.id === Number(lsPlayerIdArray[1])) 
+						console.log(newPlayerObject);
 						setPlayerObject(newPlayerObject);
 						let updatedWordList = response.wordList;
 						updatedWordList.find(e => e.isCurrentWord).isCurrentWord = false;
@@ -105,8 +106,14 @@ const Match = (props) => {
 			if (currentWord.article.includes(input)) {
 				// If the playerobject is falsey (for example it doesn't exist because they refresh the match page), send them to the lobby
 				if (!playerObject) navigate(`/${matchId}`);
+				// Add one to the wordsCompleted number
+				playerObject.wordsCompleted++;
 				// Increase the score by 1 if the word wasn't input incorrectly before
-				if (currentWord.isCorrectWord === null) playerObject.score++;
+				if (currentWord.isCorrectWord === null) {
+					playerObject.score++;
+					dataService.updatePlayer(matchId, playerObject.name, 4, playerObject.score)
+						.then(() => dataService.updatePlayer(matchId, playerObject.name, 2, playerObject.wordsCompleted));
+				}
 				// Set the current word into the fadeout element before it changes value
 				animatedText.current.innerHTML = currentWord.article.replace(currentWord.article.charAt(0), currentWord.article.charAt(0).toUpperCase()) + " " + currentWord.word;
 				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else it wouldn't re-render thinking it's the same array
@@ -116,10 +123,6 @@ const Match = (props) => {
 				articleInputRef.current.value = "";
 				// Apply the fadeout animation
 				animatedText.current.classList.add("fadeout-class");
-				// Add one to the wordsCompleted number
-				playerObject.wordsCompleted++;
-				// We log the current playerObject for debugging purposes
-				dataService.updatePlayer(matchId, playerObject.name, 2, playerObject.wordsCompleted);
 				checkWordsCompleted();
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
