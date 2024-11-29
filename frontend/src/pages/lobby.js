@@ -24,6 +24,7 @@ const Lobby = (props) => {
 	const [showDialog, setShowDialog] = useState(false);
 	const [loadedMatch, setLoadedMatch] = useState({playerList: []});
 	const [buttonName, setButtonName] = useState("SPIEL STARTEN");
+	const [playerIsOwner, setPlayerIsOwner] = useState(false);
 	const foundDuplicatePlayerIds = useRef(false);
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
@@ -87,7 +88,7 @@ const Lobby = (props) => {
 			.then((data) => data.json())
 			.then((data) => {
 				setLoadedMatch(data);
-			})
+							})
 			// On error just send the player to a new match
 			.catch((err) => {
 				if (err.status === 404) {
@@ -105,6 +106,15 @@ const Lobby = (props) => {
 		if (loadedMatch.playerList.length > 0) {
 			localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName).id}`);
 		}
+		if (loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner)) {
+					console.log('player is owner');
+					setPlayerIsOwner(true);
+				}
+				else {
+					console.log('player is not owner');
+					setPlayerIsOwner(false);
+				}
+
 	}, [loadedMatch]);
 
 
@@ -204,11 +214,11 @@ const Lobby = (props) => {
 						setShowDialog={setShowDialog}
 					/>
 				</div>) : (<h1>Laden...</h1>)}
-				{loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner) && (
-					<div className="start-game">
-							<Button onClick={startMatch}>{buttonName}</Button>
-					</div>
-				)}
+				 
+				<div className="start-game">
+						<Button onClick={startMatch} disabled={!playerIsOwner}>{buttonName}</Button>
+				</div>
+				
 			</div>
 		</>
 	);
