@@ -1,6 +1,7 @@
 const config = require("./config");
 
 class DataService {
+	// Returns a new Match object
 	async post() {
 		const res = await fetch(config.fetchUrl + `/create`, {
 			method: "POST",
@@ -12,6 +13,7 @@ class DataService {
 		return res;
 	}
 
+	// Gets Match object
 	async get(id) {
 		const res = await fetch(config.fetchUrl + `/${id}`, {
 			// GET is the default so we omit declaring it
@@ -36,19 +38,20 @@ class DataService {
 		return res;
 	}
 
-	async checkMatch(matchId) {
-		const res = await fetch(config.fetchUrl + `/checkMatch/${matchId}`, {
-			method: "PUT",
-			headers: {
-				"content-type": "application/json"
-			}
-		});
+	// COMMETING OUT BECAUSE IT'S NO LONGER NEEDED. KEEPING JUST IN CASE.
+	//async checkMatch(matchId) {
+	//	const res = await fetch(config.fetchUrl + `/checkMatch/${matchId}`, {
+	//		method: "PUT",
+	//		headers: {
+	//			"content-type": "application/json"
+	//		}
+	//	});
+	//
+	//	return res;
+	//}
 
-		return res;
-	}
 
-
-	async updatePlayer(matchId, playerName, commandName, commandArg) {
+	async updatePlayer(matchId, playerId, commandName, commandArg) {
 		const res = await fetch(config.fetchUrl + `/updatePlayer/${matchId}`, {
 			method: "PUT",
 			headers: {
@@ -57,7 +60,7 @@ class DataService {
 			// http bodies are always strings
 			body: JSON.stringify({
 				"matchId": matchId,
-				"playerName": playerName,
+				"playerId": playerId,
 				"commandName": commandName,
 				"commandArg": commandArg
 			})
@@ -77,7 +80,7 @@ class DataService {
 		return res;
 	}
 	
-	async removePlayer(matchId, playerId, playerName) {
+	async removePlayer(matchId, playerId) {
 		const res = await fetch(config.fetchUrl + `/removePlayer`, {
 			method: "PUT",
 			headers: {
@@ -85,8 +88,7 @@ class DataService {
 			},
 			body: JSON.stringify({
 				"matchId" : matchId,
-				"playerId" : playerId,
-				"playerName" : playerName
+				"playerId" : playerId
 			})
 		});
 

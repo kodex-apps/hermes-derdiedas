@@ -18,7 +18,7 @@ const PlayerListElement = (props) => {
 	};
 
 	const handleKick = (e) => {
-		dataService.removePlayer(matchId, e.target.id, props.playerElement.name)
+		dataService.removePlayer(matchId, e.target.getAttribute('data-playerid'))
 			.then(data => console.log(data));
 	}
 
@@ -49,7 +49,7 @@ const PlayerListElement = (props) => {
 					<img
 						alt="Delete Button"
 						className="PLE__img--delete"
-						id={props.playerElement.id}
+						data-playerid={props.playerElement._id}
 						src={deleteIcon}
 						onClick={handleKick}
 					/>

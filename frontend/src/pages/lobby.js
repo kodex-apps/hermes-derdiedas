@@ -49,7 +49,7 @@ const Lobby = (props) => {
 				const localPlayerIdArray = lsPlayerId.split('-');
 				const localPlayerId = parseInt(localPlayerIdArray[1]);
 				const localPlayerMatch = parseInt(localPlayerIdArray[0]);
-				if (((localPlayerMatch === response._id) && (response.playerList.some(element => (element.name === lsPlayerName) && (element.id === localPlayerId)))) || ((localPlayerMatch != 0) && (!response.playerList.some(element => lsPlayerName === element.name)))) {
+				if (((localPlayerMatch === response._id) && (response.playerList.some(element => (element.name === lsPlayerName) && (element._id === localPlayerId)))) || ((localPlayerMatch != 0) && (!response.playerList.some(element => lsPlayerName === element.name)))) {
 					localPlayerName = lsPlayerName; 
 					setPlayerName(localPlayerName);
 				}
@@ -104,7 +104,7 @@ const Lobby = (props) => {
 
 	useEffect(() => {
 		if (loadedMatch.playerList.length > 0) {
-			localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName).id}`);
+			localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName)._id}`);
 		}
 		if (loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner)) {
 					setPlayerIsOwner(true);
@@ -151,7 +151,7 @@ const Lobby = (props) => {
 			newPlayerObject.name = newUserName;
 			setPlayerName(newUserName);
 			localStorage.setItem('playerName', newUserName);
-			dataService.updatePlayer(matchId, oldPlayerName, 1, newUserName);
+			dataService.updatePlayer(matchId, newPlayerObject._id, 1, newUserName);
 			oldPlayerName = newUserName;
 		}
 	}
@@ -165,26 +165,28 @@ const Lobby = (props) => {
 				//setLoadedMatch(match);
 				let matchPlayerIds = [];
 				match.playerList.forEach(e => {
-					if (matchPlayerIds.includes(e.id)) foundDuplicatePlayerIds.current = true;
-					matchPlayerIds.push(e.id);
+					if (matchPlayerIds.includes(e._id)) foundDuplicatePlayerIds.current = true;
+					matchPlayerIds.push(e._id);
 				});
 				if (match.isOngoing && !getPlayerObject(match, playerName).hasPlayed) {
 					const playerObject = getPlayerObject(match, playerName) || undefined;
 					navigate(`/spiel/${match._id}`, { state: { playerObject: getPlayerObject(match, playerName) } });
 				}
+				// COMMENTING THIS OUT AS IT'S NO LONGER NEEDED. LEAVING IN JUST IN CASE
 				// Make the client check for duplicate player IDs because fuck him
-				if (foundDuplicatePlayerIds.current) {
-					dataService.checkMatch(matchId)
-						.then((data) => data.json())
-						.then((data) => {
-							setLoadedMatch(data);
-						})
-						.then(() => foundDuplicatePlayerIds.current = false)
-						.catch(e => console.log(e));
-				}
-				else {
-					setLoadedMatch(match);
-				}
+				//if (foundDuplicatePlayerIds.current) {
+				//	dataService.checkMatch(matchId)
+				//		.then((data) => data.json())
+				//		.then((data) => {
+				//			setLoadedMatch(data);
+				//		})
+				//		.then(() => foundDuplicatePlayerIds.current = false)
+				//		.catch(e => console.log(e));
+				//}
+				//lse {
+				//	setLoadedMatch(match);
+				//}
+				setLoadedMatch(match);
 			})
 			/* Commenting out to try and put this somewhere else
 			 * .then(() => {

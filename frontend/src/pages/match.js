@@ -51,7 +51,7 @@ const Match = (props) => {
 						navigate(`/${matchId}`);
 					} else if ((!playerObject || !hasMatchingWordsCompleted) && (lsPlayerIdArray[0] === matchId)) {
 						// Created a temp variable to use that isn't really necessary but cba to change it
-						const newPlayerObject = response.playerList.find(e => e.id === Number(lsPlayerIdArray[1])) 
+						const newPlayerObject = response.playerList.find(e => e._id === lsPlayerIdArray[1]) 
 						setPlayerObject(newPlayerObject);
 						let updatedWordList = response.wordList;
 						updatedWordList.find(e => e.isCurrentWord).isCurrentWord = false;
@@ -73,7 +73,6 @@ const Match = (props) => {
 
 	// Function to check the wordsCompleted and send them to lobby if they're done
 	const checkWordsCompleted = () => {
-		console.log(`DEBUG: Executing checkWordsCompleted`);
 		// If user has completed 10 words (or more, just in case), end the match and send them to lobby
 		if (playerObject && playerObject.wordsCompleted >= 10) {
 			playerObject.hasPlayed = true;
@@ -82,8 +81,8 @@ const Match = (props) => {
 			//dataService.update(playerObject, matchId)
 			//	.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
 			//	.catch(e => console.log(e.message));
-			dataService.updatePlayer(matchId, playerObject.name, 4, playerObject.score)
-				.then(() => dataService.updatePlayer(matchId, playerObject.name, 3, undefined))
+			dataService.updatePlayer(matchId, playerObject._id, 4, playerObject.score)
+				.then(() => dataService.updatePlayer(matchId, playerObject._id, 3, undefined))
 				.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
 				.catch(e => console.log(e.message));
 		}
@@ -100,34 +99,24 @@ const Match = (props) => {
 	 * 2. Set the wordList to be the next one (there's a util for that)
 	 */
 	const handleChange = (event) => {
-		console.log(`DEBUG: Executing handleChange`);
 		const input = event.target.value.slice(-3).toLowerCase();
 		wordSpan.current.classList.remove("shake-class");
 		// Check if user wrote a valid article
 		if (validArticles.includes(input)) {
-			console.log('DEBUG: wordList: ');
-			console.log(wordList);
 			currentWordPlain = wordList.find((e) => e.isCurrentWord);
 			// We assign the currentWord to its variable to check
 			currentWord.current = wordList.find((e) => e.isCurrentWord);
-			console.log(`DEBUG: currentWord: `);
-			console.log(currentWord.current);
-			console.log(`DEBUG: currentWordPlain: `);
-			console.log(currentWordPlain);
 			// Get the last three characters of user input (der, die, das are always three) and check if they are the article belonging to the current word
 			if (currentWord.current.article.includes(input)) {
-				console.log('DEBUG: wordList: ');
-				console.log(wordList);
 				// Add one to the wordsCompleted number
 				playerObject.wordsCompleted++;
-				console.log(`DEBUG: currentWord.current.isCorrectWord ${currentWord.current.isCorrectWord}`);
 				// Increase the score by 1 if the word wasn't input incorrectly before
 				if (currentWord.current.isCorrectWord === null) {
 					playerObject.score++;
 				}
-				console.log(`DEBUG: About to updatePlayer with wordsCompleted ${playerObject.wordsCompleted}`);
-				dataService.updatePlayer(matchId, playerObject.name, 4, playerObject.score)
-					.then(() => dataService.updatePlayer(matchId, playerObject.name, 2, playerObject.wordsCompleted))
+				console.log(`DEBUG: Updating updatePlayer(${matchId}, ${playerObject._id}, 4, ${playerObject.score}`);
+				dataService.updatePlayer(matchId, playerObject._id, 4, playerObject.score)
+					.then(() => dataService.updatePlayer(matchId, playerObject._id, 2, playerObject.wordsCompleted))
 					.then(() => wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord = true)
 					.then(() => setWordList([...setNextWord(wordList)]))
 					.then(() => checkWordsCompleted());
@@ -135,8 +124,6 @@ const Match = (props) => {
 				animatedText.current.innerHTML = currentWord.current.article.replace(currentWord.current.article.charAt(0), currentWord.current.article.charAt(0).toUpperCase()) + " " + currentWord.current.word;
 				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else it wouldn't re-render thinking it's the same array
 				currentWord.current = wordList.find((e) => e.isCurrentWord);
-				console.log(`DEBUG: currentWord: `);
-				console.log(currentWord.current);
 				// Empty the text input element
 				articleInputRef.current.value = "";
 				// Apply the fadeout animation
