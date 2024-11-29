@@ -1,5 +1,6 @@
 const db = require("../models/index");
 const Match = db.match;
+const mongoose = require('mongoose');
 const getNewId = require('../utils/match.getnewid');
 const getWordList = require('../utils/match.getwordlist');
 
@@ -59,7 +60,7 @@ exports.create = (req, res) => {
  */
 exports.updatePlayer = (req, res) => {
 	const matchId = req.params.matchId;
-	const playerName = req.body.playerName;
+	const playerId = req.body.playerId;
 	const commandName = req.body.commandName;
 	// Description of the command for logging purposes
 	let commandNameString;
@@ -68,7 +69,7 @@ exports.updatePlayer = (req, res) => {
 	Match.find({ _id: matchId })
 		.then(data => {
 			let match = data[0];
-			const player = match.playerList.find(e => e.name === playerName);
+			const player = match.playerList.find(e => e._id.toString() === playerId);
 			switch (commandName) {
 				case 1: player.name = commandArg; commandNameString = 'setName'; break;
 				case 2: player.wordsCompleted = commandArg; commandNameString = 'setWordsCompleted'; break;
@@ -77,10 +78,10 @@ exports.updatePlayer = (req, res) => {
 			}
 			// If the player got to 10 wordsCompleted and everyone else did as well, finish the match.
 			if ((player.wordsCompleted >= 10) && match.isOngoing && !match.playerList.some(e => e.wordsCompleted < 10)) match.isOngoing = false;
-			match.playerList[match.playerList.findIndex(e => e.id === player.id)] = player;
+			match.playerList[match.playerList.findIndex(e => e._id === player._id)] = player;
 			return match.save();})
 		.then((data) => {
-			console.log(`Match ${matchId} - Succesfully updated ${playerName}. Command ${commandNameString} with argument: ${commandArg}`);
+			console.log(`Match ${matchId} - Succesfully updated player with ID: ${playerId}. Command ${commandNameString} with argument: ${commandArg}`);
 			res.send(data);})
 		.catch(error => {
 			console.log(`Error updating player to match ${matchId}. ${error.name}: ${error.message}`);
@@ -103,17 +104,16 @@ exports.addPlayer = (req, res) => {
 			let match = data[0];
 
 			// Check if a player with that name exists already
-			if (match.playerList.some(e => e.name === playerObject.name)) throw new Error('Player name already taken');
-			playerObject.id = match.playerList.length;
+			if (match.playerList.some(e => e.name === playerObject.name)) throw new Error('Player name already taken.');
 			match.playerList.push(playerObject);
 			return match.save();})
 		.then((data) => {
-			console.log(`Succesfully added player ${playerObject.name} (ID: ${playerObject.id}) to match ${matchId}`);
+			console.log(`Succesfully added player ${playerObject.name} (ID: ${playerObject._id}) to match ${matchId}.`);
 			res.send(data);
 		})
 		.catch(error => {
-			console.log(`Error adding player to match ${matchId}. ${error.name}: ${error.message}`);
-			res.status(500).send(`Error adding player to match ${matchId}. ${error.name}: ${error.message}`);
+			console.log(`Error adding player to match ${matchId}. ${error.name}: ${error.message}.`);
+			res.status(500).send(`Error adding player to match ${matchId}. ${error.name}: ${error.message}.`);
 		});
 }
 
@@ -133,42 +133,37 @@ exports.startMatch = (req, res) => {
 				e.wordsCompleted = 0;
 				e.hasPlayed = false;
 			});
-			console.log(`Starting match ${matchId}`);
+			console.log(`Starting match ${matchId}.`);
 			// Set the updateAt value to current date
 			retrievedMatch.updatedAt = new Date();
 			retrievedMatch.replaceOne(retrievedMatch)
-				.then(() => res.status(200).send())
+				.then(() => res.status(200).send('Match created succesfully.'))
 				.catch((error) => res.status(500).send({ message: error.message }));
 		});
 }
 
 exports.removePlayer = (req, res) => {
-	const playerId = Number(req.body.playerId);
 	const matchId = req.body.matchId;
-	const playerName = req.body.playerName;
-	console.log(`Deleting ${playerName} (ID ${playerId}) from match ${matchId}`);
+	const playerId = req.body.playerId;
+	console.log(`Deleting ID ${playerId} from match ${matchId}`);
 
 	Match.find({ _id: matchId }).
 		then((data) => {
 			const match = data[0];
-			const playerToDelete = match.playerList.find(e => e.id === playerId);
-			// If the playerToDelete fits with the playerName the user wants to delete, remove it from the playerList.
-			if (playerToDelete.name === playerName) {
-				match.playerList.splice(match.playerList.findIndex((e) => e.id === playerId), 1);
-				match.replaceOne(match)
-					.then(() => res.status(200).send(`Removed player ${playerName}`))
-					.catch(e => res.status(500).send( { message: error.message }));
-			} else {
-				res.status(500).send('Player and id mismatch, probably kicking too fast.');
-			}
+			// If the playerToDelete fits with the playerId the user wants to delete, remove it from the playerList.
+			match.playerList.splice(match.playerList.findIndex((e) => e._id === playerId), 1);
+			match.save()
+				.then(() => res.status(200).send(`Removed player with ID: ${playerId}.`))
+				.catch(e => res.status(500).send( { message: error.message }));
 		});
 
 }
 
 /* 
+ * COMMENTING THIS OUT BECAUSE IT SHOULD NO LONGER BE NEEDED. KEEPING JUST IN CASE
  * Absolute fuck-up of a function because I can't be arsed to fix the architecture of the app.
  * When a client finds several matching player IDs (yeah fuck concurrency) it will send a signal for the backend to check it and fix it
- */
+ *
 exports.checkMatch = (req, res) => {
 	const matchId = req.params.matchId;
 	let foundDuplicateId;
@@ -198,4 +193,4 @@ exports.checkMatch = (req, res) => {
 		.catch(error => {
 			console.log(`Error checking match ${matchId}. ${error.name}: ${error.message}`);
 			res.status(500).send(`Error checking match  ${matchId}. ${error.name}: ${error.message}`);});
-}
+}*/
