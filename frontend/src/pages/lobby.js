@@ -107,11 +107,9 @@ const Lobby = (props) => {
 			localStorage.setItem('playerIdArray', `${matchId}-${loadedMatch.playerList.find(e => e.name === playerName).id}`);
 		}
 		if (loadedMatch.playerList.some((e) => e.name === playerName && e.isOwner)) {
-					console.log('player is owner');
 					setPlayerIsOwner(true);
 				}
 				else {
-					console.log('player is not owner');
 					setPlayerIsOwner(false);
 				}
 
