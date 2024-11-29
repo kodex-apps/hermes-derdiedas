@@ -23,7 +23,8 @@ const Match = (props) => {
 	// Assign the state variable to the playerObject variable
 	const [playerObject, setPlayerObject] = useState(state ? state.playerObject : null);
 	// Set the currentWord variable, the backend already sets isCurrentWord for the first word in the list
-	let currentWord = wordList.find((e) => e.isCurrentWord);
+	let currentWordPlain;
+	const currentWord = useRef();
 	// Initialise the variable for the text input
 	const articleInputRef = useRef(null);
 	// Initialise the variable for the floating text when you get a correct word
@@ -63,7 +64,8 @@ const Match = (props) => {
 							setWordList(updatedWordList);
 						}
 						checkWordsCompleted();
-					}
+					 // If the playerobject is falsey (for example it doesn't exist because they refresh the match page), send them to the lobby
+					} else if (!playerObject) navigate(`/${matchId}`);
 				});
 		}
 		return () => { done = true; }
@@ -71,6 +73,7 @@ const Match = (props) => {
 
 	// Function to check the wordsCompleted and send them to lobby if they're done
 	const checkWordsCompleted = () => {
+		console.log(`DEBUG: Executing checkWordsCompleted`);
 		// If user has completed 10 words (or more, just in case), end the match and send them to lobby
 		if (playerObject && playerObject.wordsCompleted >= 10) {
 			playerObject.hasPlayed = true;
@@ -97,35 +100,51 @@ const Match = (props) => {
 	 * 2. Set the wordList to be the next one (there's a util for that)
 	 */
 	const handleChange = (event) => {
+		console.log(`DEBUG: Executing handleChange`);
 		const input = event.target.value.slice(-3).toLowerCase();
 		wordSpan.current.classList.remove("shake-class");
 		// Check if user wrote a valid article
 		if (validArticles.includes(input)) {
+			console.log('DEBUG: wordList: ');
+			console.log(wordList);
+			currentWordPlain = wordList.find((e) => e.isCurrentWord);
+			// We assign the currentWord to its variable to check
+			currentWord.current = wordList.find((e) => e.isCurrentWord);
+			console.log(`DEBUG: currentWord: `);
+			console.log(currentWord.current);
+			console.log(`DEBUG: currentWordPlain: `);
+			console.log(currentWordPlain);
 			// Get the last three characters of user input (der, die, das are always three) and check if they are the article belonging to the current word
-			if (currentWord.article.includes(input)) {
-				// If the playerobject is falsey (for example it doesn't exist because they refresh the match page), send them to the lobby
-				if (!playerObject) navigate(`/${matchId}`);
+			if (currentWord.current.article.includes(input)) {
+				console.log('DEBUG: wordList: ');
+				console.log(wordList);
 				// Add one to the wordsCompleted number
 				playerObject.wordsCompleted++;
+				console.log(`DEBUG: currentWord.current.isCorrectWord ${currentWord.current.isCorrectWord}`);
 				// Increase the score by 1 if the word wasn't input incorrectly before
-				if (currentWord.isCorrectWord === null) {
+				if (currentWord.current.isCorrectWord === null) {
 					playerObject.score++;
-					dataService.updatePlayer(matchId, playerObject.name, 4, playerObject.score)
-						.then(() => dataService.updatePlayer(matchId, playerObject.name, 2, playerObject.wordsCompleted));
 				}
+				console.log(`DEBUG: About to updatePlayer with wordsCompleted ${playerObject.wordsCompleted}`);
+				dataService.updatePlayer(matchId, playerObject.name, 4, playerObject.score)
+					.then(() => dataService.updatePlayer(matchId, playerObject.name, 2, playerObject.wordsCompleted))
+					.then(() => wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord = true)
+					.then(() => setWordList([...setNextWord(wordList)]))
+					.then(() => checkWordsCompleted());
 				// Set the current word into the fadeout element before it changes value
-				animatedText.current.innerHTML = currentWord.article.replace(currentWord.article.charAt(0), currentWord.article.charAt(0).toUpperCase()) + " " + currentWord.word;
+				animatedText.current.innerHTML = currentWord.current.article.replace(currentWord.current.article.charAt(0), currentWord.current.article.charAt(0).toUpperCase()) + " " + currentWord.current.word;
 				// Update the state variable wordList with the setNextWord util function. Notice we pass a new array, through destructuring, as a function or else it wouldn't re-render thinking it's the same array
-				setWordList([...setNextWord(wordList)]);
-				currentWord = wordList.find((e) => e.isCurrentWord);
+				currentWord.current = wordList.find((e) => e.isCurrentWord);
+				console.log(`DEBUG: currentWord: `);
+				console.log(currentWord.current);
 				// Empty the text input element
 				articleInputRef.current.value = "";
 				// Apply the fadeout animation
 				animatedText.current.classList.add("fadeout-class");
-				checkWordsCompleted();
 			} else {
 				// Set the isCorrectWord = false if the user got it wrong once
 				wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord = false;
+				checkWordsCompleted();
 				// Empty the text input element
 				articleInputRef.current.value = "";
 				wordSpan.current.classList.add("shake-class");

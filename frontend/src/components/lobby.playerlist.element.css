@@ -22,3 +22,7 @@
 .PLE__score {
     text-align: center;
 }
+
+.PLE__progress > progress {
+	width: 50px;
+}
