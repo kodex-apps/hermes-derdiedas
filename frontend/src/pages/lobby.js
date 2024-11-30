@@ -47,7 +47,7 @@ const Lobby = (props) => {
 				// else if the playerName exists but the match-id doesn't fit, assign a new one
 				// else if we don't have any playerName at all, assign a new one
 				const localPlayerIdArray = lsPlayerId.split('-');
-				const localPlayerId = parseInt(localPlayerIdArray[1]);
+				const localPlayerId = localPlayerIdArray[1];
 				const localPlayerMatch = parseInt(localPlayerIdArray[0]);
 				if (((localPlayerMatch === response._id) && (response.playerList.some(element => (element.name === lsPlayerName) && (element._id === localPlayerId)))) || ((localPlayerMatch != 0) && (!response.playerList.some(element => lsPlayerName === element.name)))) {
 					localPlayerName = lsPlayerName; 
@@ -73,7 +73,7 @@ const Lobby = (props) => {
 					return dataService.addPlayer(matchId, playerObject);
 				} 
 				// If there is a playerList and the playerName doesn't appear, add him
-				else if ((response.playerList.findIndex(e => e.name === localPlayerName)) === -1) {
+				else if (!response.playerList.find(e => e._id === localPlayerId)) {
 					playerObject = {
 						name: localPlayerName,
 						wordsCompleted: 0,

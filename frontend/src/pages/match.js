@@ -114,7 +114,6 @@ const Match = (props) => {
 				if (currentWord.current.isCorrectWord === null) {
 					playerObject.score++;
 				}
-				console.log(`DEBUG: Updating updatePlayer(${matchId}, ${playerObject._id}, 4, ${playerObject.score}`);
 				dataService.updatePlayer(matchId, playerObject._id, 4, playerObject.score)
 					.then(() => dataService.updatePlayer(matchId, playerObject._id, 2, playerObject.wordsCompleted))
 					.then(() => wordList[wordList.findIndex((e) => e.isCurrentWord)].isCorrectWord = true)
