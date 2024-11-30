@@ -29,7 +29,8 @@ exports.create = (req, res) => {
 	const newMatch = new Match({
 		_id: newId,
 		playerList: [],
-		isOngoing: false
+		isOngoing: false,
+		level: 'A1'
 	});
 	// Save the Match object in the DB
 	newMatch
@@ -121,11 +122,12 @@ exports.startMatch = (req, res) => {
 	// Receive a matchId and set that match isOngoing variable to true and assign words to it
 	const matchId = req.params.matchId;
 	// Temp wordList for testing purposes.
-	const loadedWords = getWordList();
+	const loadedWords = getWordList(req.params.level);
 
 	Match.find({ _id: matchId })
 		.then((match) => {
 			let retrievedMatch = match[0];
+			retrievedMatch.level = req.params.level;
 			retrievedMatch.wordList = loadedWords;
 			retrievedMatch.isOngoing = true;
 			retrievedMatch.playerList.forEach(e => { 

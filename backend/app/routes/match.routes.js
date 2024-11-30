@@ -17,7 +17,7 @@ module.exports = (app, router) => {
 	// router.put("/checkMatch/:matchId", matchController.checkMatch);
 
 	// Set a match isOngoing to true and assign a wordList
-	router.put("/startMatch/:matchId", matchController.startMatch);
+	router.put("/startMatch/:matchId/:level", matchController.startMatch);
 
 	router.put("/removePlayer", matchController.removePlayer);
 

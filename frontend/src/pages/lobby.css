@@ -20,3 +20,11 @@
     padding-top: 40px;
     flex: 9;
 }
+
+.level-dropdown {
+    height: 50px;
+    background-color: var(--palette-element);
+    border-color: #decc35;
+    margin-right: 10px;
+    border-radius: 10px;
+}

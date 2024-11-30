@@ -69,8 +69,8 @@ class DataService {
 		return res;
 	}
 
-	async startMatch(matchId) {
-		const res = await fetch(config.fetchUrl + `/startMatch/${matchId}`, {
+	async startMatch(matchId, level) {
+		const res = await fetch(config.fetchUrl + `/startMatch/${matchId}/${level}`, {
 			method: "PUT",
 			headers: {
 				"content-type": "application/json"

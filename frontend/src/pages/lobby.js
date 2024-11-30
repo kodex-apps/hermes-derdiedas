@@ -26,6 +26,9 @@ const Lobby = (props) => {
 	const [buttonName, setButtonName] = useState("SPIEL STARTEN");
 	const [playerIsOwner, setPlayerIsOwner] = useState(false);
 	const foundDuplicatePlayerIds = useRef(false);
+	// set a useState for the level dropdown so we can set it to the last select level
+	const [levelDropdownValue, setLevelDropdownValue] = useState();
+	const levelChanged = useRef(false);
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
 
@@ -112,6 +115,7 @@ const Lobby = (props) => {
 				else {
 					setPlayerIsOwner(false);
 				}
+		if ((loadedMatch.level && !levelChanged.current)) setLevelDropdownValue(loadedMatch.level);
 
 	}, [loadedMatch]);
 
@@ -139,9 +143,18 @@ const Lobby = (props) => {
 	//		if (foundDuplicatePlayerIds) dataService.checkMatch(matchId);
 	//	}, [foundDuplicatePlayerIds]); 
 
+	const setLevel = (e) => {
+		levelChanged.current = true;
+		console.log(e.target.value);
+		setLevelDropdownValue(e.target.value);
+	}
+
 	const startMatch = (e) => {
 		setButtonName("LADEN...");
-		dataService.startMatch(loadedMatch._id)
+		// If the dropdown list is in its default state (aka wasn't touched) it's A1, if not use the assigned value.
+		// This was done so the player can see the value of the last match.
+		const levelToSend = (levelDropdownValue === 'default') ? 'A1' : levelDropdownValue;
+		dataService.startMatch(loadedMatch._id, levelDropdownValue)
 			.catch(e => console.log(e));
 			}
 	
@@ -216,6 +229,11 @@ const Lobby = (props) => {
 				</div>) : (<h1>Laden...</h1>)}
 				 
 				<div className="start-game">
+						<select class="level-dropdown" value={levelDropdownValue} onInput={setLevel} disabled={!playerIsOwner}>
+							<option value="A1">A1</option>
+							<option value="A2">A2</option>
+							<option value="B1">B1</option>
+						</select>
 						<Button onClick={startMatch} disabled={!playerIsOwner}>{buttonName}</Button>
 				</div>
 				
