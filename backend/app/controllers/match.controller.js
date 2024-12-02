@@ -91,6 +91,40 @@ exports.updatePlayer = (req, res) => {
 }
 
 /*
+ * This function will a single value of a Match.
+ * Args: matchId, commandValue, commandArg
+ * Possible keys to change:
+ * LEVEL - commandValue: 1, commandArg: level
+ * (WIP) WORDS PER MATCH - commandValue: 2, commandArg: wordsPerMatch
+ */
+
+exports.updateMatch = (req, res) => {
+	const matchId = req.params.matchId;
+	const commandValue = req.body.commandValue;
+	const commandArg = req.body.commandArg;
+	// We'll assign a value here dependin on the command for logging purposes
+	let commandNameString;
+
+	Match.find ({ _id: matchId })
+		.then((data) => {
+			match = data[0];
+
+			switch (commandValue) {
+				case 1: match.level = commandArg; commandNameString = 'setLevel'; break;
+				case 2: match.wordsPerMatch = commandArg; commandNameString = 'setWordsPerMatch'; break;
+			}
+
+			return match.save();})
+		.then(() => {
+			console.log(`Match ${matchId} - Succesfully updated. Command ${commandNameString} with argument: ${commandArg}`);
+			res.status(200).send(data); })
+		.catch(error => {
+			console.log(`Error updating match ${machId}. ${error.name}: ${error.message}`);
+			res.status(500).send(`Error updating match ${matchId}. ${error.name}: ${error.message}`);
+		});
+}
+
+/*
  * This function will add a player to a match.
  * It will receive the following parameters:
  * matchId
