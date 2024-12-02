@@ -10,6 +10,9 @@ module.exports = (app, router) => {
 	// Update a player's key depending on the commandName (check matchController explanation)
 	router.put("/updatePlayer/:matchId", matchController.updatePlayer);
 
+	// Update a match's key dependin on the commandName (check matchController explanation)
+	router.put("/updateMatch/:matchId", matchController.updateMatch);
+
 	// Add a new player to a match
 	router.put("/addPlayer/:matchId", matchController.addPlayer);
 

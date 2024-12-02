@@ -147,6 +147,10 @@ const Lobby = (props) => {
 		levelChanged.current = true;
 		console.log(e.target.value);
 		setLevelDropdownValue(e.target.value);
+		dataService.updateMatch(matchId, 1, e.target.value)
+			.then((data) => data.json())
+			.then((data) => setLoadedMatch[data])
+			.catch((e) => console.log(e));
 	}
 
 	const startMatch = (e) => {

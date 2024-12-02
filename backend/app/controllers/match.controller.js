@@ -113,13 +113,12 @@ exports.updateMatch = (req, res) => {
 				case 1: match.level = commandArg; commandNameString = 'setLevel'; break;
 				case 2: match.wordsPerMatch = commandArg; commandNameString = 'setWordsPerMatch'; break;
 			}
-
 			return match.save();})
-		.then(() => {
+		.then((data) => {
 			console.log(`Match ${matchId} - Succesfully updated. Command ${commandNameString} with argument: ${commandArg}`);
 			res.status(200).send(data); })
 		.catch(error => {
-			console.log(`Error updating match ${machId}. ${error.name}: ${error.message}`);
+			console.log(`Error updating match ${matchId}. ${error.name}: ${error.message}`);
 			res.status(500).send(`Error updating match ${matchId}. ${error.name}: ${error.message}`);
 		});
 }

@@ -69,6 +69,23 @@ class DataService {
 		return res;
 	}
 
+	async updateMatch(matchId, commandValue, commandArg) {
+		const res = await fetch(config.fetchUrl + `/updateMatch/${matchId}`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json"
+			},
+			// http bodies are always strings
+			body: JSON.stringify({
+				"matchId": matchId,
+				"commandValue": commandValue,
+				"commandArg": commandArg
+			})
+		});
+		
+		return res;
+	}
+	
 	async startMatch(matchId, level) {
 		const res = await fetch(config.fetchUrl + `/startMatch/${matchId}/${level}`, {
 			method: "PUT",
