@@ -32,7 +32,6 @@ const Lobby = (props) => {
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
 
-	//TODO: Popup that asks for the player's name
 	useEffect(() => {
 		let done = false;
 		if (!done) {

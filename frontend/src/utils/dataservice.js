@@ -38,19 +38,6 @@ class DataService {
 		return res;
 	}
 
-	// COMMETING OUT BECAUSE IT'S NO LONGER NEEDED. KEEPING JUST IN CASE.
-	//async checkMatch(matchId) {
-	//	const res = await fetch(config.fetchUrl + `/checkMatch/${matchId}`, {
-	//		method: "PUT",
-	//		headers: {
-	//			"content-type": "application/json"
-	//		}
-	//	});
-	//
-	//	return res;
-	//}
-
-
 	async updatePlayer(matchId, playerId, commandName, commandArg) {
 		const res = await fetch(config.fetchUrl + `/updatePlayer/${matchId}`, {
 			method: "PUT",

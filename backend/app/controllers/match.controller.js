@@ -30,7 +30,8 @@ exports.create = (req, res) => {
 		_id: newId,
 		playerList: [],
 		isOngoing: false,
-		level: 'A1'
+		level: 'A1',
+		wordsPerMatch: 10
 	});
 	// Save the Match object in the DB
 	newMatch
