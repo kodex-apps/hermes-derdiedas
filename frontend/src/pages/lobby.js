@@ -1,6 +1,7 @@
 import { React, useState, useEffect, useRef } from "react";
 import "./lobby.css";
 import Button from "../components/button";
+import Share from '../components/lobby.share';
 import PlayerList from "../components/lobby.playerlist";
 import getUsername from "../utils/getusername";
 import PopupName from "../components/popup.name";
@@ -231,6 +232,7 @@ const Lobby = (props) => {
 					/>
 				</div>) : (<h1>Laden...</h1>)}
 				 
+			<Share matchId={matchId}>https://derdiedasspiel.de/{matchId}</Share>
 				<div className="start-game">
 						<select class="level-dropdown" value={levelDropdownValue} onInput={setLevel} disabled={!playerIsOwner}>
 							<option value="A1">A1</option>

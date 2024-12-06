@@ -1,12 +1,18 @@
 import React from "react";
 import "./lobby.share.css";
+import shareIcon from "../img/share.png";
 
 const Share = (props) => {
-	// Return a button tag with the whatever text is between the tags and the onClick callback passed as an argument
+	const copyToClipboard = () => {
+		navigator.clipboard.writeText(`https://derdiedasspiel.de/${props.matchId}`)
+			.then(alert('Link kopiert!'))
+			.catch(e => alert(e.message));
+	}
+
 	return (
-		<button onClick={props.onClick} className="share">
-			{props.children}
-		</button>
+		<div onClick={copyToClipboard} className="share__div">
+			<span className="share__span">{props.children}<img className="share__img" src={shareIcon}/></span>	
+		</div>
 	);
 };
 
