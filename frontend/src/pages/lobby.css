@@ -28,3 +28,26 @@
     margin-right: 10px;
     border-radius: 10px;
 }
+
+.maxwords-dropdown {
+  height: 44px;
+  background-color: var(--palette-element);
+  border-color: #decc35;
+  margin-right: 10px;
+  border-radius: 10px;
+  width: 40px;
+  text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

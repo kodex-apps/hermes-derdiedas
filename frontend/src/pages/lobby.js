@@ -30,6 +30,11 @@ const Lobby = (props) => {
 	// set a useState for the level dropdown so we can set it to the last select level
 	const [levelDropdownValue, setLevelDropdownValue] = useState();
 	const levelChanged = useRef(false);
+	// set a useState for the maxWords dropdown for the same reason as above
+	const [maxWordsDropdownValue, setMaxWordsDropdownValue] = useState();
+	const maxWordsChanged = useRef(false);
+	// set a useRef for the last match played so the score shown doesn't change because you changed maxWords
+	const lastMaxWords = useRef(10);
 	let oldPlayerName = playerName;
 	const navigate = useNavigate();
 
@@ -116,7 +121,7 @@ const Lobby = (props) => {
 					setPlayerIsOwner(false);
 				}
 		if ((loadedMatch.level && !levelChanged.current)) setLevelDropdownValue(loadedMatch.level);
-
+		if ((loadedMatch.wordsPerMatch && !maxWordsChanged.current)) setMaxWordsDropdownValue(loadedMatch.wordsPerMatch);
 	}, [loadedMatch]);
 
 
@@ -148,6 +153,15 @@ const Lobby = (props) => {
 		console.log(e.target.value);
 		setLevelDropdownValue(e.target.value);
 		dataService.updateMatch(matchId, 1, e.target.value)
+			.then((data) => data.json())
+			.then((data) => setLoadedMatch[data])
+			.catch((e) => console.log(e));
+	}
+
+	const setMaxWords = (e) => {
+		maxWordsChanged.current = true;
+		setMaxWordsDropdownValue(e.target.value);
+		dataService.updateMatch(matchId, 2, e.target.value)
 			.then((data) => data.json())
 			.then((data) => setLoadedMatch[data])
 			.catch((e) => console.log(e));
@@ -229,11 +243,13 @@ const Lobby = (props) => {
 						playerList={loadedMatch.playerList}
 						playerName={playerName}
 						setShowDialog={setShowDialog}
+						lastWordsPerMatch={loadedMatch.lastWordsPerMatch}
 					/>
 				</div>) : (<h1>Laden...</h1>)}
 				 
 			<Share matchId={matchId}>https://derdiedasspiel.de/{matchId}</Share>
 				<div className="start-game">
+						<input type="number" class="maxwords-dropdown" value={maxWordsDropdownValue} onInput={setMaxWords} disabled={!playerIsOwner}/>
 						<select class="level-dropdown" value={levelDropdownValue} onInput={setLevel} disabled={!playerIsOwner}>
 							<option value="A1">A1</option>
 							<option value="A2">A2</option>

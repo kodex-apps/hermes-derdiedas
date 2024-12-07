@@ -79,7 +79,7 @@ exports.updatePlayer = (req, res) => {
 				case 4: player.score = commandArg; commandNameString = 'setScore'; break;
 			}
 			// If the player got to 10 wordsCompleted and everyone else did as well, finish the match.
-			if ((player.wordsCompleted >= 10) && match.isOngoing && !match.playerList.some(e => e.wordsCompleted < 10)) match.isOngoing = false;
+			if ((player.wordsCompleted >= match.wordsPerMatch) && match.isOngoing && !match.playerList.some(e => e.wordsCompleted < match.wordsPerMatch)) match.isOngoing = false;
 			match.playerList[match.playerList.findIndex(e => e._id === player._id)] = player;
 			return match.save();})
 		.then((data) => {
@@ -96,7 +96,8 @@ exports.updatePlayer = (req, res) => {
  * Args: matchId, commandValue, commandArg
  * Possible keys to change:
  * LEVEL - commandValue: 1, commandArg: level
- * (WIP) WORDS PER MATCH - commandValue: 2, commandArg: wordsPerMatch
+ * WORDS PER MATCH - commandValue: 2, commandArg: wordsPerMatch
+ * LAST WORDS PER MATCH - commandValue: 3, commandArg: lastWordsPerMatch (the wordsPerMatch of the last played match)
  */
 
 exports.updateMatch = (req, res) => {
@@ -113,6 +114,7 @@ exports.updateMatch = (req, res) => {
 			switch (commandValue) {
 				case 1: match.level = commandArg; commandNameString = 'setLevel'; break;
 				case 2: match.wordsPerMatch = commandArg; commandNameString = 'setWordsPerMatch'; break;
+				case 3: match.lastWordsPerMatch = commandArg; commandNameString = 'setLastWordsPerMatch'; break;
 			}
 			return match.save();})
 		.then((data) => {
@@ -155,12 +157,11 @@ exports.addPlayer = (req, res) => {
 exports.startMatch = (req, res) => {
 	// Receive a matchId and set that match isOngoing variable to true and assign words to it
 	const matchId = req.params.matchId;
-	// Temp wordList for testing purposes.
-	const loadedWords = getWordList(req.params.level);
 
 	Match.find({ _id: matchId })
 		.then((match) => {
 			let retrievedMatch = match[0];
+			const loadedWords = getWordList(retrievedMatch.level, retrievedMatch.wordsPerMatch);
 			retrievedMatch.level = req.params.level;
 			retrievedMatch.wordList = loadedWords;
 			retrievedMatch.isOngoing = true;

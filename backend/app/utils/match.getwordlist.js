@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 
-function getWordList(level) {
+function getWordList(level, wordsPerMatch) {
 	let rawWordList;
 	let wordList = [];
 	let data;
@@ -12,7 +12,7 @@ function getWordList(level) {
 		// Get the full word list and assign 10 random of them to our wordList
 		let fullWordList = data.split("\n").slice(0, -1).sort(() => 0.5 - Math.random());
 		// Getting 10 strings of words from the random fullWordList
-		rawWordList = fullWordList.slice(0, 10);
+		rawWordList = fullWordList.slice(0, wordsPerMatch);
 	} catch (err) {
 		console.error(err); return;
 	}

@@ -26,6 +26,7 @@ const PlayerList = (props) => {
 					userName={props.playerName}
 					playerElement={playerElement}
 					setShowDialog={props.setShowDialog}
+					lastWordsPerMatch={props.lastWordsPerMatch}
 				/>
 			))}
 		</tbody>

@@ -43,7 +43,7 @@ const PlayerListElement = (props) => {
 			<td className="PLE__progress">
 				{(props.playerElement.wordsCompleted != 10 && props.playerElement.hasPlayed === false) && (<progress max="10" value={props.playerElement.wordsCompleted}/>)}
 			</td>
-			<td className="PLE__score">{props.playerElement.hasPlayed ? props.playerElement.score+'/10' : '...'}</td>
+			<td className="PLE__score">{props.playerElement.hasPlayed ? props.playerElement.score+'/'+props.lastWordsPerMatch : '...'}</td>
 			{props.playerList.some((e) => e.name === props.userName && e.isOwner) && (
 				<td className="PLE__delete">
 					<img

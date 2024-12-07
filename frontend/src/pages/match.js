@@ -33,6 +33,8 @@ const Match = (props) => {
 	const navigate = useNavigate();
 	// Initialise the variable for the span element containing the word
 	const wordSpan = useRef(null);
+	// The amount of words this match is gonna show
+	const wordsPerMatch = useRef(10);
 
 	useEffect(() => {
 		let done = false;
@@ -41,6 +43,7 @@ const Match = (props) => {
 				.then((response) => response.json())
 				.then((response) => {
 					setWordList(response.wordList);
+					wordsPerMatch.current = response.wordsPerMatch;
 					// If we have no playerObject and no localStorage of the player, send them to the lobby
 					// if the playerObject is valid use that, if not retreive the playerObject through the localStorage
 					//
@@ -56,7 +59,7 @@ const Match = (props) => {
 						let updatedWordList = response.wordList;
 						updatedWordList.find(e => e.isCurrentWord).isCurrentWord = false;
 						// Use the completedWords as index for the currentWord unless it's 10 (which means we done)
-						if (newPlayerObject.wordsCompleted && newPlayerObject.wordsCompleted < 10) {
+						if (newPlayerObject.wordsCompleted && newPlayerObject.wordsCompleted < wordsPerMatch.current) {
 							updatedWordList[newPlayerObject.wordsCompleted].isCurrentWord = true;
 							setWordList(updatedWordList);
 						} else {
@@ -74,7 +77,7 @@ const Match = (props) => {
 	// Function to check the wordsCompleted and send them to lobby if they're done
 	const checkWordsCompleted = () => {
 		// If user has completed 10 words (or more, just in case), end the match and send them to lobby
-		if (playerObject && playerObject.wordsCompleted >= 10) {
+		if (playerObject && playerObject.wordsCompleted >= wordsPerMatch.current) {
 			playerObject.hasPlayed = true;
 			localStorage.setItem('playerName', playerObject.name);
 			// Commenting out instead of deleting just in case because the new and valid one is below
@@ -83,6 +86,7 @@ const Match = (props) => {
 			//	.catch(e => console.log(e.message));
 			dataService.updatePlayer(matchId, playerObject._id, 4, playerObject.score)
 				.then(() => dataService.updatePlayer(matchId, playerObject._id, 3, undefined))
+				.then(() => dataService.updateMatch(matchId, 3, wordsPerMatch.current))
 				.then(() => navigate(`/${matchId}`, { state: { playerObject: playerObject } }))
 				.catch(e => console.log(e.message));
 		}
