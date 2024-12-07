@@ -16,7 +16,7 @@ const PopupName = (props) => {
 	}
 
 	const handleOnClick = e => {
-		if (!props.playerList.find(player => player.name === finalName)) props.setUserName(finalName ? finalName : props.originalName)
+		if (!props.playerList.find(player => player.name === finalName) && finalName.length < 100) props.setUserName(finalName ? finalName : props.originalName)
 		props.setShowDialog(false);
 	}
 
