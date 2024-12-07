@@ -150,7 +150,7 @@ const Match = (props) => {
 	}
 
 	return <div onClick={handleMatchClick} className="match">
-			{(playerObject && ((wordList.some(e => e.isCurrentWord) === true) && (playerObject.wordsCompleted < 10))) ? 
+			{(playerObject && ((wordList.some(e => e.isCurrentWord) === true) && (playerObject.wordsCompleted < wordsPerMatch.current))) ? 
 			(<div>
 				<div><TextBox articleInputRef={articleInputRef} onChange={handleChange} />
 				<div ref={animatedText} className="animated-text"/></div>
