@@ -20,6 +20,6 @@ DerDieDasSpiel uses ReactJS for the frontend and NodeJS + MongoDB for the backen
 
 This web app is being actively maintained. Bugs will be squashed and new features will be added, which include:
 
-- Mode where you can play random words of the Duden dictionary.
-- Improve visually the frontend.
+- Mode where you can play random words from the Duden dictionary.
+- Improve the frontend visually.
 - List the words of the last match with a link directly to their DWDS entry for further study.
